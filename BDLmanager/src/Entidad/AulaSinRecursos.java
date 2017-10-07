@@ -12,5 +12,20 @@ package Entidad;
 public class AulaSinRecursos extends Aula{
     
     private String tipoClimatizacion; //Deberia ser ENUM
+
+    public AulaSinRecursos(int capacidad, boolean habilitado, int id, String nombreAula, String tipoPizarron, int piso, String tipoClimatizacion) {
+        this.capacidad=capacidad;
+        this.habilitado=habilitado;
+        this.id=id;
+        this.nombreAula=nombreAula;
+        this.tipoPizarron=tipoPizarron;
+        this.piso=piso;
+        
+        this.tipoClimatizacion = tipoClimatizacion;
+    }
+
+    
+    
+    
     
 }

@@ -5,10 +5,30 @@
  */
 package Control;
 
+import Entidad.PoliticaSeguridad;
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  *
  * @author Facundo
  */
 public class DAO_PoliticaSeguridad {
+    
+    //Patrón Singleton
+    private static DAO_PoliticaSeguridad instance=null;
+    private DAO_PoliticaSeguridad(){};
+    public static DAO_PoliticaSeguridad getInstance(){
+        if(instance==null) instance=new DAO_PoliticaSeguridad();
+        return instance;
+    }
+    
+    public Collection<PoliticaSeguridad> find(){
+        
+        //A implementar
+        
+        return new ArrayList();
+        
+    }
     
 }

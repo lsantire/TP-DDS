@@ -12,4 +12,12 @@ package Entidad;
 public class Curso {
     private int id;
     private String nombreCurso;
+
+    public Curso(int id, String nombreCurso) {
+        this.id = id;
+        this.nombreCurso = nombreCurso;
+    }
+    
+    
+    
 }

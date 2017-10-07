@@ -19,4 +19,16 @@ public class Reserva {
     private Bedel bedel;
     private Curso curso;
     private Docente docente;
+
+    public Reserva(int cantidadAlumnos, boolean esPeriodica, int id, Collection<DiaReserva> diasReserva, Bedel bedel, Curso curso, Docente docente) {
+        this.cantidadAlumnos = cantidadAlumnos;
+        this.esPeriodica = esPeriodica;
+        this.id = id;
+        this.diasReserva = diasReserva;
+        this.bedel = bedel;
+        this.curso = curso;
+        this.docente = docente;
+    }
+    
+    
 }

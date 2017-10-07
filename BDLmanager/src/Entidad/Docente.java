@@ -12,4 +12,13 @@ package Entidad;
 public class Docente {
     private int dni;
     private String nombreYApellido;
+    private String mail;
+
+    public Docente(int dni, String nombreYApellido) {
+        this.dni = dni;
+        this.nombreYApellido = nombreYApellido;
+    }
+    
+    
+
 }

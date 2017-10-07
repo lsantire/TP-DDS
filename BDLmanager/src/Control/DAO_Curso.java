@@ -5,10 +5,31 @@
  */
 package Control;
 
+import Entidad.Curso;
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  *
  * @author Facundo
  */
 public class DAO_Curso {
+    
+    //Patrón Singleton
+    private static DAO_Curso instance=null;
+    private DAO_Curso (){};
+    public static DAO_Curso getInstance(){
+        if(instance==null) instance=new DAO_Curso();
+        return instance;
+    }
+    
+    public Collection<Curso> find (){
+        
+        //a implementar
+        
+        return new ArrayList();
+        
+    }
+    
     
 }

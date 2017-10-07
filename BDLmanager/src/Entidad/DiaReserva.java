@@ -20,4 +20,16 @@ public class DiaReserva {
     private int id;
     private Reserva reserva;
     private Aula aula;
+
+    public DiaReserva(Date fecha, Time horaInicio, Time horaFin, int id, Reserva reserva, Aula aula) {
+        this.fecha = fecha;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+        this.id = id;
+        this.reserva = reserva;
+        this.aula = aula;
+    }
+    
+    
+    
 }

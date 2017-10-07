@@ -9,11 +9,11 @@ package Entidad;
  *
  * @author Facundo
  */
-public class Aula {
-    private int capacidad;
-    private boolean habilitado;
-    private int id;
-    private String nombreAula;
-    private int piso;
-    private String tipo_pizarron; //Deberia ser una ENUM, x lo menos en la implementacion
+public abstract class Aula {
+    protected int capacidad;
+    protected boolean habilitado;
+    protected int id;
+    protected String nombreAula;
+    protected int piso;
+    protected String tipoPizarron; //Deberia ser una ENUM, x lo menos en la implementacion
 }

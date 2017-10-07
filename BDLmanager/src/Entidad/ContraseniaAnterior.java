@@ -12,5 +12,11 @@ package Entidad;
 public class ContraseniaAnterior {
     
     private String contraseña;
+
+    public ContraseniaAnterior(String contraseña) {
+        this.contraseña = contraseña;
+    }
+    
+    
     
 }

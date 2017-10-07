@@ -15,4 +15,13 @@ public class Administrador {
     private String id;
     private String contrasenia;
     private Collection<ContraseniaAnterior> contraseniasAnteriores;
+
+    public Administrador(String id, String contrasenia, Collection<ContraseniaAnterior> contraseniasAnteriores) {
+        this.id = id;
+        this.contrasenia = contrasenia;
+        this.contraseniasAnteriores = contraseniasAnteriores;
+    }
+    
+    
+    
 }

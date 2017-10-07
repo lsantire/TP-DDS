@@ -19,4 +19,16 @@ public class PoliticaSeguridad {
     private int id;
     private int longitudMinima;
     
+    public PoliticaSeguridad (boolean debeEspecial, boolean debeUnNumero, boolean debeUnaMayus, boolean puedeRepetirse, boolean vigente, int id, int longitudMinima){
+        
+        this.debeEspecial=debeEspecial;
+        this.debeUnNumero=debeUnNumero;
+        this.debeUnaMayus=debeUnaMayus;
+        this.puedeRepetirse=puedeRepetirse;
+        this.vigente=vigente;
+        this.id=id;
+        this.longitudMinima=longitudMinima;
+        
+    }
+    
 }

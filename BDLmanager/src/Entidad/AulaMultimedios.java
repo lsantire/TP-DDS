@@ -16,5 +16,23 @@ public class AulaMultimedios extends Aula{
     private boolean computadora;
     private boolean dvd;
     private boolean televisor;
+
+    public AulaMultimedios(int capacidad, boolean habilitado, int id, String nombreAula, String tipoPizarron, int piso, boolean aireAcondicionado, boolean canion, boolean computadora, boolean dvd, boolean televisor) {
+        
+        this.capacidad=capacidad;
+        this.habilitado=habilitado;
+        this.id=id;
+        this.nombreAula=nombreAula;
+        this.tipoPizarron=tipoPizarron;
+        this.piso=piso;
+        
+        this.aireAcondicionado = aireAcondicionado;
+        this.canion = canion;
+        this.computadora = computadora;
+        this.dvd = dvd;
+        this.televisor = televisor;
+    }
+    
+    
     
 }

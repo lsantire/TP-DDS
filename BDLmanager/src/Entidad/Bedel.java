@@ -21,5 +21,18 @@ public class Bedel {
     private boolean eliminado;
     private Collection<ContraseniaAnterior> contraseniasAnteriores;
     private Collection<Reserva> reservas;
+
+    public Bedel(String nombre, String apellido, String id, String contraseña, String turno, boolean eliminado, Collection<ContraseniaAnterior> contraseniasAnteriores, Collection<Reserva> reservas) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.id = id;
+        this.contraseña = contraseña;
+        this.turno = turno;
+        this.eliminado = eliminado;
+        this.contraseniasAnteriores = contraseniasAnteriores;
+        this.reservas = reservas;
+    }
+    
+    
     
 }

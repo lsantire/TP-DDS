@@ -15,4 +15,13 @@ public class Cuatrimestre {
     private int cicloLectivo;
     private Date fechaInicio;
     private Date fechaFin;
+
+    public Cuatrimestre(int cicloLectivo, Date fechaInicio, Date fechaFin) {
+        this.cicloLectivo = cicloLectivo;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+    }
+    
+    
+    
 }
