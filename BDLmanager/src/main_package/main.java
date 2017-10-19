@@ -5,6 +5,9 @@
  */
 package main_package;
 
+import Interfaz.PopUp;
+import Interfaz.TipoPopUp;
+
 /**
  *
  * @author Mateo Chamorro
@@ -16,6 +19,7 @@ public class main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        
     }
     
 }

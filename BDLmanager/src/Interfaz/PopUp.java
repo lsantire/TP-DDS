@@ -11,18 +11,24 @@ import javax.swing.JOptionPane;
  *
  * @author Facundo
  */
-public class PopUp extends JOptionPane {
+public class PopUp {
+    private int val=0;
     
     
     public PopUp(TipoPopUp tipo,String mensaje){
         
         switch (tipo){
-            case ERROR:
-            case ADVERTENCIA:
-            case INFORMACION:
-            case CONFIRMACION:
+            case ERROR: JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE); break;
+            case ADVERTENCIA: JOptionPane.showMessageDialog(null, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE); break;
+            case INFORMACION: JOptionPane.showMessageDialog(null, mensaje, "Informacion", JOptionPane.INFORMATION_MESSAGE); break;
+            case CONFIRMACION: int x=JOptionPane.showConfirmDialog(null, mensaje, "Confirmacion", JOptionPane.YES_NO_OPTION);
+                               if(x==JOptionPane.YES_OPTION)val=1;break;
         }
         
+    }
+    
+    public int getVal(){
+        return val;
     }
     
     

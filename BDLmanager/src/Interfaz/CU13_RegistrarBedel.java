@@ -5,6 +5,8 @@
  */
 package Interfaz;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Mateo Chamorro
@@ -50,6 +52,11 @@ public class CU13_RegistrarBedel extends javax.swing.JFrame {
 
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton3.setText("Registrar");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -57,6 +64,11 @@ public class CU13_RegistrarBedel extends javax.swing.JFrame {
         });
 
         jButton1.setText("Cancelar");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -173,6 +185,42 @@ public class CU13_RegistrarBedel extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+        int respuesta=0;
+        String nombre =jTextField4.getText();
+        String apellido =jTextField5.getText();
+        String id = jTextField6.getText();
+        String pass = String.valueOf(jPasswordField3.getPassword());
+        String conf = String.valueOf(jPasswordField4.getPassword());
+        
+        System.out.println(pass);
+        
+        if(nombre.isEmpty() || apellido.isEmpty() || pass.isEmpty() || conf.isEmpty() || id.isEmpty()){
+          new PopUp(TipoPopUp.ERROR,"No se han completado todos los campos requeridos.");
+        }else if(nombre.length()<2 || nombre.length()>60 ||apellido.length()<2 || apellido.length()>60 || id.length()<6 || id.length()>32 || pass.length()>32){
+          new PopUp(TipoPopUp.ERROR,"No se respetaron algunas de los siguientes rangos:\n"
+                  + "Nombre y apellido: entre 2 y 60 caracteres.\n"
+                  + "Id: entre 6 y 32.\n"
+                  + "Contrasenia: menor que 32.");
+        }else if(!pass.equals(conf)){
+             new PopUp(TipoPopUp.ERROR,"Las contrasenia y su confirmacion deben coincidir.");
+        }
+        else{
+           //Llamar al gestor bedel.
+        }
+    }//GEN-LAST:event_jButton3MouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        int respuesta=0;
+        PopUp popUp = new PopUp(TipoPopUp.CONFIRMACION,"¿Desea cancelar el registro?.");
+        respuesta=popUp.getVal();
+        if(respuesta==1){
+        new Menu_Administradores().setVisible(true);
+        this.dispose();
+        }
+        
+    }//GEN-LAST:event_jButton1MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -204,7 +252,7 @@ public class CU13_RegistrarBedel extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CU13_RegistrarBedel().setVisible(true);
+               new CU13_RegistrarBedel().setVisible(true);
             }
         });
     }
