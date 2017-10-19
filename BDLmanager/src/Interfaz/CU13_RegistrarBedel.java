@@ -5,7 +5,8 @@
  */
 package Interfaz;
 
-import javax.swing.JOptionPane;
+import Control.Gestor_Bedeles;
+import Excepciones.*;
 
 /**
  *
@@ -52,11 +53,6 @@ public class CU13_RegistrarBedel extends javax.swing.JFrame {
 
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton3.setText("Registrar");
-        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton3MouseClicked(evt);
-            }
-        });
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -64,11 +60,6 @@ public class CU13_RegistrarBedel extends javax.swing.JFrame {
         });
 
         jButton1.setText("Cancelar");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
-            }
-        });
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -87,17 +78,7 @@ public class CU13_RegistrarBedel extends javax.swing.JFrame {
 
         jLabel13.setText("Confirmar contraseña:");
 
-        jTextField4.setText("Juan");
-
-        jTextField5.setText("Gomez");
-
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tarde" }));
-
-        jTextField6.setText("jGomez182");
-
-        jPasswordField3.setText("asdasdasdasd");
-
-        jPasswordField4.setText("asdasdasdasd");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -178,48 +159,78 @@ public class CU13_RegistrarBedel extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        String nombre =jTextField4.getText();
+        String apellido =jTextField5.getText();
+        String id = jTextField6.getText();
+        String pass = String.valueOf(jPasswordField3.getPassword());
+        String conf = String.valueOf(jPasswordField4.getPassword());
+        String turno = (String)jComboBox2.getSelectedItem();
+        
+        System.out.println(turno);
+        
+        //Validacion sintáctica en la interfaz
+        if(nombre.isEmpty() || apellido.isEmpty() || pass.isEmpty() || conf.isEmpty() || id.isEmpty())
+        {
+          new PopUp(TipoPopUp.ERROR,"No puede haber campos vacios.");
+        }
+        else if(nombre.length()<2 || nombre.length()>60 ||apellido.length()<2 || apellido.length()>60)
+        {
+          new PopUp(TipoPopUp.ERROR,"El nombre y el apellido deben tener entre 2 y 60 caracteres");
+        }
+        else if(id.length()<6 || id.length()>32)
+        {
+            new PopUp(TipoPopUp.ERROR,"El ID debe tener entre 6 y 32 caracteres");
+        }
+        else if(pass.length()>32)
+        {
+            new PopUp(TipoPopUp.ERROR,"La contrasenia no debe tener más de 32 caracteres");
+        }
+        else if(!pass.equals(conf))
+        {
+            new PopUp(TipoPopUp.ERROR,"La contrasenia y confirmacion deben coincidir");
+        }
+        else{
+           
+            //Invocacion al metodo de crearBedel del Gestor_Bedeles
+            try {
+                Gestor_Bedeles.getInstance().crearBedel(nombre, apellido, turno, id, pass);
+            }
+            catch (BedelEnUsoException beue){
+                new PopUp(TipoPopUp.ERROR,"El ID de bedel ingresado ya esta en uso");
+            } 
+            catch (ErrorInsercionException eie){
+                new PopUp(TipoPopUp.ERROR,"No se pudo registrar el nuevo bedel");
+            } 
+            catch (NoCumplePoliticaException ncpe){
+                new PopUp(TipoPopUp.ERROR,"No se respeta la politica de seguridad establecida:\n"+ncpe.getMessage());
+            }
+            finally {
+                new PopUp(TipoPopUp.INFORMACION,"El Bedel fue registrado exitosamente");
+                new Menu_Administradores().setVisible(true);
+                this.dispose();
+            }
+           
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
-        int respuesta=0;
         String nombre =jTextField4.getText();
         String apellido =jTextField5.getText();
         String id = jTextField6.getText();
         String pass = String.valueOf(jPasswordField3.getPassword());
         String conf = String.valueOf(jPasswordField4.getPassword());
         
-        System.out.println(pass);
-        
-        if(nombre.isEmpty() || apellido.isEmpty() || pass.isEmpty() || conf.isEmpty() || id.isEmpty()){
-          new PopUp(TipoPopUp.ERROR,"No se han completado todos los campos requeridos.");
-        }else if(nombre.length()<2 || nombre.length()>60 ||apellido.length()<2 || apellido.length()>60 || id.length()<6 || id.length()>32 || pass.length()>32){
-          new PopUp(TipoPopUp.ERROR,"No se respetaron algunas de los siguientes rangos:\n"
-                  + "Nombre y apellido: entre 2 y 60 caracteres.\n"
-                  + "Id: entre 6 y 32.\n"
-                  + "Contrasenia: menor que 32.");
-        }else if(!pass.equals(conf)){
-             new PopUp(TipoPopUp.ERROR,"Las contrasenia y su confirmacion deben coincidir.");
+        if(nombre.isEmpty() && apellido.isEmpty() && id.isEmpty() && pass.isEmpty() && conf.isEmpty()){
+            new Menu_Administradores().setVisible(true);
+            this.dispose();
         }
         else{
-           //Llamar al gestor bedel.
+            if(new PopUp(TipoPopUp.CONFIRMACION,"¿Desea cancelar el registro?.").getVal()==1){
+                new Menu_Administradores().setVisible(true);
+                this.dispose();
+            }
         }
-    }//GEN-LAST:event_jButton3MouseClicked
-
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        int respuesta=0;
-        PopUp popUp = new PopUp(TipoPopUp.CONFIRMACION,"¿Desea cancelar el registro?.");
-        respuesta=popUp.getVal();
-        if(respuesta==1){
-        new Menu_Administradores().setVisible(true);
-        this.dispose();
-        }
-        
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

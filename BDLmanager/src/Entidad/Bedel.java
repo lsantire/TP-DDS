@@ -5,6 +5,7 @@
  */
 package Entidad;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -33,6 +34,28 @@ public class Bedel {
         this.reservas = reservas;
     }
     
+    public Bedel(String nombre, String apellido, String id, String contraseña, String turno){
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.id = id;
+        this.contraseña = contraseña;
+        this.turno = turno;
+        this.eliminado=false;
+        this.contraseniasAnteriores=new ArrayList();
+        this.reservas=new ArrayList();
+    }
+    
+    public Bedel(String id){
+        nombre=null;
+        apellido=null;
+        this.id=id;
+        contraseña=null;
+        turno=null;
+        eliminado=false;
+        contraseniasAnteriores=null;
+        reservas=null;
+        
+    }
     
     
 }

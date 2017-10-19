@@ -30,5 +30,31 @@ public class PoliticaSeguridad {
         this.longitudMinima=longitudMinima;
         
     }
+
+    public boolean isDebeEspecial() {
+        return debeEspecial;
+    }
+
+    public boolean isDebeUnNumero() {
+        return debeUnNumero;
+    }
+
+    public boolean isDebeUnaMayus() {
+        return debeUnaMayus;
+    }
+
+    public boolean isPuedeRepetirse() {
+        return puedeRepetirse;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getLongitudMinima() {
+        return longitudMinima;
+    }
+    
+    
     
 }

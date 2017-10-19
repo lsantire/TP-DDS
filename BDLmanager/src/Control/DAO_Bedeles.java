@@ -30,7 +30,7 @@ public class DAO_Bedeles {
         return true;
     }
     
-    public Collection<Bedel> find(String apellido, String turno){
+    public Collection<Bedel> find(Bedel bdl){
         
         //A implementar
         

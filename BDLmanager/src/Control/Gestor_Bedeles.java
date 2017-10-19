@@ -7,6 +7,7 @@ package Control;
 
 import Entidad.Bedel;
 import Entidad.PoliticaSeguridad;
+import Excepciones.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -32,10 +33,32 @@ public class Gestor_Bedeles {
         
     }
     
-    public void crearBedel(Bedel bdl){
+    public void crearBedel(String nombre, String apellido, String turno, String id, String pass) throws BedelEnUsoException,ErrorInsercionException,NoCumplePoliticaException {
         
-        //a implementar
+        PoliticaSeguridad politicaSeguridad = ((ArrayList<PoliticaSeguridad>)(DAO_PoliticaSeguridad.getInstance().find())).get(0);
         
+        
+        //Validacion de politica seguridad
+        if(!this.validarPolitica(politicaSeguridad,pass)){
+            String infoError = "";
+            if(politicaSeguridad.isDebeEspecial())infoError+="La contraseña debe tener al menos un signo especial(@#$%&*)\n";
+            if(politicaSeguridad.isDebeUnNumero())infoError+="La contraseña debe tener al menos un numero\n";
+            if(politicaSeguridad.isDebeUnaMayus())infoError+="La contraseña debe tener una mayuscula\n";
+            infoError+="La contraseña debe tener un mínimo de "+politicaSeguridad.getLongitudMinima()+" caracteres\n";
+            
+            throw new NoCumplePoliticaException(infoError);
+        }
+        
+        //Validacion de existencia del bedel
+        if(!DAO_Bedeles.getInstance().find(new Bedel(id)).isEmpty()){
+            throw new BedelEnUsoException();
+        }
+        
+        //Se crea el nuevo bedel y se procede a pedirle al DAO que lo inserte en la bdd
+        Bedel bdl = new Bedel (nombre,apellido,id,pass,turno);
+        if(!DAO_Bedeles.getInstance().insert(bdl)){
+            throw new ErrorInsercionException();
+        }    
     }
     
     public boolean eliminarBedel (Bedel bdl){
@@ -49,8 +72,29 @@ public class Gestor_Bedeles {
         
         //A implementar
         
-        return (Bedel)(((ArrayList)DAO_Bedeles.getInstance().find("Gimenez", "mañana")).get(0));
+        return new Bedel("a");
          
+    }
+    
+    private boolean validarPolitica(PoliticaSeguridad ps, String pass){
+        
+        if(ps.isDebeEspecial() && !(pass.contains("@")||pass.contains("#")||pass.contains("$")||pass.contains("%")||pass.contains("&")||pass.contains("*"))){
+            return false;
+        }
+        if(ps.isDebeUnNumero() && !(pass.contains("0")||pass.contains("1")||pass.contains("2")||pass.contains("3")||pass.contains("4")||pass.contains("5")||
+                                    pass.contains("6")||pass.contains("7")||pass.contains("8")||pass.contains("9"))){
+            return false;
+        }
+        if(ps.isDebeUnaMayus() && pass.equals(pass.toLowerCase())){
+            return false;
+        }
+        if(ps.getLongitudMinima()>pass.length()){
+            return false;
+        }
+        
+        //No se evalua la posibilidad de una contraseña anterior porque este es un bedel nuevo
+        
+        return true;
     }
     
 }
