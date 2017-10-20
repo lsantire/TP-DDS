@@ -6,6 +6,7 @@
 package Entidad;
 
 import java.util.Collection;
+import javax.persistence.*;
 
 /**
  *
@@ -20,6 +21,10 @@ public class Administrador {
         this.id = id;
         this.contrasenia = contrasenia;
         this.contraseniasAnteriores = contraseniasAnteriores;
+    }
+    
+    public Administrador(){
+        
     }
     
     

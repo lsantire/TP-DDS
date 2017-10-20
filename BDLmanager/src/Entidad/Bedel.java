@@ -7,6 +7,7 @@ package Entidad;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.persistence.*;
 
 /**
  *
@@ -23,6 +24,10 @@ public class Bedel {
     private Collection<ContraseniaAnterior> contraseniasAnteriores;
     private Collection<Reserva> reservas;
 
+    public Bedel (){
+        
+    }
+    
     public Bedel(String nombre, String apellido, String id, String contraseña, String turno, boolean eliminado, Collection<ContraseniaAnterior> contraseniasAnteriores, Collection<Reserva> reservas) {
         this.nombre = nombre;
         this.apellido = apellido;

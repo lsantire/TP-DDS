@@ -5,6 +5,8 @@
  */
 package Entidad;
 
+import javax.persistence.*;
+
 /**
  *
  * @author Facundo
@@ -17,6 +19,9 @@ public class ContraseniaAnterior {
         this.contraseña = contraseña;
     }
     
+    public ContraseniaAnterior(){
+        
+    }
     
     
 }

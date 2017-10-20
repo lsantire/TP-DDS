@@ -6,6 +6,7 @@
 package Entidad;
 
 import java.util.Date;
+import javax.persistence.*;
 
 /**
  *
@@ -22,6 +23,8 @@ public class Cuatrimestre {
         this.fechaFin = fechaFin;
     }
     
-    
+    public Cuatrimestre (){
+        
+    }
     
 }

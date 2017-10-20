@@ -5,6 +5,7 @@
  */
 package Entidad;
 
+import javax.persistence.*;
 import java.util.Collection;
 
 /**
@@ -30,5 +31,8 @@ public class Reserva {
         this.docente = docente;
     }
     
+    public Reserva(){
+        
+    }
     
 }

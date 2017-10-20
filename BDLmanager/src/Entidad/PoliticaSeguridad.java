@@ -5,18 +5,23 @@
  */
 package Entidad;
 
+import javax.persistence.*;
+
 /**
  *
  * @author Facundo
  */
+
+@Entity
 public class PoliticaSeguridad {
     
+    @Id
+    private int id;
     private boolean debeEspecial;
     private boolean debeUnNumero;
     private boolean debeUnaMayus;
     private boolean puedeRepetirse;
     private boolean vigente;
-    private int id;
     private int longitudMinima;
     
     public PoliticaSeguridad (boolean debeEspecial, boolean debeUnNumero, boolean debeUnaMayus, boolean puedeRepetirse, boolean vigente, int id, int longitudMinima){
@@ -28,6 +33,10 @@ public class PoliticaSeguridad {
         this.vigente=vigente;
         this.id=id;
         this.longitudMinima=longitudMinima;
+        
+    }
+    
+    public PoliticaSeguridad(){
         
     }
 

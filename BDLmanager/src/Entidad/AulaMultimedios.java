@@ -5,6 +5,8 @@
  */
 package Entidad;
 
+import javax.persistence.*;
+
 /**
  *
  * @author Facundo
@@ -33,6 +35,8 @@ public class AulaMultimedios extends Aula{
         this.televisor = televisor;
     }
     
-    
+    public AulaMultimedios (){
+        
+    }
     
 }

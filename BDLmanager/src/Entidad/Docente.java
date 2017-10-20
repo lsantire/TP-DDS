@@ -5,6 +5,8 @@
  */
 package Entidad;
 
+import javax.persistence.*;
+
 /**
  *
  * @author Facundo
@@ -19,6 +21,8 @@ public class Docente {
         this.nombreYApellido = nombreYApellido;
     }
     
-    
+    public Docente (){
+        
+    }
 
 }

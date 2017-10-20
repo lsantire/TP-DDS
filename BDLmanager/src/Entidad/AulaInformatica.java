@@ -5,6 +5,8 @@
  */
 package Entidad;
 
+import javax.persistence.*;
+
 /**
  *
  * @author Facundo
@@ -29,6 +31,8 @@ public class AulaInformatica extends Aula{
         this.cantidadPcs = cantidadPcs;
     }
     
-    
+    public AulaInformatica (){
+        
+    }
     
 }

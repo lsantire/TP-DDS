@@ -5,6 +5,7 @@
  */
 package Entidad;
 
+import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
 
@@ -30,6 +31,8 @@ public class DiaReserva {
         this.aula = aula;
     }
     
-    
+    public DiaReserva(){
+        
+    }
     
 }

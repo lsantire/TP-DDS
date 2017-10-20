@@ -6,6 +6,7 @@
 package Control;
 
 import Entidad.PoliticaSeguridad;
+import Hibernate.Hibernator;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -25,9 +26,7 @@ public class DAO_PoliticaSeguridad {
     
     public Collection<PoliticaSeguridad> find(){
         
-        //A implementar
-        
-        return new ArrayList();
+        return (ArrayList<PoliticaSeguridad>)(Hibernator.getInstance().getSessionFactory().openSession().createCriteria(PoliticaSeguridad.class).list()) ;
         
     }
     

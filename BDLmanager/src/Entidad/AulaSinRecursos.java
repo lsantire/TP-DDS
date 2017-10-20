@@ -5,6 +5,7 @@
  */
 package Entidad;
 
+import javax.persistence.*;
 /**
  *
  * @author Facundo
@@ -25,7 +26,9 @@ public class AulaSinRecursos extends Aula{
     }
 
     
-    
+    public AulaSinRecursos(){
+        
+    }
     
     
 }
