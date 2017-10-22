@@ -10,7 +10,9 @@ import Entidad.PoliticaSeguridad;
 import Interfaz.CU17_Login;
 import Interfaz.PopUp;
 import Interfaz.TipoPopUp;
+import java.awt.Font;
 import java.util.ArrayList;
+import javax.swing.UIManager;
 
 /**
  *
@@ -23,6 +25,7 @@ public class main {
      */
     public static void main(String[] args) {
         
+        setUIFont (new javax.swing.plaf.FontUIResource("Segoe UI",Font.PLAIN,12));
         
         new CU17_Login().setVisible(true);
         
@@ -35,5 +38,15 @@ public class main {
         }*/
         
     }
+    
+    public static void setUIFont (javax.swing.plaf.FontUIResource f){
+    java.util.Enumeration keys = UIManager.getDefaults().keys();
+    while (keys.hasMoreElements()) {
+      Object key = keys.nextElement();
+      Object value = UIManager.get (key);
+      if (value instanceof javax.swing.plaf.FontUIResource)
+        UIManager.put (key, f);
+      }
+    } 
     
 }
