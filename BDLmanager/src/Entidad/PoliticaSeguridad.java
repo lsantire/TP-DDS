@@ -40,6 +40,12 @@ public class PoliticaSeguridad {
         
     }
 
+    public boolean isVigente() {
+        return vigente;
+    }
+    
+        
+    
     public boolean isDebeEspecial() {
         return debeEspecial;
     }

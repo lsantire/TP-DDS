@@ -35,7 +35,20 @@ public class Gestor_Bedeles {
     
     public void crearBedel(String nombre, String apellido, String turno, String id, String pass) throws BedelEnUsoException,ErrorInsercionException,NoCumplePoliticaException {
         
-        PoliticaSeguridad politicaSeguridad = ((ArrayList<PoliticaSeguridad>)(DAO_PoliticaSeguridad.getInstance().find())).get(0);
+        ArrayList<PoliticaSeguridad> politicas =(ArrayList<PoliticaSeguridad>)(DAO_PoliticaSeguridad.getInstance().find());
+        
+        if(politicas.isEmpty()){
+            throw new NoCumplePoliticaException("No existe una politica de seguridad.\nNo se puede crear un bedel");
+        }
+        
+        PoliticaSeguridad politicaSeguridad=null;
+        
+        for(int i=0;i<politicas.size();i++){
+            if(politicas.get(i).isVigente()){
+                politicaSeguridad=politicas.get(i); //En el caso que haya muchas vigentes, va a tomar la ultima en la BDD
+            }
+        }
+        
         
         
         //Validacion de politica seguridad
