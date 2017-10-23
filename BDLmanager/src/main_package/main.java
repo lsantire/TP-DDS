@@ -13,6 +13,9 @@ import Interfaz.PopUp;
 import Interfaz.TipoPopUp;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.*;
 import javax.swing.UIManager;
 
 /**
@@ -27,6 +30,7 @@ public class main {
     public static void main(String[] args) {
         
         setUIFont (new javax.swing.plaf.FontUIResource("Segoe UI",Font.PLAIN,12));
+        setLogLevel(Level.SEVERE);
         
         new CU17_Login().setVisible(true);
         
@@ -51,5 +55,11 @@ public class main {
         UIManager.put (key, f);
       }
     } 
+    
+    public static void setLogLevel(Level l){
+        
+       LogManager.getLogManager().getLogger("").setLevel(l);
+        
+    }
     
 }

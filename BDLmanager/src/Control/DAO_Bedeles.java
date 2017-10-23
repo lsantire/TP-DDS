@@ -6,8 +6,13 @@
 package Control;
 
 import Entidad.Bedel;
+import Hibernate.Hibernator;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -32,14 +37,52 @@ public class DAO_Bedeles {
     
     public Collection<Bedel> find(Bedel bdl){
         
-        //A implementar
+        Session ses = Hibernator.getInstance().getSessionFactory().openSession();
+        ses.beginTransaction();
         
-        return new ArrayList();
+        Criteria crit = ses.createCriteria(Bedel.class);
+        
+        Disjunction disj = Restrictions.disjunction();
+        
+        if(bdl.getId()!=null){
+            disj.add(Restrictions.eq("id",bdl.getId()));
+        }
+        
+        if(bdl.getNombre()!=null){
+            disj.add(Restrictions.eq("nombre",bdl.getNombre()));
+        }
+        
+        if(bdl.getApellido()!=null){
+            disj.add(Restrictions.eq("apellido", bdl.getApellido()));
+        }
+        
+        if(bdl.getContraseña()!=null){
+            disj.add(Restrictions.eq("contraseña",bdl.getContraseña()));
+        }
+        
+        if(bdl.getTurno()!=null){
+            disj.add(Restrictions.eq("turno",bdl.getTurno()));
+        }
+        
+        crit.add(disj);
+        
+        ArrayList<Bedel> resultado = (ArrayList<Bedel>)crit.list();
+        
+        ses.getTransaction().commit();
+        ses.close();
+        
+        return resultado;
         
     }
     
     public boolean insert(Bedel bdl){
-        //A implementar
+        
+        Session s = Hibernator.getInstance().getSessionFactory().openSession();
+        s.beginTransaction();
+        s.save(s);
+        s.getTransaction().commit();
+        s.close();
+        
         return true;
         
     }
