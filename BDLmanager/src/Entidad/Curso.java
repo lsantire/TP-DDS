@@ -5,15 +5,23 @@
  */
 package Entidad;
 
+import java.util.Collection;
 import javax.persistence.*;
 
 /**
  *
  * @author Facundo
  */
+
+@Entity
 public class Curso {
+    
+    @Id
     private int id;
     private String nombreCurso;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "curso", targetEntity = Reserva.class)
+    private Collection<Reserva> reservas;
 
     public Curso(int id, String nombreCurso) {
         this.id = id;

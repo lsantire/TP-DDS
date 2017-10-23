@@ -11,15 +11,24 @@ import javax.persistence.*;
  *
  * @author Facundo
  */
-public class ContraseniaAnterior {
+
+@Entity
+public class ContraseniaAnteriorAdministrador {
     
+    @Id
+    @GeneratedValue
+    private int id;
+    
+    @ManyToOne
+    @JoinColumn(name="idAdministradorFK")
+    private Administrador administrador;
     private String contraseña;
 
-    public ContraseniaAnterior(String contraseña) {
+    public ContraseniaAnteriorAdministrador(String contraseña) {
         this.contraseña = contraseña;
     }
     
-    public ContraseniaAnterior(){
+    public ContraseniaAnteriorAdministrador(){
         
     }
     

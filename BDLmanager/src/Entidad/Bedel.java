@@ -13,22 +13,29 @@ import javax.persistence.*;
  *
  * @author Facundo
  */
+
+@Entity
 public class Bedel {
     
+    @Id
+    private String id;
     private String nombre;
     private String apellido;
-    private String id;
     private String contraseña;
     private String turno; //deberia ser una enumeracion, por lo menos en la implementacion (facilita que si se agrega un elemento a la enum va a andar igual)
     private boolean eliminado;
-    private Collection<ContraseniaAnterior> contraseniasAnteriores;
+    
+    @OneToMany(targetEntity = ContraseniaAnteriorBedel.class, mappedBy = "bedel", cascade = CascadeType.ALL)
+    private Collection<ContraseniaAnteriorBedel> contraseniasAnteriores;
+    
+    @OneToMany(targetEntity = Reserva.class, mappedBy="bedel", cascade = CascadeType.PERSIST)
     private Collection<Reserva> reservas;
 
     public Bedel (){
         
     }
     
-    public Bedel(String nombre, String apellido, String id, String contraseña, String turno, boolean eliminado, Collection<ContraseniaAnterior> contraseniasAnteriores, Collection<Reserva> reservas) {
+    public Bedel(String nombre, String apellido, String id, String contraseña, String turno, boolean eliminado, Collection<ContraseniaAnteriorBedel> contraseniasAnteriores, Collection<Reserva> reservas) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.id = id;

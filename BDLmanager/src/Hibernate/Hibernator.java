@@ -29,7 +29,8 @@ public class Hibernator {
         config.addAnnotatedClass(AulaMultimedios.class);
         config.addAnnotatedClass(AulaSinRecursos.class);
         config.addAnnotatedClass(Bedel.class);
-        config.addAnnotatedClass(ContraseniaAnterior.class);
+        config.addAnnotatedClass(ContraseniaAnteriorAdministrador.class);
+        config.addAnnotatedClass(ContraseniaAnteriorBedel.class);
         config.addAnnotatedClass(Cuatrimestre.class);
         config.addAnnotatedClass(Curso.class);
         config.addAnnotatedClass(DiaReserva.class);

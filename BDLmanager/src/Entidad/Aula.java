@@ -5,17 +5,26 @@
  */
 package Entidad;
 
+import java.util.Collection;
 import javax.persistence.*;
 
 /**
  *
  * @author Facundo
  */
+
+@Entity
 public abstract class Aula {
+    
+    @Id
+    @GeneratedValue
+    protected int id;
     protected int capacidad;
     protected boolean habilitado;
-    protected int id;
     protected String nombreAula;
     protected int piso;
-    protected String tipoPizarron; //Deberia ser una ENUM, x lo menos en la implementacion
+    protected String tipoPizarron; 
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "aula", targetEntity = DiaReserva.class)
+    protected Collection<DiaReserva> diasReserva;
 }

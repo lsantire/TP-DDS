@@ -10,6 +10,8 @@ import javax.persistence.*;
  *
  * @author Facundo
  */
+
+@Entity
 public class AulaSinRecursos extends Aula{
     
     private String tipoClimatizacion; //Deberia ser ENUM

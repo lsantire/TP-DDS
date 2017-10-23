@@ -38,7 +38,6 @@ public class Menu_Administradores extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BDLadmin");
-        setAlwaysOnTop(true);
 
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+2f));
         jLabel1.setText("Menú de Administrador");

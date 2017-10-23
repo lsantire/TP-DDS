@@ -12,14 +12,18 @@ import javax.persistence.*;
  *
  * @author Facundo
  */
+
+@Entity
 public class Cuatrimestre {
-    private int cicloLectivo;
-    private Date fechaInicio;
+    
+    @Id
+    private Cuatrimestre_PK cuatrimestrePK;
     private Date fechaFin;
 
     public Cuatrimestre(int cicloLectivo, Date fechaInicio, Date fechaFin) {
-        this.cicloLectivo = cicloLectivo;
-        this.fechaInicio = fechaInicio;
+        this.cuatrimestrePK=new Cuatrimestre_PK();
+        cuatrimestrePK.setCicloLectivo(cicloLectivo);
+        cuatrimestrePK.setFechaInicio(fechaInicio);
         this.fechaFin = fechaFin;
     }
     

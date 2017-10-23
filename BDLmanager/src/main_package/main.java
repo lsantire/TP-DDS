@@ -7,6 +7,7 @@ package main_package;
 
 import Control.DAO_PoliticaSeguridad;
 import Entidad.PoliticaSeguridad;
+import Hibernate.Hibernator;
 import Interfaz.CU17_Login;
 import Interfaz.PopUp;
 import Interfaz.TipoPopUp;
@@ -28,6 +29,8 @@ public class main {
         setUIFont (new javax.swing.plaf.FontUIResource("Segoe UI",Font.PLAIN,12));
         
         new CU17_Login().setVisible(true);
+        
+        Hibernator.getInstance();
         
         /*ArrayList<PoliticaSeguridad> ps = (ArrayList<PoliticaSeguridad>)DAO_PoliticaSeguridad.getInstance().find();
         

@@ -12,12 +12,18 @@ import javax.persistence.*;
  *
  * @author Facundo
  */
+
+@Entity
 public class Administrador {
+    
+    @Id
     private String id;
     private String contrasenia;
-    private Collection<ContraseniaAnterior> contraseniasAnteriores;
+    
+    @OneToMany(targetEntity=ContraseniaAnteriorAdministrador.class, mappedBy="administrador", cascade=CascadeType.ALL)
+    private Collection<ContraseniaAnteriorAdministrador> contraseniasAnteriores;
 
-    public Administrador(String id, String contrasenia, Collection<ContraseniaAnterior> contraseniasAnteriores) {
+    public Administrador(String id, String contrasenia, Collection<ContraseniaAnteriorAdministrador> contraseniasAnteriores) {
         this.id = id;
         this.contrasenia = contrasenia;
         this.contraseniasAnteriores = contraseniasAnteriores;

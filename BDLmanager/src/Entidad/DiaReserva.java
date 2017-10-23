@@ -13,13 +13,29 @@ import java.util.Date;
  *
  * @author Facundo
  */
+
+@Entity
 public class DiaReserva {
     
-    private Date fecha;
-    private Time horaInicio;
-    private Time horaFin;
+    @Id
+    @GeneratedValue
     private int id;
+    
+    
+    private Date fecha;
+    
+    
+    private Time horaInicio;
+    
+    
+    private Time horaFin;
+    
+    @ManyToOne
+    @JoinColumn(name="idReservaFK")
     private Reserva reserva;
+    
+    @ManyToOne
+    @JoinColumn(name="idAulaFK")
     private Aula aula;
 
     public DiaReserva(Date fecha, Time horaInicio, Time horaFin, int id, Reserva reserva, Aula aula) {

@@ -11,6 +11,8 @@ import javax.persistence.*;
  *
  * @author Facundo
  */
+
+@Entity
 public class AulaMultimedios extends Aula{
     
     private boolean aireAcondicionado;
