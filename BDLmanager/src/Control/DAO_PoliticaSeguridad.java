@@ -29,11 +29,6 @@ public class DAO_PoliticaSeguridad {
         ArrayList<PoliticaSeguridad> retorno = (ArrayList<PoliticaSeguridad>) Hibernator.getInstance().getSessionFactory().openSession().createCriteria(PoliticaSeguridad.class).list();
         
         
-        //Si no hay ninguna politica de seguridad cargada se devuelve una instancia que permite todo, con longitud minima 1 caracter
-        if (retorno.isEmpty()){
-            retorno.add(new PoliticaSeguridad(false,false,false,false,true,-1,1));
-        }
-        
         return retorno;
         
     }

@@ -6,8 +6,12 @@
 package Control;
 
 import Entidad.Administrador;
+import Hibernate.Hibernator;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -23,8 +27,15 @@ public class DAO_Administrador {
         return instance;
     }
     
-    public Collection<Administrador> find (){
-        return new ArrayList();
+    public Collection<Administrador> find (String id, String pass){
+        
+        Session ses = Hibernator.getInstance().getSessionFactory().openSession();
+        ses.beginTransaction();
+        Criteria cr = ses.createCriteria(Administrador.class);
+        cr.add(Restrictions.conjunction().add(Restrictions.eq("id",id)).add(Restrictions.eq("contrasenia",pass)));
+        
+        return (ArrayList<Administrador>)cr.list();
+        
     }
     
 }

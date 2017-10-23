@@ -25,11 +25,18 @@ public class Gestor_Bedeles {
         return instance;
     }
     
-    public Collection<Bedel> buscarBedel(){
+    public Collection<Bedel> buscarBedel(String apellido, String turno){
         
-        //a implementar
+        Bedel bdlbusq=new Bedel();
         
-        return new ArrayList();
+        if(turno.equals("Todos")){
+            bdlbusq.setApellido(apellido);
+        }else{
+            bdlbusq.setApellido(apellido);
+            bdlbusq.setTurno(turno);
+        }
+        
+        return DAO_Bedeles.getInstance().find(bdlbusq);
         
     }
     
@@ -59,7 +66,7 @@ public class Gestor_Bedeles {
             if(politicaSeguridad.isDebeUnaMayus())infoError+="La contraseña debe tener una mayuscula\n";
             infoError+="La contraseña debe tener un mínimo de "+politicaSeguridad.getLongitudMinima()+" caracteres\n";
             
-            throw new NoCumplePoliticaException(infoError);
+            throw new NoCumplePoliticaException("No se respeta la politica de seguridad:\n"+infoError);
         }
         
         //Validacion de existencia del bedel

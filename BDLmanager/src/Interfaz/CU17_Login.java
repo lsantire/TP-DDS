@@ -5,6 +5,7 @@
  */
 package Interfaz;
 
+import Control.Gestor_Autenticacion;
 import java.awt.Font;
 import javax.swing.UIManager;
 import static main_package.main.setUIFont;
@@ -167,15 +168,22 @@ public class CU17_Login extends javax.swing.JFrame {
         String usuario = jTextField1.getText();
         String pass = jPasswordField1.getText();
         
-        //Version preliminar
-        if(usuario.equals("admin") && pass.equals("admin") && jRadioButton2.isSelected()){
-            new Menu_Administradores().setVisible(true);
-            this.dispose();
+        if(jRadioButton2.isSelected()){ //ADMIN
+            if(Gestor_Autenticacion.getInstance().autenticarAdministrador(usuario, pass)){
+                new Menu_Administradores().setVisible(true);
+                this.dispose();
+            }
+            else new PopUp(TipoPopUp.ERROR,"Usuario/contraseña incorrectos");
         }
-        if(usuario.equals("bedel") && pass.equals("bedel") && jRadioButton1.isSelected()){
-            new Menu_Bedeles().setVisible(true);
-            this.dispose();
+        
+        else if(jRadioButton1.isSelected()){ //BEDEL
+            if(Gestor_Autenticacion.getInstance().autenticarBedel(usuario, pass)){
+                new Menu_Bedeles().setVisible(true);
+                this.dispose();
+            }
+            else new PopUp(TipoPopUp.ERROR,"Usuario/contraseña incorrectos");
         }
+        
         
     }//GEN-LAST:event_jButton1ActionPerformed
 

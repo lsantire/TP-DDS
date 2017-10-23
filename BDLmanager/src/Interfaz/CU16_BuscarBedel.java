@@ -5,6 +5,11 @@
  */
 package Interfaz;
 
+import Control.Gestor_Bedeles;
+import Entidad.Bedel;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Mateo Chamorro
@@ -16,7 +21,10 @@ public class CU16_BuscarBedel extends javax.swing.JFrame {
      */
     public CU16_BuscarBedel() {
         initComponents();
-    }
+        this.setLocationRelativeTo(null);
+        jTable1.setRowSelectionAllowed(true);
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -59,29 +67,15 @@ public class CU16_BuscarBedel extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton1.setText("Buscar");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Nombre", "Apellido", "ID", "Turno"
@@ -93,6 +87,10 @@ public class CU16_BuscarBedel extends javax.swing.JFrame {
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int row, int column){
+                return false;
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -159,9 +157,26 @@ public class CU16_BuscarBedel extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-
-    }//GEN-LAST:event_jButton1MouseClicked
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        String apellido=jTextField1.getText();
+        String turno=jComboBox1.getSelectedItem().toString();
+        ArrayList<Bedel> resultado = (ArrayList<Bedel>)Gestor_Bedeles.getInstance().buscarBedel(apellido,turno);
+        
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        
+        for(int i=0;i<model.getRowCount();i++){
+            model.removeRow(i);
+        }
+        
+        for (int i=0;i<resultado.size();i++){
+            Bedel b = resultado.get(i);
+            Object[] fila = {b.getNombre(),b.getApellido(),b.getId(),b.getTurno()};
+            model.addRow(fila);
+            
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

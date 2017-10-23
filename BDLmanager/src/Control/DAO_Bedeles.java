@@ -11,8 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 
 /**
  *
@@ -42,29 +41,29 @@ public class DAO_Bedeles {
         
         Criteria crit = ses.createCriteria(Bedel.class);
         
-        Disjunction disj = Restrictions.disjunction();
+        Conjunction conj = Restrictions.conjunction();
         
         if(bdl.getId()!=null){
-            disj.add(Restrictions.eq("id",bdl.getId()));
+            conj.add(Restrictions.eq("id",bdl.getId()));
         }
         
         if(bdl.getNombre()!=null){
-            disj.add(Restrictions.eq("nombre",bdl.getNombre()));
+            conj.add(Restrictions.eq("nombre",bdl.getNombre()));
         }
         
         if(bdl.getApellido()!=null){
-            disj.add(Restrictions.eq("apellido", bdl.getApellido()));
+            conj.add(Restrictions.eq("apellido", bdl.getApellido()));
         }
         
         if(bdl.getContraseña()!=null){
-            disj.add(Restrictions.eq("contraseña",bdl.getContraseña()));
+            conj.add(Restrictions.eq("contraseña",bdl.getContraseña()));
         }
         
         if(bdl.getTurno()!=null){
-            disj.add(Restrictions.eq("turno",bdl.getTurno()));
+            conj.add(Restrictions.eq("turno",bdl.getTurno()));
         }
         
-        crit.add(disj);
+        crit.add(conj);
         
         ArrayList<Bedel> resultado = (ArrayList<Bedel>)crit.list();
         
@@ -79,7 +78,7 @@ public class DAO_Bedeles {
         
         Session s = Hibernator.getInstance().getSessionFactory().openSession();
         s.beginTransaction();
-        s.save(s);
+        s.save(bdl);
         s.getTransaction().commit();
         s.close();
         
