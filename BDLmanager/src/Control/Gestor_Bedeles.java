@@ -29,11 +29,16 @@ public class Gestor_Bedeles {
         
         Bedel bdlbusq=new Bedel();
         
-        if(turno.equals("Todos")){
-            bdlbusq.setApellido(apellido);
-        }else{
+        if(!turno.equals("Todos") && !apellido.isEmpty()){
             bdlbusq.setApellido(apellido);
             bdlbusq.setTurno(turno);
+        }
+        else if(apellido.isEmpty() && !turno.equals("Todos")){
+            bdlbusq.setTurno(turno);
+        }
+        else if(turno.equals("Todos") && !apellido.isEmpty())
+        {
+            bdlbusq.setApellido(apellido);
         }
         
         return DAO_Bedeles.getInstance().find(bdlbusq);
