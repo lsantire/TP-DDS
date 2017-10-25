@@ -57,7 +57,7 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `bdlmanager`.`bedel` (
   `id` VARCHAR(255) NOT NULL,
   `apellido` VARCHAR(255) NULL DEFAULT NULL,
-  `contraseña` VARCHAR(255) NULL DEFAULT NULL,
+  `contrasenia` VARCHAR(255) NULL DEFAULT NULL,
   `eliminado` BIT(1) NOT NULL,
   `nombre` VARCHAR(255) NULL DEFAULT NULL,
   `turno` VARCHAR(255) NULL DEFAULT NULL,
@@ -71,7 +71,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bdlmanager`.`contraseniaanterioradministrador` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `contraseña` VARCHAR(255) NULL DEFAULT NULL,
+  `contrasenia` VARCHAR(255) NULL DEFAULT NULL,
   `idAdministradorFK` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `FK_a4xa5i2dip4jxqhjgfyiofkwv` (`idAdministradorFK` ASC),

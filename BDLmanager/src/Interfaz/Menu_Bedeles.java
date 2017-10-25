@@ -147,7 +147,7 @@ public class Menu_Bedeles extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        new CU17_Login();
+        new CU17_Login().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 

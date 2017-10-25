@@ -21,7 +21,7 @@ public class Bedel {
     private String id;
     private String nombre;
     private String apellido;
-    private String contraseña;
+    private String contrasenia;
     private String turno; //deberia ser una enumeracion, por lo menos en la implementacion (facilita que si se agrega un elemento a la enum va a andar igual)
     private boolean eliminado;
     
@@ -35,22 +35,22 @@ public class Bedel {
         
     }
     
-    public Bedel(String nombre, String apellido, String id, String contraseña, String turno, boolean eliminado, Collection<ContraseniaAnteriorBedel> contraseniasAnteriores, Collection<Reserva> reservas) {
+    public Bedel(String nombre, String apellido, String id, String contrasenia, String turno, boolean eliminado, Collection<ContraseniaAnteriorBedel> contraseniasAnteriores, Collection<Reserva> reservas) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.id = id;
-        this.contraseña = contraseña;
+        this.contrasenia = contrasenia;
         this.turno = turno;
         this.eliminado = eliminado;
         this.contraseniasAnteriores = contraseniasAnteriores;
         this.reservas = reservas;
     }
     
-    public Bedel(String nombre, String apellido, String id, String contraseña, String turno){
+    public Bedel(String nombre, String apellido, String id, String contrasenia, String turno){
         this.nombre = nombre;
         this.apellido = apellido;
         this.id = id;
-        this.contraseña = contraseña;
+        this.contrasenia = contrasenia;
         this.turno = turno;
         this.eliminado=false;
         this.contraseniasAnteriores=new ArrayList();
@@ -61,7 +61,7 @@ public class Bedel {
         nombre=null;
         apellido=null;
         this.id=id;
-        contraseña=null;
+        contrasenia=null;
         turno=null;
         eliminado=false;
         contraseniasAnteriores=null;
@@ -94,11 +94,11 @@ public class Bedel {
     }
 
     public String getContraseña() {
-        return contraseña;
+        return contrasenia;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContraseña(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 
     public String getTurno() {

@@ -22,10 +22,10 @@ public class ContraseniaAnteriorAdministrador {
     @ManyToOne
     @JoinColumn(name="idAdministradorFK")
     private Administrador administrador;
-    private String contraseña;
+    private String contrasenia;
 
-    public ContraseniaAnteriorAdministrador(String contraseña) {
-        this.contraseña = contraseña;
+    public ContraseniaAnteriorAdministrador(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
     
     public ContraseniaAnteriorAdministrador(){

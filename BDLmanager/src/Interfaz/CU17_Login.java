@@ -6,9 +6,6 @@
 package Interfaz;
 
 import Control.Gestor_Autenticacion;
-import java.awt.Font;
-import javax.swing.UIManager;
-import static main_package.main.setUIFont;
 
 /**
  *

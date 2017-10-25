@@ -56,7 +56,7 @@ public class DAO_Bedeles {
         }
         
         if(bdl.getContraseña()!=null){
-            conj.add(Restrictions.eq("contraseña",bdl.getContraseña()));
+            conj.add(Restrictions.eq("contrasenia",bdl.getContraseña()));
         }
         
         if(bdl.getTurno()!=null){
@@ -86,7 +86,7 @@ public class DAO_Bedeles {
         
     }
     
-    public boolean update (Bedel bdl, String apellido, String contraseña, String eliminado, String nombre, String turno){
+    public boolean update (Bedel bdl, String apellido, String contrasenia, String eliminado, String nombre, String turno){
         
         //A implementar
         return true;

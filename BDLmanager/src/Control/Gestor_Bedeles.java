@@ -66,10 +66,10 @@ public class Gestor_Bedeles {
         //Validacion de politica seguridad
         if(!this.validarPolitica(politicaSeguridad,pass)){
             String infoError = "";
-            if(politicaSeguridad.isDebeEspecial())infoError+="La contraseña debe tener al menos un signo especial(@#$%&*)\n";
-            if(politicaSeguridad.isDebeUnNumero())infoError+="La contraseña debe tener al menos un numero\n";
-            if(politicaSeguridad.isDebeUnaMayus())infoError+="La contraseña debe tener una mayuscula\n";
-            infoError+="La contraseña debe tener un mínimo de "+politicaSeguridad.getLongitudMinima()+" caracteres\n";
+            if(politicaSeguridad.isDebeEspecial())infoError+="La contrasenia debe tener al menos un signo especial(@#$%&*)\n";
+            if(politicaSeguridad.isDebeUnNumero())infoError+="La contrasenia debe tener al menos un numero\n";
+            if(politicaSeguridad.isDebeUnaMayus())infoError+="La contrasenia debe tener una mayuscula\n";
+            infoError+="La contrasenia debe tener un mínimo de "+politicaSeguridad.getLongitudMinima()+" caracteres\n";
             
             throw new NoCumplePoliticaException("No se respeta la politica de seguridad:\n"+infoError);
         }
@@ -117,7 +117,7 @@ public class Gestor_Bedeles {
             return false;
         }
         
-        //No se evalua la posibilidad de una contraseña anterior porque este es un bedel nuevo
+        //No se evalua la posibilidad de una contrasenia anterior porque este es un bedel nuevo
         
         return true;
     }
