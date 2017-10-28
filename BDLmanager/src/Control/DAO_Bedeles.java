@@ -36,7 +36,7 @@ public class DAO_Bedeles {
     
     public Collection<Bedel> find(Bedel bdl){
         
-        Session ses = Hibernator.getInstance().getSessionFactory().openSession();
+        Session ses = Hibernator.getInstance().getSession();
         ses.beginTransaction();
         
         Criteria crit = ses.createCriteria(Bedel.class);
@@ -48,27 +48,28 @@ public class DAO_Bedeles {
         }
         
         if(bdl.getNombre()!=null){
-            conj.add(Restrictions.eq("nombre",bdl.getNombre()));
+            conj.add(Restrictions.ilike("nombre", bdl.getNombre(),MatchMode.ANYWHERE));
         }
         
         if(bdl.getApellido()!=null){
-            conj.add(Restrictions.eq("apellido", bdl.getApellido()));
+            conj.add(Restrictions.ilike("apellido", bdl.getApellido(), MatchMode.ANYWHERE));
         }
         
-        if(bdl.getContraseña()!=null){
-            conj.add(Restrictions.eq("contrasenia",bdl.getContraseña()));
+        if(bdl.getContrasenia()!=null){
+            conj.add(Restrictions.eq("contrasenia",bdl.getContrasenia()));
         }
         
         if(bdl.getTurno()!=null){
             conj.add(Restrictions.eq("turno",bdl.getTurno()));
         }
         
+        conj.add(Restrictions.eq("eliminado", bdl.isEliminado()));
+        
         crit.add(conj);
         
         ArrayList<Bedel> resultado = (ArrayList<Bedel>)crit.list();
         
         ses.getTransaction().commit();
-        ses.close();
         
         return resultado;
         
@@ -76,19 +77,22 @@ public class DAO_Bedeles {
     
     public boolean insert(Bedel bdl){
         
-        Session s = Hibernator.getInstance().getSessionFactory().openSession();
+        Session s = Hibernator.getInstance().getSession();
         s.beginTransaction();
         s.save(bdl);
         s.getTransaction().commit();
-        s.close();
         
         return true;
         
     }
     
-    public boolean update (Bedel bdl, String apellido, String contrasenia, String eliminado, String nombre, String turno){
+    public boolean update (Bedel bdl){
         
-        //A implementar
+        Session s=Hibernator.getInstance().getSession();
+        s.beginTransaction();
+        s.update(bdl);
+        s.getTransaction().commit();
+        
         return true;
         
     }

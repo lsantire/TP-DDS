@@ -7,7 +7,10 @@ package Interfaz;
 
 import Control.Gestor_Bedeles;
 import Entidad.Bedel;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Collections;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -16,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class CU16_BuscarBedel extends javax.swing.JFrame {
 
+    private ArrayList<Bedel> resultado=null;
     /**
      * Creates new form BuscarBedel_CU16
      */
@@ -23,8 +27,16 @@ public class CU16_BuscarBedel extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         jTable1.setRowSelectionAllowed(true);
+        jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jTable1.getTableHeader().setReorderingAllowed(false);
+        
         }
+    
+    public void research(){
+        
+        jButton1.doClick();
+        
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,6 +64,7 @@ public class CU16_BuscarBedel extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BDLadmin");
+        setResizable(false);
 
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+2f));
         jLabel1.setText("Buscar bedel");
@@ -82,7 +95,7 @@ public class CU16_BuscarBedel extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nombre", "Apellido", "ID", "Turno"
+                "Apellido", "Nombre", "ID", "Turno"
             }
         ) {
             Class[] types = new Class [] {
@@ -100,6 +113,11 @@ public class CU16_BuscarBedel extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jButton2.setText("Modificar Bedel");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Eliminar Bedel");
 
@@ -204,15 +222,20 @@ public class CU16_BuscarBedel extends javax.swing.JFrame {
         
         String apellido=jTextField1.getText();
         String turno=jComboBox1.getSelectedItem().toString();
-        ArrayList<Bedel> resultado = (ArrayList<Bedel>)Gestor_Bedeles.getInstance().buscarBedel(apellido,turno);
+        resultado = (ArrayList<Bedel>)Gestor_Bedeles.getInstance().buscarBedel(apellido,turno);
+        Collections.sort(resultado);
         
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        
+        if(resultado.isEmpty()){
+            new PopUp(TipoPopUp.ERROR,"No se encontraron bedeles con esas caracteristicas");
+        }
         
         model.setRowCount(0);
         
         for (int i=0;i<resultado.size();i++){
             Bedel b = resultado.get(i);
-            Object[] fila = {b.getNombre(),b.getApellido(),b.getId(),b.getTurno()};
+            Object[] fila = {b.getApellido(),b.getNombre(),b.getId(),b.getTurno()};
             model.addRow(fila);
             
         }
@@ -221,10 +244,17 @@ public class CU16_BuscarBedel extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         
-        new Menu_Administradores().setVisible(true);
-        this.dispose();
+        FrameController.pop();
         
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(0<=jTable1.getSelectedRow() && jTable1.getSelectedRow()<=resultado.size()){
+            CU14_ModificarBedel.setBedel(resultado.get(jTable1.getSelectedRow()));
+            CU14_ModificarBedel f =new CU14_ModificarBedel();
+            FrameController.push(f);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

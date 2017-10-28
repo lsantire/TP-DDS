@@ -22,6 +22,7 @@ public class CU17_Login extends javax.swing.JFrame {
         buttonGroup1.add(jRadioButton1);
         buttonGroup1.add(jRadioButton2);
         jRadioButton1.setSelected(true);
+        FrameController.push(this);
     }
 
     /**
@@ -167,16 +168,18 @@ public class CU17_Login extends javax.swing.JFrame {
         
         if(jRadioButton2.isSelected()){ //ADMIN
             if(Gestor_Autenticacion.getInstance().autenticarAdministrador(usuario, pass)){
-                new Menu_Administradores().setVisible(true);
-                this.dispose();
+                FrameController.push(new Menu_Administradores());
+                jTextField1.setText("");
+                jPasswordField1.setText("");
             }
             else new PopUp(TipoPopUp.ERROR,"Usuario/contraseña incorrectos");
         }
         
         else if(jRadioButton1.isSelected()){ //BEDEL
             if(Gestor_Autenticacion.getInstance().autenticarBedel(usuario, pass)){
-                new Menu_Bedeles().setVisible(true);
-                this.dispose();
+                FrameController.push(new Menu_Bedeles());
+                jTextField1.setText("");
+                jPasswordField1.setText("");
             }
             else new PopUp(TipoPopUp.ERROR,"Usuario/contraseña incorrectos");
         }

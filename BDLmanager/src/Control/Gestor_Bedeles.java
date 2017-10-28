@@ -6,10 +6,12 @@
 package Control;
 
 import Entidad.Bedel;
+import Entidad.ContraseniaAnteriorBedel;
 import Entidad.PoliticaSeguridad;
 import Excepciones.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.hibernate.collection.internal.PersistentBag;
 
 /**
  *
@@ -64,7 +66,7 @@ public class Gestor_Bedeles {
         
         
         //Validacion de politica seguridad
-        if(!this.validarPolitica(politicaSeguridad,pass)){
+        if(!this.validarPoliticaNew(politicaSeguridad,pass)){
             String infoError = "";
             if(politicaSeguridad.isDebeEspecial())infoError+="La contrasenia debe tener al menos un signo especial(@#$%&*)\n";
             if(politicaSeguridad.isDebeUnNumero())infoError+="La contrasenia debe tener al menos un numero\n";
@@ -93,15 +95,59 @@ public class Gestor_Bedeles {
         return true;
     }
     
-    public Bedel modificarBedel(Bedel bdl){
+    public void modificarBedel(String nombre, String apellido, String turno, String id, String contrasenia) throws ErrorUpdateException, NoCumplePoliticaException{
         
-        //A implementar
+        ArrayList<PoliticaSeguridad> politicas =(ArrayList<PoliticaSeguridad>)(DAO_PoliticaSeguridad.getInstance().find());
         
-        return new Bedel("a");
-         
+        if(politicas.isEmpty()){
+            throw new NoCumplePoliticaException("No existe una politica de seguridad.\nNo se puede modificar el bedel");
+        }
+        
+        PoliticaSeguridad politicaSeguridad=null;
+        
+        for(int i=0;i<politicas.size();i++){
+            if(politicas.get(i).isVigente()){
+                politicaSeguridad=politicas.get(i); //En el caso que haya muchas vigentes, va a tomar la ultima en la BDD
+            }
+        }
+        
+        //Se busca el objeto bedel de la base de datos segun su ID
+        ArrayList<Bedel> bedeles = (ArrayList<Bedel>)DAO_Bedeles.getInstance().find(new Bedel(id));
+        
+        if(bedeles.size()!=1){
+            throw new ErrorUpdateException();
+        }
+        Bedel bdl = bedeles.get(0);
+        
+        //Validacion de politica seguridad (solo si la contraseña es modificada)
+        if(!bdl.getContrasenia().equals(contrasenia)){
+            if(!this.validarPoliticaUpdate(politicaSeguridad,contrasenia,bdl)){
+                String infoError = "";
+                if(politicaSeguridad.isDebeEspecial())infoError+="La contrasenia debe tener al menos un signo especial(@#$%&*)\n";
+                if(politicaSeguridad.isDebeUnNumero())infoError+="La contrasenia debe tener al menos un numero\n";
+                if(politicaSeguridad.isDebeUnaMayus())infoError+="La contrasenia debe tener una mayuscula\n";
+                infoError+="La contrasenia debe tener un mínimo de "+politicaSeguridad.getLongitudMinima()+" caracteres\n";
+                
+                throw new NoCumplePoliticaException("No se respeta la politica de seguridad:\n"+infoError);
+            }
+        }
+        
+        //Se actualizan los campos de dicho bedel, previamente guardando su contrasenia vieja en una nueva instancia de ContraseniaAnteriorBedel
+        ContraseniaAnteriorBedel contraseniaAnt=new ContraseniaAnteriorBedel(bdl.getContrasenia());
+        contraseniaAnt.setBedel(bdl);
+        bdl.getContraseniasAnteriores().add(contraseniaAnt);
+        bdl.setContrasenia(contrasenia);
+        bdl.setApellido(apellido);
+        bdl.setNombre(nombre);
+        bdl.setTurno(turno);
+        
+        if(!DAO_Bedeles.getInstance().update(bdl)){
+            throw new ErrorUpdateException();
+        }
+        
     }
     
-    private boolean validarPolitica(PoliticaSeguridad ps, String pass){
+    private boolean validarPoliticaNew(PoliticaSeguridad ps, String pass){
         
         if(ps.isDebeEspecial() && !(pass.contains("@")||pass.contains("#")||pass.contains("$")||pass.contains("%")||pass.contains("&")||pass.contains("*"))){
             return false;
@@ -120,6 +166,38 @@ public class Gestor_Bedeles {
         //No se evalua la posibilidad de una contrasenia anterior porque este es un bedel nuevo
         
         return true;
+    }
+    
+    private boolean validarPoliticaUpdate(PoliticaSeguridad ps, String pass, Bedel bdl){
+        
+        if(ps.isDebeEspecial() && !(pass.contains("@")||pass.contains("#")||pass.contains("$")||pass.contains("%")||pass.contains("&")||pass.contains("*"))){
+            return false;
+        }
+        if(ps.isDebeUnNumero() && !(pass.contains("0")||pass.contains("1")||pass.contains("2")||pass.contains("3")||pass.contains("4")||pass.contains("5")||
+                                    pass.contains("6")||pass.contains("7")||pass.contains("8")||pass.contains("9"))){
+            return false;
+        }
+        if(ps.isDebeUnaMayus() && pass.equals(pass.toLowerCase())){
+            return false;
+        }
+        if(ps.getLongitudMinima()>pass.length()){
+            return false;
+        }
+        
+        if(!ps.isPuedeRepetirse()){
+            
+            PersistentBag contAnt = (PersistentBag)bdl.getContraseniasAnteriores();
+            
+            for (int i=0;i<contAnt.size();i++){
+                if( ((ContraseniaAnteriorBedel)(contAnt.get(i))).getContrasenia().equals(pass) ){
+                    return false;
+                }
+            }
+            
+        }
+        
+        return true;
+        
     }
     
 }

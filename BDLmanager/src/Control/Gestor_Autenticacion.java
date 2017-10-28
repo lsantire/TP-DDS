@@ -28,7 +28,7 @@ public class Gestor_Autenticacion {
     public boolean autenticarBedel(String id, String contrasenia){
         
         Bedel bdl=new Bedel();
-        bdl.setContraseña(contrasenia);
+        bdl.setContrasenia(contrasenia);
         bdl.setId(id);
         ArrayList<Bedel> retorno = (ArrayList<Bedel>)DAO_Bedeles.getInstance().find(bdl);
         

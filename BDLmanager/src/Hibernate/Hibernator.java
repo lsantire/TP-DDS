@@ -5,7 +5,7 @@
  */
 package Hibernate;
 import Entidad.*;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -18,6 +18,7 @@ public class Hibernator {
     
     private static AnnotationConfiguration config;
     private static SessionFactory sesFactory;
+    private static Session sesion;
     private static Hibernator instance=null;
     
     private Hibernator(){
@@ -40,7 +41,7 @@ public class Hibernator {
         config.configure("Hibernate/hibernate.cfg.xml");
         
         sesFactory=config.buildSessionFactory();
-        
+        sesion=sesFactory.openSession();
         //new SchemaExport(config).create(true, true);// -> Exporta en el schema nuevas tablas en base a las anotaciones en las clases
         
     };
@@ -52,6 +53,10 @@ public class Hibernator {
     
     public SessionFactory getSessionFactory(){
         return sesFactory;
+    }
+    
+    public Session getSession(){
+        return sesion;
     }
     
 }

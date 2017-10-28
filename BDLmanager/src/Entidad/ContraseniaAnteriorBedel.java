@@ -29,5 +29,31 @@ public class ContraseniaAnteriorBedel {
     public ContraseniaAnteriorBedel(String contrasenia){
         this.contrasenia=contrasenia;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getContrasenia() {
+        return contrasenia;
+    }
+
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
+    }
+
+    public Bedel getBedel() {
+        return bedel;
+    }
+
+    public void setBedel(Bedel bedel) {
+        this.bedel = bedel;
+    }
+    
+    
     
 }

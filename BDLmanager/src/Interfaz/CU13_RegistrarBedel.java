@@ -52,6 +52,7 @@ public class CU13_RegistrarBedel extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BDLadmin");
+        setResizable(false);
 
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+2f));
         jLabel1.setText("Ingrese los datos del nuevo bedel:");
@@ -200,13 +201,11 @@ public class CU13_RegistrarBedel extends javax.swing.JFrame {
         String conf = String.valueOf(jPasswordField4.getPassword());
 
         if(nombre.isEmpty() && apellido.isEmpty() && id.isEmpty() && pass.isEmpty() && conf.isEmpty()){
-            new Menu_Administradores().setVisible(true);
-            this.dispose();
+            FrameController.pop();
         }
         else{
             if(new PopUp(TipoPopUp.CONFIRMACION,"¿Desea cancelar el registro?.").getVal()==1){
-                new Menu_Administradores().setVisible(true);
-                this.dispose();
+                FrameController.pop();
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -251,8 +250,7 @@ public class CU13_RegistrarBedel extends javax.swing.JFrame {
             try {
                 Gestor_Bedeles.getInstance().crearBedel(nombre, apellido, turno, id, pass);
                 new PopUp(TipoPopUp.INFORMACION,"El Bedel fue registrado exitosamente");
-                new Menu_Administradores().setVisible(true);
-                this.dispose();
+                FrameController.pop();
             }
             catch (BedelEnUsoException beue){
                 new PopUp(TipoPopUp.ERROR,"El ID de bedel ingresado ya esta en uso");

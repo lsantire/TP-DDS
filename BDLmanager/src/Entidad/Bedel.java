@@ -15,7 +15,7 @@ import javax.persistence.*;
  */
 
 @Entity
-public class Bedel {
+public class Bedel implements Comparable<Bedel> {
     
     @Id
     private String id;
@@ -93,14 +93,6 @@ public class Bedel {
         this.apellido = apellido;
     }
 
-    public String getContraseña() {
-        return contrasenia;
-    }
-
-    public void setContraseña(String contrasenia) {
-        this.contrasenia = contrasenia;
-    }
-
     public String getTurno() {
         return turno;
     }
@@ -131,6 +123,20 @@ public class Bedel {
 
     public void setReservas(Collection<Reserva> reservas) {
         this.reservas = reservas;
+    }
+
+    public String getContrasenia() {
+        return contrasenia;
+    }
+
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
+    }
+
+
+    @Override
+    public int compareTo(Bedel o) {
+        return this.getApellido().compareTo(o.getApellido());
     }
     
     

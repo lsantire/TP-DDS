@@ -43,6 +43,7 @@ public class Menu_Administradores extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BDLadmin");
+        setResizable(false);
 
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+2f));
         jLabel1.setText("Menú de Administrador");
@@ -142,18 +143,15 @@ public class Menu_Administradores extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new CU13_RegistrarBedel().setVisible(true);
-        this.dispose();
+        FrameController.push(new CU13_RegistrarBedel());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        new CU17_Login().setVisible(true);
-        this.dispose();
+        FrameController.pop();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new CU16_BuscarBedel().setVisible(true);
-        this.dispose();
+        FrameController.push(new CU16_BuscarBedel());
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

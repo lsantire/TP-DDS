@@ -48,6 +48,7 @@ public class Menu_Bedeles extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BDLbedel");
+        setResizable(false);
 
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+2f));
         jLabel1.setText("Menu de Bedel");
@@ -147,8 +148,7 @@ public class Menu_Bedeles extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        new CU17_Login().setVisible(true);
-        this.dispose();
+        FrameController.pop();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
