@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Mateo Chamorro
  */
-public class CU16_BuscarBedel extends javax.swing.JFrame {
+public class CU16_BuscarBedel extends javax.swing.JFrame  {
 
     private ArrayList<Bedel> resultado=null;
     /**

@@ -9,6 +9,7 @@ import Entidad.PoliticaSeguridad;
 import Hibernate.Hibernator;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.hibernate.Session;
 
 /**
  *
@@ -26,9 +27,14 @@ public class DAO_PoliticaSeguridad {
     
     public Collection<PoliticaSeguridad> find(){
         
-        ArrayList<PoliticaSeguridad> retorno = (ArrayList<PoliticaSeguridad>) Hibernator.getInstance().getSessionFactory().openSession().createCriteria(PoliticaSeguridad.class).list();
-        
-        
+        ArrayList<PoliticaSeguridad> retorno;
+        try{
+        Session ses=Hibernator.getInstance().getSession();
+        retorno=(ArrayList<PoliticaSeguridad>)ses.createCriteria(PoliticaSeguridad.class).list();
+        }
+        catch (org.hibernate.exception.GenericJDBCException jbdc){
+            retorno=new ArrayList();
+        }
         return retorno;
         
     }

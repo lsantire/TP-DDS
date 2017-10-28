@@ -6,23 +6,24 @@
 package Interfaz;
 
 import Control.Gestor_Autenticacion;
+import javax.swing.ImageIcon;
 
 /**
  *
  * @author Mateo Chamorro
  */
-public class CU17_Login extends javax.swing.JFrame {
+public class CU17_Login extends javax.swing.JFrame  {
 
     /**
      * Creates new form Login_CU17
      */
     public CU17_Login() {
         initComponents();
-        this.setLocationRelativeTo(null);
         buttonGroup1.add(jRadioButton1);
         buttonGroup1.add(jRadioButton2);
         jRadioButton1.setSelected(true);
         FrameController.push(this);
+        this.setLocationRelativeTo(null);
     }
 
     /**

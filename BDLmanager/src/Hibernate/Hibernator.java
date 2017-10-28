@@ -8,7 +8,8 @@ import Entidad.*;
 import org.hibernate.*;
 
 import org.hibernate.cfg.AnnotationConfiguration;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.exception.*;
+
 
 /**
  *
@@ -40,20 +41,27 @@ public class Hibernator {
         config.addAnnotatedClass(Reserva.class);
         config.configure("Hibernate/hibernate.cfg.xml");
         
+        
         sesFactory=config.buildSessionFactory();
-        sesion=sesFactory.openSession();
+        sesion=sesFactory.openSession(); 
         //new SchemaExport(config).create(true, true);// -> Exporta en el schema nuevas tablas en base a las anotaciones en las clases
         
     };
     
-    public static Hibernator getInstance(){
-        if(instance==null) instance=new Hibernator();
+    public static Hibernator getInstance() throws org.hibernate.exception.GenericJDBCException{
+        if(instance==null) {
+            
+            try{
+                instance=new Hibernator();
+            }
+            catch (org.hibernate.exception.GenericJDBCException gjdbce){
+                throw new GenericJDBCException(gjdbce.getMessage(),gjdbce.getSQLException());
+            }
+            
+        }
         return instance;
     }
     
-    public SessionFactory getSessionFactory(){
-        return sesFactory;
-    }
     
     public Session getSession(){
         return sesion;

@@ -11,7 +11,7 @@ import Control.Gestor_Autenticacion;
  *
  * @author dertas
  */
-public class Menu_Bedeles extends javax.swing.JFrame {
+public class Menu_Bedeles extends javax.swing.JFrame  {
 
     /**
      * Creates new form Menu_Bedeles

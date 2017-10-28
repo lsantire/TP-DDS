@@ -29,12 +29,20 @@ public class DAO_Administrador {
     
     public Collection<Administrador> find (String id, String pass){
         
-        Session ses = Hibernator.getInstance().getSession();
-        ses.beginTransaction();
-        Criteria cr = ses.createCriteria(Administrador.class);
-        cr.add(Restrictions.conjunction().add(Restrictions.eq("id",id)).add(Restrictions.eq("contrasenia",pass)));
-        ArrayList<Administrador> resultado = (ArrayList<Administrador>)cr.list();
-        ses.getTransaction().commit();
+        ArrayList<Administrador> resultado;
+        
+        try{
+            Session ses = Hibernator.getInstance().getSession();
+            ses.beginTransaction();
+            Criteria cr = ses.createCriteria(Administrador.class);
+            cr.add(Restrictions.conjunction().add(Restrictions.eq("id",id)).add(Restrictions.eq("contrasenia",pass)));
+            resultado= (ArrayList<Administrador>)cr.list();
+            ses.getTransaction().commit();
+        }
+        catch(org.hibernate.exception.GenericJDBCException jbdc){
+            resultado=new ArrayList();
+        }
+        
         
         return resultado;
         

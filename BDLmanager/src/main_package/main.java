@@ -5,8 +5,9 @@
  */
 package main_package;
 
+import Excepciones.*;
 import Hibernate.Hibernator;
-import Interfaz.CU17_Login;
+import Interfaz.*;
 import java.awt.Font;
 import java.util.logging.*;
 import javax.swing.UIManager;
@@ -22,12 +23,26 @@ public class main {
      */
     public static void main(String[] args) {
         
-        setUIFont (new javax.swing.plaf.FontUIResource("Segoe UI",Font.PLAIN,11));
-        setLogLevel(Level.SEVERE);
+        LoadingScreen ls=new LoadingScreen();       
+        try{
+            Thread.sleep(1000);
+            setUIFont (new javax.swing.plaf.FontUIResource("Segoe UI",Font.PLAIN,11));
+            setLogLevel(Level.SEVERE);
+            Hibernator.getInstance();
+            ls.dispose();
+            FrameController.push(new CU17_Login());
+            
+        }
+        catch(InterruptedException ex){
+
+        }
+        catch(org.hibernate.exception.JDBCConnectionException jbdc){
+            new PopUp(TipoPopUp.ERROR,"La base de datos no se encuentra disponible\nEl programa se cerrará");
+            ls.dispose();
+            
+        }
         
-        new CU17_Login().setVisible(true);
-        
-        Hibernator.getInstance();
+
         
     }
     

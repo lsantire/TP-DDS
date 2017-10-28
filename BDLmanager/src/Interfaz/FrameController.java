@@ -6,6 +6,7 @@
 package Interfaz;
 
 import java.util.Stack;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 /**
@@ -17,13 +18,14 @@ public class FrameController {
     private static Stack<JFrame> pila=new Stack();
     
     public static void push(JFrame frame){
-        
+        frame.setIconImage(new ImageIcon(FrameController.class.getResource("/Interfaz/iconoround.png")).getImage());
         if(!pila.isEmpty()){
             pila.peek().setEnabled(false);
             pila.peek().setVisible(false);}
         pila.push(frame);
         frame.setEnabled(true);
         frame.setVisible(true);
+        frame.toFront();
     }
     
     public static JFrame pop(){

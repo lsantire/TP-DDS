@@ -36,64 +36,79 @@ public class DAO_Bedeles {
     
     public Collection<Bedel> find(Bedel bdl){
         
-        Session ses = Hibernator.getInstance().getSession();
-        ses.beginTransaction();
+        ArrayList<Bedel> resultado;
         
-        Criteria crit = ses.createCriteria(Bedel.class);
+        try{
+            Session ses = Hibernator.getInstance().getSession();
+            ses.beginTransaction();
+            
+            Criteria crit = ses.createCriteria(Bedel.class);
         
-        Conjunction conj = Restrictions.conjunction();
+            Conjunction conj = Restrictions.conjunction();
         
-        if(bdl.getId()!=null){
-            conj.add(Restrictions.eq("id",bdl.getId()));
+            if(bdl.getId()!=null){
+                conj.add(Restrictions.eq("id",bdl.getId()));
+            }
+        
+            if(bdl.getNombre()!=null){
+                conj.add(Restrictions.ilike("nombre", bdl.getNombre(),MatchMode.ANYWHERE));
+            }
+        
+            if(bdl.getApellido()!=null){
+                conj.add(Restrictions.ilike("apellido", bdl.getApellido(), MatchMode.ANYWHERE));
+            }
+        
+            if(bdl.getContrasenia()!=null){
+                conj.add(Restrictions.eq("contrasenia",bdl.getContrasenia()));
+            }
+        
+            if(bdl.getTurno()!=null){
+                conj.add(Restrictions.eq("turno",bdl.getTurno()));
+            }
+        
+            conj.add(Restrictions.eq("eliminado", bdl.isEliminado()));
+        
+            crit.add(conj);
+        
+            resultado = (ArrayList<Bedel>)crit.list();
+        
+            ses.getTransaction().commit();
+            }
+        catch(org.hibernate.exception.GenericJDBCException jbdc){
+            resultado=new ArrayList();
         }
         
-        if(bdl.getNombre()!=null){
-            conj.add(Restrictions.ilike("nombre", bdl.getNombre(),MatchMode.ANYWHERE));
-        }
-        
-        if(bdl.getApellido()!=null){
-            conj.add(Restrictions.ilike("apellido", bdl.getApellido(), MatchMode.ANYWHERE));
-        }
-        
-        if(bdl.getContrasenia()!=null){
-            conj.add(Restrictions.eq("contrasenia",bdl.getContrasenia()));
-        }
-        
-        if(bdl.getTurno()!=null){
-            conj.add(Restrictions.eq("turno",bdl.getTurno()));
-        }
-        
-        conj.add(Restrictions.eq("eliminado", bdl.isEliminado()));
-        
-        crit.add(conj);
-        
-        ArrayList<Bedel> resultado = (ArrayList<Bedel>)crit.list();
-        
-        ses.getTransaction().commit();
         
         return resultado;
         
     }
     
     public boolean insert(Bedel bdl){
-        
-        Session s = Hibernator.getInstance().getSession();
-        s.beginTransaction();
-        s.save(bdl);
-        s.getTransaction().commit();
-        
-        return true;
-        
+        try{
+            Session s = Hibernator.getInstance().getSession();
+            s.beginTransaction();
+            s.save(bdl);
+            s.getTransaction().commit();
+            return true;
+        }
+        catch (org.hibernate.exception.GenericJDBCException jbdc){
+            return false;
+        }
     }
     
     public boolean update (Bedel bdl){
         
-        Session s=Hibernator.getInstance().getSession();
-        s.beginTransaction();
-        s.update(bdl);
-        s.getTransaction().commit();
         
-        return true;
+        try{
+            Session s=Hibernator.getInstance().getSession();
+            s.beginTransaction();
+            s.update(bdl);
+            s.getTransaction().commit();
+            return true;
+        }
+        catch (org.hibernate.exception.GenericJDBCException jbdc){
+            return false;
+        }
         
     }
     

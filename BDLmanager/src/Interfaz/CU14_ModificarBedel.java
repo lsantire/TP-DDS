@@ -14,7 +14,7 @@ import Excepciones.*;
  *
  * @author Facundo
  */
-public class CU14_ModificarBedel extends javax.swing.JFrame {
+public class CU14_ModificarBedel extends javax.swing.JFrame  {
 
     private static Bedel bedel=null;
 
