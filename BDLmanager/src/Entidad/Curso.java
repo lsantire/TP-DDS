@@ -14,7 +14,7 @@ import javax.persistence.*;
  */
 
 @Entity
-public class Curso {
+public class Curso implements Comparable<Curso> {
     
     @Id
     private int id;
@@ -30,6 +30,16 @@ public class Curso {
     
     public Curso (){
         
+    }
+
+    @Override
+    public int compareTo(Curso o) {
+        return this.nombreCurso.compareTo(o.toString());
+    }
+ 
+    @Override
+    public String toString(){
+        return this.nombreCurso;
     }
     
 }

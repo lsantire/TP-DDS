@@ -53,7 +53,12 @@ public class Menu_Bedeles extends javax.swing.JFrame  {
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+2f));
         jLabel1.setText("Menu de Bedel");
 
-        jButton1.setText("Reservar Aulas");
+        jButton1.setText("Nueva Reserva");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Buscar y Modificar Aulas");
 
@@ -150,6 +155,10 @@ public class Menu_Bedeles extends javax.swing.JFrame  {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         FrameController.pop();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        FrameController.push(new CU01_NuevaReserva());
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -6,8 +6,11 @@
 package Control;
 
 import Entidad.Curso;
+import Hibernate.Hibernator;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 
 /**
  *
@@ -25,9 +28,14 @@ public class DAO_Curso {
     
     public Collection<Curso> find (){
         
-        //a implementar
+        Session ses=Hibernator.getInstance().getSession();
+        ses.beginTransaction();
+        Criteria crit = ses.createCriteria(Curso.class);
+        ArrayList<Curso> resultado = new ArrayList(); 
+        if(!crit.list().isEmpty()){resultado=(ArrayList<Curso>)crit.list();}
+        ses.getTransaction().commit();
         
-        return new ArrayList();
+        return resultado;
         
     }
     

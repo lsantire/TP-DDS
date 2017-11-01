@@ -19,6 +19,7 @@ public class FrameController {
     
     public static void push(JFrame frame){
         frame.setIconImage(new ImageIcon(FrameController.class.getResource("/Interfaz/iconoround.png")).getImage());
+        frame.setResizable(false);
         if(!pila.isEmpty()){
             pila.peek().setEnabled(false);
             pila.peek().setVisible(false);}

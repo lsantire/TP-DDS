@@ -6,8 +6,11 @@
 package Control;
 
 import Entidad.Docente;
+import Hibernate.Hibernator;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 
 /**
  *
@@ -25,9 +28,14 @@ public class DAO_Docentes {
     
     public Collection<Docente> find (){
         
-        //a implementar
+        Session ses=Hibernator.getInstance().getSession();
+        ses.beginTransaction();
+        Criteria crit = ses.createCriteria(Docente.class);
+        ArrayList<Docente> resultado = new ArrayList(); 
+        if(!crit.list().isEmpty()){resultado=(ArrayList<Docente>)crit.list();}
+        ses.getTransaction().commit();
         
-        return new ArrayList();
+        return resultado;
     }
     
 }

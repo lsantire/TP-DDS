@@ -5,7 +5,7 @@
  */
 package Control;
 
-import Entidad.Reserva;
+import Entidad.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -35,6 +35,14 @@ public class Gestor_Reservas {
     
     public void crearReserva(){ //deberia devolver una reserva
         //a implementar
+    }
+    
+    public Collection<Docente> obtenerDocentes (){
+        return DAO_Docentes.getInstance().find();
+    }
+    
+    public Collection<Curso> obtenerCursos(){
+        return DAO_Curso.getInstance().find();
     }
     
 }

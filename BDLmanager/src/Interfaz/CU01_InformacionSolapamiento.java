@@ -42,8 +42,8 @@ public class CU01_InformacionSolapamiento extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Información reserva solapamiento");
+        jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+2f));
+        jLabel1.setText("Información reserva solapamiento:");
 
         jTextField1.setEditable(false);
         jTextField1.setText("Diseño e implementación de estructuras de datos");
@@ -55,7 +55,7 @@ public class CU01_InformacionSolapamiento extends javax.swing.JFrame {
 
         jLabel3.setText("Cátedra/curso:");
 
-        jButton1.setText("Atrás");
+        jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -94,7 +94,7 @@ public class CU01_InformacionSolapamiento extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addContainerGap(226, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -147,7 +147,7 @@ public class CU01_InformacionSolapamiento extends javax.swing.JFrame {
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(1, 1, 1)
                 .addComponent(jButton1)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
