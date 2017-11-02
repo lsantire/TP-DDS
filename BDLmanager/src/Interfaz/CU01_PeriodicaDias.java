@@ -5,7 +5,19 @@
  */
 package Interfaz;
 
+import Control.Gestor_Reservas;
 import Entidad.*;
+import Utilidades.Triple;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import javafx.util.Pair;
 
 /**
  *
@@ -13,14 +25,46 @@ import Entidad.*;
  */
 public class CU01_PeriodicaDias extends javax.swing.JFrame {
 
+    private static int MAXHOUR=7; //MAXHOUR=N -> N*30mins + 30 mins en horas
+    private boolean C1;
+    private boolean C2;
+    private int cantAlumnos;
+    private String tipoAula;
+    private Docente docente;
+    private Bedel bedel;
+    private Curso curso;
+    private DateFormat formatterHorario = new SimpleDateFormat("HH:mm");
+    
     /**
      * Creates new form CU1_parte2
      */
     public CU01_PeriodicaDias(boolean C1, boolean C2, int cantAlumnos, String tipoAula, Docente docente, Bedel bedel, Curso curso) {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.C1=C1;
+        this.C2=C2;
+        this.cantAlumnos=cantAlumnos;
+        this.tipoAula=tipoAula;
+        this.docente=docente;
+        this.bedel=bedel;
+        this.curso=curso;
     }
 
+    public static List<Date> getDaysBetweenDates(Date startdate, Date enddate)
+    {
+        List<Date> dates = new ArrayList<Date>();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(startdate);
+
+        while (calendar.getTime().before(enddate))
+        {
+            Date result = calendar.getTime();
+            dates.add(result);
+            calendar.add(Calendar.DATE, 1);
+        }
+        return dates;
+}
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,26 +75,26 @@ public class CU01_PeriodicaDias extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jComboBox4 = new javax.swing.JComboBox<>();
+        martesIni = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox5 = new javax.swing.JComboBox<>();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jComboBox6 = new javax.swing.JComboBox<>();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jComboBox7 = new javax.swing.JComboBox<>();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jComboBox8 = new javax.swing.JComboBox<>();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jComboBox9 = new javax.swing.JComboBox<>();
-        jCheckBox5 = new javax.swing.JCheckBox();
-        jComboBox10 = new javax.swing.JComboBox<>();
+        miercolesIni = new javax.swing.JComboBox<>();
+        lunesCB = new javax.swing.JCheckBox();
+        juevesIni = new javax.swing.JComboBox<>();
+        martesCB = new javax.swing.JCheckBox();
+        viernesIni = new javax.swing.JComboBox<>();
+        miercolesCB = new javax.swing.JCheckBox();
+        martesFin = new javax.swing.JComboBox<>();
+        juevesCB = new javax.swing.JCheckBox();
+        miercolesFin = new javax.swing.JComboBox<>();
+        viernesCB = new javax.swing.JCheckBox();
+        juevesFin = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox11 = new javax.swing.JComboBox<>();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        viernesFin = new javax.swing.JComboBox<>();
+        lunesIni = new javax.swing.JComboBox<>();
         jButton4 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        lunesFin = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
@@ -58,41 +102,139 @@ public class CU01_PeriodicaDias extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BDLbedel");
 
-        jLabel2.setText("Dia/s de semana");
-
-        jCheckBox1.setText("Lunes");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        martesIni.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30" }));
+        martesIni.setEnabled(false);
+        martesIni.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                martesIniActionPerformed(evt);
             }
         });
 
-        jCheckBox2.setText("Martes");
+        jLabel2.setText("Dia/s de semana");
 
-        jCheckBox3.setText("Miercoles");
+        miercolesIni.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30" }));
+        miercolesIni.setEnabled(false);
+        miercolesIni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miercolesIniActionPerformed(evt);
+            }
+        });
 
-        jCheckBox4.setText("Jueves");
+        lunesCB.setText("Lunes");
+        lunesCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lunesCBActionPerformed(evt);
+            }
+        });
 
-        jCheckBox5.setText("Viernes");
+        juevesIni.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30" }));
+        juevesIni.setEnabled(false);
+        juevesIni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                juevesIniActionPerformed(evt);
+            }
+        });
+
+        martesCB.setText("Martes");
+        martesCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                martesCBActionPerformed(evt);
+            }
+        });
+
+        viernesIni.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30" }));
+        viernesIni.setEnabled(false);
+        viernesIni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viernesIniActionPerformed(evt);
+            }
+        });
+
+        miercolesCB.setText("Miercoles");
+        miercolesCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miercolesCBActionPerformed(evt);
+            }
+        });
+
+        martesFin.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "23:59" }));
+        martesFin.setEnabled(false);
+        martesFin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                martesFinActionPerformed(evt);
+            }
+        });
+
+        juevesCB.setText("Jueves");
+        juevesCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                juevesCBActionPerformed(evt);
+            }
+        });
+
+        miercolesFin.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "23:59" }));
+        miercolesFin.setEnabled(false);
+        miercolesFin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miercolesFinActionPerformed(evt);
+            }
+        });
+
+        viernesCB.setText("Viernes");
+        viernesCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viernesCBActionPerformed(evt);
+            }
+        });
+
+        juevesFin.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "23:59" }));
+        juevesFin.setEnabled(false);
+        juevesFin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                juevesFinActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Horario inicio");
 
-        jComboBox1.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentMoved(java.awt.event.ComponentEvent evt) {
-                jComboBox1ComponentMoved(evt);
+        viernesFin.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "23:59" }));
+        viernesFin.setEnabled(false);
+        viernesFin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viernesFinActionPerformed(evt);
+            }
+        });
+
+        lunesIni.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30" }));
+        lunesIni.setEnabled(false);
+        lunesIni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lunesIniActionPerformed(evt);
             }
         });
 
         jButton4.setFont(jButton4.getFont().deriveFont(jButton4.getFont().getStyle() | java.awt.Font.BOLD));
         jButton4.setText("Continuar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Horario fin");
 
         jButton2.setText("Atrás");
-
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        lunesFin.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "23:59" }));
+        lunesFin.setEnabled(false);
+        lunesFin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lunesFinActionPerformed(evt);
             }
         });
 
@@ -118,20 +260,20 @@ public class CU01_PeriodicaDias extends javax.swing.JFrame {
                                 .addGap(15, 15, 15)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
-                                    .addComponent(jCheckBox1)
-                                    .addComponent(jCheckBox5)
-                                    .addComponent(jCheckBox3)
-                                    .addComponent(jCheckBox2)
-                                    .addComponent(jCheckBox4))
+                                    .addComponent(lunesCB)
+                                    .addComponent(viernesCB)
+                                    .addComponent(miercolesCB)
+                                    .addComponent(martesCB)
+                                    .addComponent(juevesCB))
                                 .addGap(41, 41, 41)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jComboBox4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jComboBox5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jComboBox6, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(lunesIni, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(martesIni, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(miercolesIni, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(juevesIni, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(viernesIni, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(51, 51, 51))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
@@ -141,11 +283,11 @@ public class CU01_PeriodicaDias extends javax.swing.JFrame {
                             .addComponent(jButton4)
                             .addComponent(jLabel4)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jComboBox11, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jComboBox10, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jComboBox9, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jComboBox8, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.LEADING, 0, 80, Short.MAX_VALUE)))))
+                                .addComponent(viernesFin, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(juevesFin, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(miercolesFin, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(martesFin, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lunesFin, javax.swing.GroupLayout.Alignment.LEADING, 0, 80, Short.MAX_VALUE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(116, 116, 116)
@@ -170,31 +312,31 @@ public class CU01_PeriodicaDias extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBox1)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lunesCB)
+                            .addComponent(lunesFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lunesIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(9, 9, 9)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBox2)
-                            .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(martesCB)
+                            .addComponent(martesFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(9, 9, 9)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBox3)
-                            .addComponent(jComboBox9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(miercolesCB)
+                            .addComponent(miercolesFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(miercolesIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(9, 9, 9)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBox4)
-                            .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(juevesCB)
+                            .addComponent(juevesFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(juevesIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(9, 9, 9)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBox5)
-                            .addComponent(jComboBox11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(viernesCB)
+                            .addComponent(viernesFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(viernesIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
-                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(martesIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4)
@@ -218,17 +360,275 @@ public class CU01_PeriodicaDias extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    //CheckBox dias
+    
+    private void lunesCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lunesCBActionPerformed
+        if(lunesCB.isSelected()){
+            lunesIni.setEnabled(true);
+            lunesFin.setEnabled(true);
+        }else{
+            lunesIni.setEnabled(false);
+            lunesFin.setEnabled(false);
+        }
+    }//GEN-LAST:event_lunesCBActionPerformed
 
-    private void jComboBox1ComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jComboBox1ComponentMoved
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ComponentMoved
+    private void martesCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_martesCBActionPerformed
+        if(martesCB.isSelected()){
+            martesIni.setEnabled(true);
+            martesFin.setEnabled(true);
+        }else{
+            martesIni.setEnabled(false);
+            martesFin.setEnabled(false);
+        }
+    }//GEN-LAST:event_martesCBActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+    private void miercolesCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miercolesCBActionPerformed
+        if(miercolesCB.isSelected()){
+            miercolesIni.setEnabled(true);
+            miercolesFin.setEnabled(true);
+        }else{
+            miercolesIni.setEnabled(false);
+            miercolesFin.setEnabled(false);
+        }
+    }//GEN-LAST:event_miercolesCBActionPerformed
+
+    private void juevesCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_juevesCBActionPerformed
+        if(juevesCB.isSelected()){
+            juevesIni.setEnabled(true);
+            juevesFin.setEnabled(true);
+        }else{
+            juevesIni.setEnabled(false);
+            juevesFin.setEnabled(false);
+        }
+    }//GEN-LAST:event_juevesCBActionPerformed
+
+    private void viernesCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viernesCBActionPerformed
+        if(viernesCB.isSelected()){
+            viernesIni.setEnabled(true);
+            viernesFin.setEnabled(true);
+        }else{
+            viernesIni.setEnabled(false);
+            viernesFin.setEnabled(false);
+        }
+    }//GEN-LAST:event_viernesCBActionPerformed
+
+    //ComboBox horarios
+    
+    private void lunesIniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lunesIniActionPerformed
+        if(lunesFin.getSelectedIndex()<lunesIni.getSelectedIndex()){
+            lunesFin.setSelectedIndex(lunesIni.getSelectedIndex());
+        }
+        if(lunesFin.getSelectedIndex()>lunesIni.getSelectedIndex()+MAXHOUR){
+            lunesFin.setSelectedIndex(lunesIni.getSelectedIndex()+MAXHOUR);
+        }
+    }//GEN-LAST:event_lunesIniActionPerformed
+
+    private void lunesFinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lunesFinActionPerformed
+        if(lunesFin.getSelectedIndex()<lunesIni.getSelectedIndex()){
+            lunesIni.setSelectedIndex(lunesFin.getSelectedIndex());
+        }
+        if(lunesFin.getSelectedIndex()>lunesIni.getSelectedIndex()+MAXHOUR){
+            lunesIni.setSelectedIndex(lunesFin.getSelectedIndex()-MAXHOUR);
+        }
+    }//GEN-LAST:event_lunesFinActionPerformed
+
+    private void martesIniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_martesIniActionPerformed
+        if(martesFin.getSelectedIndex()<martesIni.getSelectedIndex()){
+            martesFin.setSelectedIndex(martesIni.getSelectedIndex());
+        }
+        if(martesFin.getSelectedIndex()>martesIni.getSelectedIndex()+MAXHOUR){
+            martesFin.setSelectedIndex(martesIni.getSelectedIndex()+MAXHOUR);
+        }
+    }//GEN-LAST:event_martesIniActionPerformed
+
+    private void martesFinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_martesFinActionPerformed
+        if(martesFin.getSelectedIndex()<martesIni.getSelectedIndex()){
+            martesIni.setSelectedIndex(martesFin.getSelectedIndex());
+        }
+        if(martesFin.getSelectedIndex()>martesIni.getSelectedIndex()+MAXHOUR){
+            martesIni.setSelectedIndex(martesFin.getSelectedIndex()-MAXHOUR);
+        }
+    }//GEN-LAST:event_martesFinActionPerformed
+
+    private void miercolesIniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miercolesIniActionPerformed
+        if(miercolesFin.getSelectedIndex()<miercolesIni.getSelectedIndex()){
+            miercolesFin.setSelectedIndex(miercolesIni.getSelectedIndex());
+        }
+        if(miercolesFin.getSelectedIndex()>miercolesIni.getSelectedIndex()+MAXHOUR){
+            miercolesFin.setSelectedIndex(miercolesIni.getSelectedIndex()+MAXHOUR);
+        }
+    }//GEN-LAST:event_miercolesIniActionPerformed
+
+    private void miercolesFinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miercolesFinActionPerformed
+        if(miercolesFin.getSelectedIndex()<miercolesIni.getSelectedIndex()){
+            miercolesIni.setSelectedIndex(miercolesFin.getSelectedIndex());
+        }
+        if(miercolesFin.getSelectedIndex()>miercolesIni.getSelectedIndex()+MAXHOUR){
+            miercolesIni.setSelectedIndex(miercolesFin.getSelectedIndex()-MAXHOUR);
+        }
+    }//GEN-LAST:event_miercolesFinActionPerformed
+
+    private void juevesIniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_juevesIniActionPerformed
+        if(juevesFin.getSelectedIndex()<juevesIni.getSelectedIndex()){
+            juevesFin.setSelectedIndex(juevesIni.getSelectedIndex());
+        }
+        if(juevesFin.getSelectedIndex()>juevesIni.getSelectedIndex()+MAXHOUR){
+            juevesFin.setSelectedIndex(juevesIni.getSelectedIndex()+MAXHOUR);
+        }
+    }//GEN-LAST:event_juevesIniActionPerformed
+
+    private void juevesFinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_juevesFinActionPerformed
+        if(juevesFin.getSelectedIndex()<juevesIni.getSelectedIndex()){
+            juevesIni.setSelectedIndex(juevesFin.getSelectedIndex());
+        }
+        if(juevesFin.getSelectedIndex()>juevesIni.getSelectedIndex()+MAXHOUR){
+            juevesIni.setSelectedIndex(juevesFin.getSelectedIndex()-MAXHOUR);
+        }
+    }//GEN-LAST:event_juevesFinActionPerformed
+
+    private void viernesIniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viernesIniActionPerformed
+        if(viernesFin.getSelectedIndex()<viernesIni.getSelectedIndex()){
+            viernesFin.setSelectedIndex(viernesIni.getSelectedIndex());
+        }
+        if(viernesFin.getSelectedIndex()>viernesIni.getSelectedIndex()+MAXHOUR){
+            viernesFin.setSelectedIndex(viernesIni.getSelectedIndex()+MAXHOUR);
+        }
+    }//GEN-LAST:event_viernesIniActionPerformed
+
+    private void viernesFinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viernesFinActionPerformed
+        if(viernesFin.getSelectedIndex()<viernesIni.getSelectedIndex()){
+            viernesIni.setSelectedIndex(viernesFin.getSelectedIndex());
+        }
+        if(viernesFin.getSelectedIndex()>viernesIni.getSelectedIndex()+MAXHOUR){
+            viernesIni.setSelectedIndex(viernesFin.getSelectedIndex()-MAXHOUR);
+        }
+    }//GEN-LAST:event_viernesFinActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        
+        if(lunesCB.isSelected() || martesCB.isSelected() || miercolesCB.isSelected() || juevesCB.isSelected() || viernesCB.isSelected()){
+            
+            Pair<Date,Date> periodo = Gestor_Reservas.getInstance().obtenerPeriodo(C1, C2);
+            
+            ArrayList<Date> dias=(ArrayList)CU01_PeriodicaDias.getDaysBetweenDates(periodo.getKey(), periodo.getValue());
+            ArrayList<Triple<Date,Time,Time>> listaDiasHorarios=new ArrayList();
+            Date today=new Date();
+            
+            for (int i=0;i<dias.size();i++){
+                
+                if(!dias.get(i).before(today)){ //equivalente a after pero inclusive, tambien puede ser .after || equals
+                
+                    if(lunesCB.isSelected() && dias.get(i).getDay()==1){
+                        
+                        try{
+                            Date dtIni=formatterHorario.parse(lunesIni.getSelectedItem().toString());
+                            Date dtFin=formatterHorario.parse(lunesFin.getSelectedItem().toString());
+                            Time timeIni=new Time(dtIni.getHours(),dtIni.getMinutes(),0);
+                            Time timeFin=new Time(dtFin.getHours(),dtFin.getMinutes(),0);
+                            listaDiasHorarios.add(new Triple(dias.get(i),timeIni,timeFin));
+                                    
+                        }catch(ParseException e){
+                            //error de parsing
+                        }
+                    }
+                    
+                    if(martesCB.isSelected() && dias.get(i).getDay()==2){
+                        
+                        try{
+                            Date dtIni=formatterHorario.parse(martesIni.getSelectedItem().toString());
+                            Date dtFin=formatterHorario.parse(martesFin.getSelectedItem().toString());
+                            Time timeIni=new Time(dtIni.getHours(),dtIni.getMinutes(),0);
+                            Time timeFin=new Time(dtFin.getHours(),dtFin.getMinutes(),0);
+                            listaDiasHorarios.add(new Triple(dias.get(i),timeIni,timeFin));
+                                    
+                        }catch(ParseException e){
+                            //error de parsing
+                        }
+                    }
+                    
+                    if(miercolesCB.isSelected() && dias.get(i).getDay()==3){
+                        
+                        try{
+                            Date dtIni=formatterHorario.parse(miercolesIni.getSelectedItem().toString());
+                            Date dtFin=formatterHorario.parse(miercolesFin.getSelectedItem().toString());
+                            Time timeIni=new Time(dtIni.getHours(),dtIni.getMinutes(),0);
+                            Time timeFin=new Time(dtFin.getHours(),dtFin.getMinutes(),0);
+                            listaDiasHorarios.add(new Triple(dias.get(i),timeIni,timeFin));
+                                    
+                        }catch(ParseException e){
+                            //error de parsing
+                        }
+                    }
+                    
+                    if(juevesCB.isSelected() && dias.get(i).getDay()==4){
+                        
+                        try{
+                            Date dtIni=formatterHorario.parse(juevesIni.getSelectedItem().toString());
+                            Date dtFin=formatterHorario.parse(juevesFin.getSelectedItem().toString());
+                            Time timeIni=new Time(dtIni.getHours(),dtIni.getMinutes(),0);
+                            Time timeFin=new Time(dtFin.getHours(),dtFin.getMinutes(),0);
+                            listaDiasHorarios.add(new Triple(dias.get(i),timeIni,timeFin));
+                                    
+                        }catch(ParseException e){
+                            //error de parsing
+                        }
+                    }
+                    
+                    if(viernesCB.isSelected() && dias.get(i).getDay()==5){
+                        
+                        try{
+                            Date dtIni=formatterHorario.parse(viernesIni.getSelectedItem().toString());
+                            Date dtFin=formatterHorario.parse(viernesFin.getSelectedItem().toString());
+                            Time timeIni=new Time(dtIni.getHours(),dtIni.getMinutes(),0);
+                            Time timeFin=new Time(dtFin.getHours(),dtFin.getMinutes(),0);
+                            listaDiasHorarios.add(new Triple(dias.get(i),timeIni,timeFin));
+                                    
+                        }catch(ParseException e){
+                            //error de parsing
+                        }
+                    }
+                    
+                }
+            }
+            
+            //En este momento ya se tiene una lista con ternas <Date,Time,Time> con las fechas del periodo correspondiente que coiniciden con los dias de la semana
+            //ingresados por el usuario.
+            
+            /*System.out.println("Fechas:");
+            for(int i=0;i<listaDiasHorarios.size();i++){
+                Date d=listaDiasHorarios.get(i).first;
+                switch(d.getDay()){
+                    case 1:System.out.print("LUN");break;
+                    case 2:System.out.print("MAR");break;
+                    case 3:System.out.print("MIE");break;
+                    case 4:System.out.print("JUE");break;
+                    case 5:System.out.print("VIE");break;
+                }
+                System.out.print(" ");
+                System.out.print(d.getDate());
+                System.out.print("/");
+                System.out.print(d.getMonth()+1);
+                System.out.print("/");
+                System.out.print(d.getYear()+1900);
+                System.out.print("  ");
+                System.out.print(listaDiasHorarios.get(i).second.toString());
+                System.out.print(" - ");
+                System.out.print(listaDiasHorarios.get(i).third.toString());
+                System.out.print("\n");
+            }
+            
+            System.out.print("\n");*/
+            
+            
+        }else{
+            new PopUp(TipoPopUp.ERROR,"Debe seleccionar al menos un dia");
+        }
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        FrameController.pop();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -299,21 +699,6 @@ public class CU01_PeriodicaDias extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JCheckBox jCheckBox5;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox10;
-    private javax.swing.JComboBox<String> jComboBox11;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private javax.swing.JComboBox<String> jComboBox6;
-    private javax.swing.JComboBox<String> jComboBox7;
-    private javax.swing.JComboBox<String> jComboBox8;
-    private javax.swing.JComboBox<String> jComboBox9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -321,5 +706,21 @@ public class CU01_PeriodicaDias extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JCheckBox juevesCB;
+    private javax.swing.JComboBox<String> juevesFin;
+    private javax.swing.JComboBox<String> juevesIni;
+    private javax.swing.JCheckBox lunesCB;
+    private javax.swing.JComboBox<String> lunesFin;
+    private javax.swing.JComboBox<String> lunesIni;
+    private javax.swing.JCheckBox martesCB;
+    private javax.swing.JComboBox<String> martesFin;
+    private javax.swing.JComboBox<String> martesIni;
+    private javax.swing.JCheckBox miercolesCB;
+    private javax.swing.JComboBox<String> miercolesFin;
+    private javax.swing.JComboBox<String> miercolesIni;
+    private javax.swing.JCheckBox viernesCB;
+    private javax.swing.JComboBox<String> viernesFin;
+    private javax.swing.JComboBox<String> viernesIni;
     // End of variables declaration//GEN-END:variables
 }
+

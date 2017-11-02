@@ -6,8 +6,12 @@
 package Control;
 
 import Entidad.Cuatrimestre;
+import Utilidades.Hibernator;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -23,11 +27,28 @@ public class DAO_Cuatrimestre {
         return instance;
     }
     
-    public Collection<Cuatrimestre> find () {
+    public Collection<Cuatrimestre> find (int cicloLectivo) {
         
-        //a implementar
+        ArrayList<Cuatrimestre> resultado=new ArrayList(),inter;
         
-        return new ArrayList();
+        try{
+            Session ses = Hibernator.getInstance().getSession();
+            ses.beginTransaction();
+            Criteria cr = ses.createCriteria(Cuatrimestre.class);
+            inter=(ArrayList<Cuatrimestre>)cr.list();
+            ses.getTransaction().commit();
+            for(int i=0;i<inter.size();i++){
+                if(inter.get(i).getCicloLectivo()==cicloLectivo){
+                    resultado.add(inter.get(i));
+                }
+            }
+        }
+        catch(org.hibernate.exception.GenericJDBCException jbdc){
+            resultado=new ArrayList();
+        }
+        
+        
+        return resultado;
         
     }
     

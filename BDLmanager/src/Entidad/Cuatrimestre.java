@@ -30,5 +30,17 @@ public class Cuatrimestre {
     public Cuatrimestre (){
         
     }
+
+    public Date getFechaInicio(){
+        return this.cuatrimestrePK.getFechaInicio();
+    }
+    
+    public Date getFechaFin() {
+        return fechaFin;
+    }
+    
+    public int getCicloLectivo(){
+        return this.cuatrimestrePK.getCicloLectivo();
+    }
     
 }

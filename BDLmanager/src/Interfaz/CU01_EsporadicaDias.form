@@ -3,6 +3,7 @@
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="title" type="java.lang.String" value="BDLbedel"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -23,7 +24,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+          <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -43,39 +44,37 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jSeparator1" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
+                          <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jButton4" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jButton4" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jDateChooser" min="-2" pref="106" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="horaIni" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="horaFin" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jXDatePicker1" min="-2" pref="106" max="-2" attributes="0"/>
-                                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                                              <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                                              <Component id="jComboBox2" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
-                                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                                              <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Component id="jButton3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jScrollPane2" alignment="0" min="-2" pref="268" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
+                                          <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                                          <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                                       </Group>
+                                      <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jScrollPane2" alignment="0" min="-2" pref="268" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
+                              <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="15" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -102,11 +101,13 @@
                       <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jXDatePicker1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jComboBox2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="horaIni" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="horaFin" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="jDateChooser" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButton1" min="-2" max="-2" attributes="0"/>
@@ -130,16 +131,47 @@
             <Property name="text" type="java.lang.String" value="Hora inicio"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox1">
+        <Component class="javax.swing.JComboBox" name="horaIni">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="1">
+              <StringArray count="32">
                 <StringItem index="0" value="08:00"/>
+                <StringItem index="1" value="08:30"/>
+                <StringItem index="2" value="09:00"/>
+                <StringItem index="3" value="09:30"/>
+                <StringItem index="4" value="10:00"/>
+                <StringItem index="5" value="10:30"/>
+                <StringItem index="6" value="11:00"/>
+                <StringItem index="7" value="11:30"/>
+                <StringItem index="8" value="12:00"/>
+                <StringItem index="9" value="12:30"/>
+                <StringItem index="10" value="13:00"/>
+                <StringItem index="11" value="13:30"/>
+                <StringItem index="12" value="14:00"/>
+                <StringItem index="13" value="14:30"/>
+                <StringItem index="14" value="15:00"/>
+                <StringItem index="15" value="15:30"/>
+                <StringItem index="16" value="16:00"/>
+                <StringItem index="17" value="16:30"/>
+                <StringItem index="18" value="17:00"/>
+                <StringItem index="19" value="17:30"/>
+                <StringItem index="20" value="18:00"/>
+                <StringItem index="21" value="18:30"/>
+                <StringItem index="22" value="19:00"/>
+                <StringItem index="23" value="19:30"/>
+                <StringItem index="24" value="20:00"/>
+                <StringItem index="25" value="20:30"/>
+                <StringItem index="26" value="21:00"/>
+                <StringItem index="27" value="21:30"/>
+                <StringItem index="28" value="22:00"/>
+                <StringItem index="29" value="22:30"/>
+                <StringItem index="30" value="23:00"/>
+                <StringItem index="31" value="23:30"/>
               </StringArray>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="componentMoved" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="jComboBox1ComponentMoved"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="horaIniActionPerformed"/>
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -162,6 +194,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Atr&#xe1;s"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton4">
           <Properties>
@@ -228,17 +263,52 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Agregar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="org.jdesktop.swingx.JXDatePicker" name="jXDatePicker1">
-        </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox2">
+        <Component class="javax.swing.JComboBox" name="horaFin">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="1">
-                <StringItem index="0" value="09:30"/>
+              <StringArray count="32">
+                <StringItem index="0" value="08:30"/>
+                <StringItem index="1" value="09:00"/>
+                <StringItem index="2" value="09:30"/>
+                <StringItem index="3" value="10:00"/>
+                <StringItem index="4" value="10:30"/>
+                <StringItem index="5" value="11:00"/>
+                <StringItem index="6" value="11:30"/>
+                <StringItem index="7" value="12:00"/>
+                <StringItem index="8" value="12:30"/>
+                <StringItem index="9" value="13:00"/>
+                <StringItem index="10" value="13:30"/>
+                <StringItem index="11" value="14:00"/>
+                <StringItem index="12" value="14:30"/>
+                <StringItem index="13" value="15:00"/>
+                <StringItem index="14" value="15:30"/>
+                <StringItem index="15" value="16:00"/>
+                <StringItem index="16" value="16:30"/>
+                <StringItem index="17" value="17:00"/>
+                <StringItem index="18" value="17:30"/>
+                <StringItem index="19" value="18:00"/>
+                <StringItem index="20" value="18:30"/>
+                <StringItem index="21" value="19:00"/>
+                <StringItem index="22" value="19:30"/>
+                <StringItem index="23" value="20:00"/>
+                <StringItem index="24" value="20:30"/>
+                <StringItem index="25" value="21:00"/>
+                <StringItem index="26" value="21:30"/>
+                <StringItem index="27" value="22:00"/>
+                <StringItem index="28" value="22:30"/>
+                <StringItem index="29" value="23:00"/>
+                <StringItem index="30" value="23:30"/>
+                <StringItem index="31" value="23:59"/>
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="horaFinActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
@@ -256,6 +326,8 @@
               <Image iconType="3" name="/Interfaz/bdlbedel.png"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser">
         </Component>
       </SubComponents>
     </Container>

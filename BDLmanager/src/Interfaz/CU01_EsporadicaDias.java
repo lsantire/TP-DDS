@@ -1,6 +1,14 @@
 package Interfaz;
 
 import Entidad.*;
+import Utilidades.Triple;
+import java.sql.Time;
+import java.text.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,12 +22,19 @@ import Entidad.*;
  */
 public class CU01_EsporadicaDias extends javax.swing.JFrame {
 
-    
-    
+    private static int MAXHOUR=7; //MAXHOUR=N -> N*30+30 [mins]
+    private List<Triple<Date,Time,Time>> listaDiasHorarios=new ArrayList();
+    private DateFormat formatterHorario = new SimpleDateFormat("HH:mm");
+    private DateFormat formatterFecha = new SimpleDateFormat("dd/MM/yyyy");
     
     public CU01_EsporadicaDias(boolean C1, boolean C2, int cantAlumnos, String tipoAula, Docente docente, Bedel bedel, Curso curso) {
         initComponents();
         this.setLocationRelativeTo(null);
+        jDateChooser.setMinSelectableDate(new Date());
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.setColumnSelectionAllowed(false);
+        jTable1.setRowSelectionAllowed(true);
+        jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     /**
@@ -33,7 +48,7 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        horaIni = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -42,20 +57,21 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        horaFin = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
+        jDateChooser = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("BDLbedel");
 
         jLabel9.setText("Hora inicio");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00" }));
-        jComboBox1.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentMoved(java.awt.event.ComponentEvent evt) {
-                jComboBox1ComponentMoved(evt);
+        horaIni.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30" }));
+        horaIni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                horaIniActionPerformed(evt);
             }
         });
 
@@ -69,6 +85,11 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
         });
 
         jButton2.setText("Atrás");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton4.setFont(jButton4.getFont().deriveFont(jButton4.getFont().getStyle() | java.awt.Font.BOLD));
         jButton4.setText("Continuar");
@@ -103,8 +124,18 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
 
         jButton1.setFont(jButton1.getFont().deriveFont(jButton1.getFont().getStyle() | java.awt.Font.BOLD));
         jButton1.setText("Agregar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "09:30" }));
+        horaFin.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "23:59" }));
+        horaFin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                horaFinActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Día específico:");
 
@@ -119,32 +150,31 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jButton2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jButton4))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton1)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jButton2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton4))
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jButton1)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabel2)
-                                            .addGap(55, 55, 55)
-                                            .addComponent(jLabel9)
-                                            .addGap(26, 26, 26)
-                                            .addComponent(jLabel10))
-                                        .addComponent(jButton3)
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 15, Short.MAX_VALUE)))
+                                        .addComponent(jDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(horaIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(horaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(55, 55, 55)
+                                        .addComponent(jLabel9)
+                                        .addGap(26, 26, 26)
+                                        .addComponent(jLabel10))
+                                    .addComponent(jButton3)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel1))
+                        .addGap(10, 10, 10)))
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(86, 86, 86)
@@ -165,11 +195,12 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jLabel9)
                     .addComponent(jLabel10))
-                .addGap(7, 7, 7)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(horaIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(horaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addGap(11, 11, 11)
@@ -187,7 +218,7 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,12 +229,93 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        
+        listaDiasHorarios.remove(jTable1.getSelectedRow());
+        
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+                model.setRowCount(0);
+                
+                for (int i=0;i<listaDiasHorarios.size();i++){
+                    
+                    Triple trip=listaDiasHorarios.get(i);
+                    Object[] fila = {formatterFecha.format((Date)trip.first),formatterHorario.format((Time)(trip.second))+"-"+formatterHorario.format((Time)(trip.third))};
+                    model.addRow(fila);
+                }
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jComboBox1ComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jComboBox1ComponentMoved
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ComponentMoved
+    private void horaIniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_horaIniActionPerformed
+        if(horaFin.getSelectedIndex()<horaIni.getSelectedIndex()){
+            horaFin.setSelectedIndex(horaIni.getSelectedIndex());
+        }
+        if(horaFin.getSelectedIndex()>horaIni.getSelectedIndex()+MAXHOUR){
+            horaFin.setSelectedIndex(horaIni.getSelectedIndex()+MAXHOUR);
+        }
+    }//GEN-LAST:event_horaIniActionPerformed
+
+    private void horaFinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_horaFinActionPerformed
+        if(horaFin.getSelectedIndex()<horaIni.getSelectedIndex()){
+            horaIni.setSelectedIndex(horaFin.getSelectedIndex());
+        }
+        if(horaFin.getSelectedIndex()>horaIni.getSelectedIndex()+MAXHOUR){
+            horaIni.setSelectedIndex(horaFin.getSelectedIndex()-MAXHOUR);
+        }
+    }//GEN-LAST:event_horaFinActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       
+        boolean repetido=false;
+        for(int i=0;i<listaDiasHorarios.size();i++){
+            Date d=listaDiasHorarios.get(i).first;
+            if(formatterFecha.format(jDateChooser.getDate()).equals(formatterFecha.format(d))){
+                repetido=true;
+            }
+        }
+        
+        if(repetido){
+            new PopUp(TipoPopUp.ERROR,"Solo se puede hacer una reserva por dia");
+        }
+        
+        if(jDateChooser.getDate()!=null && !repetido){
+            
+            
+            try{
+                Date dtIni=formatterHorario.parse(horaIni.getSelectedItem().toString());
+                Date dtFin=formatterHorario.parse(horaFin.getSelectedItem().toString());
+                
+                Time HI=new Time(dtIni.getHours(), dtIni.getMinutes(), 0);
+                Time HF=new Time(dtFin.getHours(), dtFin.getMinutes(), 0);
+                
+                Triple t=new Triple(jDateChooser.getDate(),HI,HF);
+                listaDiasHorarios.add(t);
+                
+                //Deberia encontrar una forma de deshabilitar el dia que se acaba de elegir en el calendario
+                
+                //Deberia ordenarse la lista de triples
+                DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+                model.setRowCount(0);
+                
+                for (int i=0;i<listaDiasHorarios.size();i++){
+                    
+                    Triple trip=listaDiasHorarios.get(i);
+                    Object[] fila = {formatterFecha.format((Date)trip.first),formatterHorario.format((Time)(trip.second))+"-"+formatterHorario.format((Time)(trip.third))};
+                    model.addRow(fila);
+                }
+                
+                
+                
+            }catch(ParseException e){
+                //Esta excepcion hace alusion a cuando se intenta parsear una fecha no valida, como, en este caso que trabajamos
+                //con horas y minutos, por ejemplo las 34:98.
+            }
+
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        FrameController.pop();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -272,12 +384,13 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> horaFin;
+    private javax.swing.JComboBox<String> horaIni;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private com.toedter.calendar.JDateChooser jDateChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -287,6 +400,5 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
     // End of variables declaration//GEN-END:variables
 }

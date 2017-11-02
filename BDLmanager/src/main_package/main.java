@@ -6,7 +6,7 @@
 package main_package;
 
 import Excepciones.*;
-import Hibernate.Hibernator;
+import Utilidades.Hibernator;
 import Interfaz.*;
 import java.awt.Font;
 import java.util.logging.*;

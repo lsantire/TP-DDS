@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Hibernate;
+package Utilidades;
 import Entidad.*;
 import org.hibernate.*;
 
@@ -39,7 +39,7 @@ public class Hibernator {
         config.addAnnotatedClass(Docente.class);
         config.addAnnotatedClass(PoliticaSeguridad.class);
         config.addAnnotatedClass(Reserva.class);
-        config.configure("Hibernate/hibernate.cfg.xml");
+        config.configure("Utilidades/hibernate.cfg.xml");
         
         
         sesFactory=config.buildSessionFactory();

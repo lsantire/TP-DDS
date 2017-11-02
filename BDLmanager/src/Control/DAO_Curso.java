@@ -6,7 +6,7 @@
 package Control;
 
 import Entidad.Curso;
-import Hibernate.Hibernator;
+import Utilidades.Hibernator;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.hibernate.Criteria;
