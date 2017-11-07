@@ -8,6 +8,7 @@ package Interfaz;
 import Control.Gestor_Bedeles;
 import Entidad.Bedel;
 import Excepciones.*;
+import Utilidades.StringHandler;
 
 
 /**
@@ -223,9 +224,9 @@ public class CU14_ModificarBedel extends javax.swing.JFrame  {
         {
             new PopUp(TipoPopUp.ERROR,"La contrasenia no puede contener espacios.");
         }
-        else if(nombre.length()<2 || nombre.length()>60 ||apellido.length()<2 || apellido.length()>60)
+        else if(nombre.length()<2 || nombre.length()>60 ||apellido.length()<2 || apellido.length()>60 || !StringHandler.isNameOrSurname(nombre) || !StringHandler.isNameOrSurname(apellido))
         {
-            new PopUp(TipoPopUp.ERROR,"El nombre y el apellido deben tener entre 2 y 60 caracteres");
+            new PopUp(TipoPopUp.ERROR,"El nombre y el apellido deben tener entre 2 y 60 caracteres alfabeticos y/o apóstrofe, guión medio o espacio");
         }
         else if(pass.length()>32)
         {
@@ -240,7 +241,7 @@ public class CU14_ModificarBedel extends javax.swing.JFrame  {
             
             try{
                 
-                Gestor_Bedeles.getInstance().modificarBedel(nombre, apellido, turno, id, pass);
+                Gestor_Bedeles.getInstance().modificarBedel(StringHandler.toProperNameCase(nombre), StringHandler.toProperNameCase(apellido), turno, id, pass);
                 new PopUp(TipoPopUp.INFORMACION,"El Bedel fue modificado");
                 ((CU16_BuscarBedel)(FrameController.pop())).research();
             }

@@ -7,6 +7,7 @@ package Interfaz;
 
 import Control.Gestor_Bedeles;
 import Excepciones.*;
+import Utilidades.StringHandler;
 
 /**
  *
@@ -227,9 +228,9 @@ public class CU13_RegistrarBedel extends javax.swing.JFrame {
         {
             new PopUp(TipoPopUp.ERROR,"El usuario y la contrasenia no pueden contener espacios.");
         }
-        else if(nombre.length()<2 || nombre.length()>60 ||apellido.length()<2 || apellido.length()>60)
+        else if(nombre.length()<2 || nombre.length()>60 ||apellido.length()<2 || apellido.length()>60 || !StringHandler.isNameOrSurname(nombre) || !StringHandler.isNameOrSurname(apellido) )
         {
-            new PopUp(TipoPopUp.ERROR,"El nombre y el apellido deben tener entre 2 y 60 caracteres");
+            new PopUp(TipoPopUp.ERROR,"El nombre y el apellido deben tener entre 2 y 60 caracteres alfabeticos y/o apóstrofe, guión medio o espacio");
         }
         else if(id.length()<6 || id.length()>32)
         {
@@ -248,7 +249,7 @@ public class CU13_RegistrarBedel extends javax.swing.JFrame {
 
             //Invocacion al metodo de crearBedel del Gestor_Bedeles
             try {
-                Gestor_Bedeles.getInstance().crearBedel(nombre, apellido, turno, id, pass);
+                Gestor_Bedeles.getInstance().crearBedel(StringHandler.toProperNameCase(nombre), StringHandler.toProperNameCase(apellido), turno, id, pass);
                 new PopUp(TipoPopUp.INFORMACION,"El Bedel fue registrado exitosamente");
                 FrameController.pop();
             }
