@@ -5,9 +5,8 @@
  */
 package Control;
 
-import Entidad.Aula;
-import java.util.ArrayList;
-import java.util.Collection;
+import Entidad.*;
+import java.util.*;
 
 /**
  *
@@ -22,12 +21,23 @@ public class Gestor_Aulas {
         if(instance==null) instance=new Gestor_Aulas();
         return instance;
     }
+
     
-    public Collection<Aula> buscarAula(){
+    public Collection<Aula> obtenerAulas(int cantAlumnos, String tipoAula){
         
+        Aula buscador;
         
+        switch (tipoAula){
+            case "Sin Recursos Adicionales": buscador=new AulaSinRecursos(); ((Aula)buscador).setCapacidad(cantAlumnos); break;
+            case "Multimedios": buscador=new AulaMultimedios(); ((Aula)buscador).setCapacidad(cantAlumnos); break;
+            case "Informática": buscador=new AulaInformatica(); ((Aula)buscador).setCapacidad(cantAlumnos); break;
+            default: buscador=new Aula(); buscador.setCapacidad(cantAlumnos);
+        }
         
-        return new ArrayList();
+        Collection<Aula> aulasCompatibles = DAO_Aulas.getInstance().find(buscador);
+        
+        return aulasCompatibles;
+        
     }
     
     public boolean modificarAula(Aula aula){

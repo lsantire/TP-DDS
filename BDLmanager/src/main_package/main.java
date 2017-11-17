@@ -23,6 +23,7 @@ public class main {
      */
     public static void main(String[] args) {
         
+        
         LoadingScreen ls=new LoadingScreen();       
         try{
             Thread.sleep(1000);
@@ -41,7 +42,6 @@ public class main {
             ls.dispose();
             
         }
-        
 
         
     }

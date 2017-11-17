@@ -619,6 +619,7 @@ public class CU01_PeriodicaDias extends javax.swing.JFrame {
             
             System.out.print("\n");*/
             
+            FrameController.push(new CU01_SelectorAulas(C1,C2,listaDiasHorarios,cantAlumnos,tipoAula,docente,bedel,curso));
             
         }else{
             new PopUp(TipoPopUp.ERROR,"Debe seleccionar al menos un dia");

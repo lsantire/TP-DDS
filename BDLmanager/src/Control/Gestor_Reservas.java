@@ -6,6 +6,7 @@
 package Control;
 
 import Entidad.*;
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -75,6 +76,20 @@ public class Gestor_Reservas {
         }else{
             return new Pair(primerCuatrimestre.getFechaInicio(),segundoCuatrimestre.getFechaFin());
         }
+        
+    }
+    
+    public Collection<Pair<Integer,DiaReserva>> obtenerAulasDisponibles(boolean C1, boolean C2, int cantAlumnos, String tipoAula, Date dia, Time horainicio, Time horafin){
+        
+        Collection<Aula> aulasCompatibles = Gestor_Aulas.getInstance().obtenerAulas(cantAlumnos, tipoAula);
+        
+        for (int i=0;i<aulasCompatibles.size();i++){
+            
+            //SEGUIR ACÁ
+            
+        }
+        
+        return new ArrayList();
         
     }
     

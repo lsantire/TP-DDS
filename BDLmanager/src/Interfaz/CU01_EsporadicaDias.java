@@ -26,6 +26,14 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
     private List<Triple<Date,Time,Time>> listaDiasHorarios=new ArrayList();
     private DateFormat formatterHorario = new SimpleDateFormat("HH:mm");
     private DateFormat formatterFecha = new SimpleDateFormat("dd/MM/yyyy");
+    private boolean C1;
+    private boolean C2;
+    private int cantAlumnos;
+    private String tipoAula;
+    private Docente docente;
+    private Bedel bedel;
+    private Curso curso;
+    
     
     public CU01_EsporadicaDias(boolean C1, boolean C2, int cantAlumnos, String tipoAula, Docente docente, Bedel bedel, Curso curso) {
         initComponents();
@@ -35,6 +43,13 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
         jTable1.setColumnSelectionAllowed(false);
         jTable1.setRowSelectionAllowed(true);
         jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        this.C1=C1;
+        this.C2=C2;
+        this.cantAlumnos=cantAlumnos;
+        this.tipoAula=tipoAula;
+        this.docente=docente;
+        this.bedel=bedel;
+        this.curso=curso;
     }
 
     /**
@@ -93,6 +108,11 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
 
         jButton4.setFont(jButton4.getFont().deriveFont(jButton4.getFont().getStyle() | java.awt.Font.BOLD));
         jButton4.setText("Continuar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -316,6 +336,18 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         FrameController.pop();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        
+        if(!listaDiasHorarios.isEmpty()){
+            
+            FrameController.push(new CU01_SelectorAulas(C1,C2,(ArrayList)listaDiasHorarios,cantAlumnos,tipoAula,docente,bedel,curso));
+            
+        }else{
+            new PopUp(TipoPopUp.ERROR,"Debe seleccionar al menos un dia");
+        }
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
