@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.TreeSet;
 import javafx.util.Pair;
 
 /**
@@ -79,13 +80,23 @@ public class Gestor_Reservas {
         
     }
     
-    public Collection<Pair<Integer,DiaReserva>> obtenerAulasDisponibles(boolean C1, boolean C2, int cantAlumnos, String tipoAula, Date dia, Time horainicio, Time horafin){
+    public Collection<Pair<Integer,Aula>> obtenerAulasDisponibles(boolean C1, boolean C2, int cantAlumnos, String tipoAula, ArrayList<Date> dias, Time horainicio, Time horafin){
         
-        Collection<Aula> aulasCompatibles = Gestor_Aulas.getInstance().obtenerAulas(cantAlumnos, tipoAula);
         
-        for (int i=0;i<aulasCompatibles.size();i++){
-            
-            //SEGUIR ACÁ
+        ArrayList<Aula> aulasCompatibles = (ArrayList)Gestor_Aulas.getInstance().obtenerAulas(cantAlumnos, tipoAula);
+        ArrayList<Pair<Integer,Aula>> disponibles=new ArrayList();
+        DiaReserva dr=new DiaReserva();
+        
+        for (int i=0;i<aulasCompatibles.size();i++)
+        {
+            dr.setAula(aulasCompatibles.get(i));
+            for(int j=0;j<dias.size();j++)
+            {
+                dr.setFecha(dias.get(j));
+                dr.setHoraInicio(horainicio);
+                dr.setHoraFin(horafin);
+                DAO_Reservas.getInstance().find(dr);
+            }
             
         }
         

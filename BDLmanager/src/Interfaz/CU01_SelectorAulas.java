@@ -12,6 +12,8 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import javafx.util.Pair;
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 
 /**
  *
@@ -26,9 +28,55 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
      */
     public CU01_SelectorAulas(boolean C1, boolean C2, ArrayList<Triple<Date,Time,Time>> listaDiasHorarios, int cantAlumnos, String tipoAula, Docente docente, Bedel bedel, Curso curso) {
         initComponents();
+        this.setLocationRelativeTo(null);
         
-        for (int i=0;i<listaDiasHorarios.size();i++){
-            listaDiasReservasConSolapamiento.add(Gestor_Reservas.getInstance().obtenerAulasDisponibles(C1, C2, cantAlumnos, tipoAula, listaDiasHorarios.get(i).first, listaDiasHorarios.get(i).second, listaDiasHorarios.get(i).third));
+        ArrayList diasPorSemana[] = new ArrayList[5];
+        for(int i=0;i<5;i++) diasPorSemana[i]=new ArrayList();
+        Pair<Time,Time> horaPorDia[]=new Pair[5];
+        
+        if(!C1 && !C2){ //Esporadica
+            for (int i=0;i<listaDiasHorarios.size();i++){
+                ArrayList diaEsporadico=new ArrayList();
+                diaEsporadico.add(listaDiasHorarios.get(i).first);
+                listaDiasReservasConSolapamiento.add(Gestor_Reservas.getInstance().obtenerAulasDisponibles(C1, C2, cantAlumnos, tipoAula, diaEsporadico, listaDiasHorarios.get(i).second, listaDiasHorarios.get(i).third));
+            }
+        }else{ //Periodica
+            
+     
+            for(int i=0;i<listaDiasHorarios.size();i++){
+                diasPorSemana[listaDiasHorarios.get(i).first.getDay()-1].add(listaDiasHorarios.get(i).first);
+                horaPorDia[listaDiasHorarios.get(i).first.getDay()-1]=new Pair(listaDiasHorarios.get(i).second,listaDiasHorarios.get(i).third);
+            }
+            
+            for(int i=0;i<5;i++){
+                if(!diasPorSemana[i].isEmpty()){
+                    listaDiasReservasConSolapamiento.add(Gestor_Reservas.getInstance().obtenerAulasDisponibles(C1, C2, cantAlumnos, tipoAula, diasPorSemana[i], horaPorDia[i].getKey(), horaPorDia[i].getValue()));
+                }
+            }
+            
+        }
+        if (!C1 && !C2){ //Esporadica
+
+            DefaultListModel lm;
+            lm=new DefaultListModel();
+            for(int i=0;i<listaDiasHorarios.size();i++){
+                lm.addElement(listaDiasHorarios.get(i).toStringEsporadica());
+            }
+            jList2.setModel(lm);
+            
+        } else {
+            
+            //Periodica
+            DefaultListModel lm;
+            lm=new DefaultListModel();
+            for(int i=0;i<5;i++){
+                if(!diasPorSemana[i].isEmpty()){
+                    Triple t = new Triple(diasPorSemana[i].get(0),horaPorDia[i].getKey(),horaPorDia[i].getValue());
+                    lm.addElement(t.toStringPeriodica());
+                }
+
+            }
+            jList2.setModel(lm);
         }
         
     }
@@ -122,6 +170,11 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
         jButton6.setEnabled(false);
 
         jButton2.setText("Volver");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton7.setForeground(new java.awt.Color(0, 204, 0));
@@ -142,11 +195,6 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
 
         jLabel3.setText("Días que faltan asignar");
 
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "16/04/17: 13:00 - 14:30", "18/04/17: 16:00 - 17:30" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane3.setViewportView(jList2);
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Interfaz/bdlbedel.png"))); // NOI18N
@@ -284,6 +332,10 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         new PopUp(TipoPopUp.INFORMACION,"Para asignar un aula\n  1. Seleccione el dia a reservar\n  2. Seleccione el aula\n  3. Presione el '+'\n\nPara desasignar un aula\n  1. Seleccione la reserva a desasignar         \n  2. Presione el '-' ");
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        FrameController.pop();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -5,9 +5,15 @@
  */
 package Control;
 
+import Entidad.DiaReserva;
 import Entidad.Reserva;
+import Utilidades.Hibernator;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Conjunction;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -23,11 +29,41 @@ public class DAO_Reservas {
         return instance;
     }
     
-    public Collection<Reserva> find () {
+    public Collection<DiaReserva> find (DiaReserva dr) {
         
-        //A implementar
+        ArrayList<DiaReserva> resultado=new ArrayList();
         
-        return new ArrayList();
+        try{
+            
+            Session ses = Hibernator.getInstance().getSession();
+            ses.beginTransaction();
+            
+            Criteria cr=ses.createCriteria(DiaReserva.class);
+            Conjunction conj = Restrictions.conjunction();
+            
+            if(dr.getFecha()!=null){
+                conj.add(Restrictions.eq("fecha",dr.getFecha()));
+            }
+            
+            if(dr.getHoraFin()!=null){
+                //SEGUIR ACA
+            }
+            
+            if(dr.getHoraInicio()!=null){
+                
+            }
+            
+            if(dr.getAula()!=null){
+                conj.add(Restrictions.eq("aula", dr.getAula()));
+                
+            }
+            
+            cr.add(conj);
+        }
+        catch(org.hibernate.exception.GenericJDBCException jbdc){
+            resultado=new ArrayList();
+        }
+        return resultado;
         
     }
     

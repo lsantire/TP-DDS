@@ -4,6 +4,12 @@
  * and open the template in the editor.
  */
 package Utilidades;
+
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Triple<F, S, T> {
 
     public final F first;
@@ -37,4 +43,31 @@ public class Triple<F, S, T> {
     public static <F, S, T> Triple <F, S, T> create(F f, S s, T t) {
         return new Triple<F, S, T>(f, s, t);
     }
+
+    public String toStringEsporadica() {  
+        
+        return ((Date)first).getDate()+"/"+(((Date)first).getMonth()+1)+"/"+(((Date)first).getYear()+1900)+": "
+                +((Time)second).getHours()+":"+((Time)second).getMinutes()/10+"0 - "
+                +((Time)third).getHours()+":"+((Time)third).getMinutes()/10+"0";
+    }
+    
+    public String toStringPeriodica() {
+        
+        String retorno="";
+        
+        switch(((Date)first).getDay()){
+                    case 1:retorno+="Lunes";break;
+                    case 2:retorno+="Martes";break;
+                    case 3:retorno+="Miercoles";break;
+                    case 4:retorno+="Jueves";break;
+                    case 5:retorno+="Viernes";break;
+                }
+        
+        retorno +=": "+((Time)second).getHours()+":"+((Time)second).getMinutes()/10+"0 - "
+                +((Time)third).getHours()+":"+((Time)third).getMinutes()/10+"0";
+        
+        return retorno;
+        
+    }
+    
 }
