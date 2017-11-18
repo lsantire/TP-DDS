@@ -32,7 +32,9 @@ public class Aula {
         capacidad=0;
     }
 
-    
+    public String getResumenCaracteristicas(){
+        return tipoPizarron;
+    }
     
     public int getId() {
         return id;
@@ -89,7 +91,24 @@ public class Aula {
     public void setDiasReserva(Collection<DiaReserva> diasReserva) {
         this.diasReserva = diasReserva;
     }
-    
-    
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Aula other = (Aula) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
     
 }

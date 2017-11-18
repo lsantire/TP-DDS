@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -43,6 +45,10 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
         jTable1.setColumnSelectionAllowed(false);
         jTable1.setRowSelectionAllowed(true);
         jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
+        jTable1.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        jTable1.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
         this.C1=C1;
         this.C2=C2;
         this.cantAlumnos=cantAlumnos;
@@ -284,7 +290,12 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        
+        boolean finde=false;
         boolean repetido=false;
+        boolean tarde=false;
+        
+        if(jDateChooser.getDate()!=null){
+        
         for(int i=0;i<listaDiasHorarios.size();i++){
             Date d=listaDiasHorarios.get(i).first;
             if(formatterFecha.format(jDateChooser.getDate()).equals(formatterFecha.format(d))){
@@ -292,11 +303,36 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
             }
         }
         
+        //Verificacion hoy
+        try{
+            Date hoy=new Date();
+            Date d=jDateChooser.getDate();
+            Date dtIni=formatterHorario.parse(horaIni.getSelectedItem().toString());
+            d.setHours(dtIni.getHours());
+            d.setMinutes(dtIni.getMinutes());
+            d.setSeconds(0);
+            
+            if(d.compareTo(hoy)<0){
+                tarde=true;
+            }
+            
+        }catch(ParseException e){
+            
+        }
+        
+        
+        if(jDateChooser.getDate().getDay()==0 || jDateChooser.getDate().getDay()==6){
+            new PopUp(TipoPopUp.ERROR,"No pueden hacerse reservas durante el fin de semana");
+            finde=true;
+        }
         if(repetido){
             new PopUp(TipoPopUp.ERROR,"Solo se puede hacer una reserva por dia");
         }
+        if(tarde){
+            new PopUp(TipoPopUp.ERROR,"Las reservas deben ser a futuro");
+        }
         
-        if(jDateChooser.getDate()!=null && !repetido){
+        if(!repetido && !finde && !tarde){
             
             
             try{
@@ -330,7 +366,7 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
             }
 
         }
-        
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -338,8 +374,8 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        
-        if(!listaDiasHorarios.isEmpty()){
+
+      if(!listaDiasHorarios.isEmpty()){
             
             FrameController.push(new CU01_SelectorAulas(C1,C2,(ArrayList)listaDiasHorarios,cantAlumnos,tipoAula,docente,bedel,curso));
             

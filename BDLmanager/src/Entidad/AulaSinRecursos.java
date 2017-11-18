@@ -98,6 +98,19 @@ public class AulaSinRecursos extends Aula{
     }
     
     
+        @Override
+    public String getResumenCaracteristicas(){
+        
+        String retorno="";
+        
+        retorno+=tipoPizarron;
+        retorno+=", "+tipoClimatizacion;
+        
+        
+        return retorno;
+    }
     
+    
+
     
 }

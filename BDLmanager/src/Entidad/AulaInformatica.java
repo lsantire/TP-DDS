@@ -118,6 +118,24 @@ public class AulaInformatica extends Aula{
         this.diasReserva = diasReserva;
     }
     
+    @Override
+    public String getResumenCaracteristicas(){
+        
+        String retorno="";
+        
+        retorno+=tipoPizarron;
+        retorno+=", "+cantidadPcs+" PCs";
+        
+        if(aireAcondicionado){
+            retorno+=", Aire Acondicionado";
+        }
+        if(canion){
+            retorno+=", Cañon";
+        }
+        
+        
+        return retorno;
+    }
     
     
 }

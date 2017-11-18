@@ -13,7 +13,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import javafx.util.Pair;
 import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,7 +24,37 @@ import javax.swing.ListModel;
  */
 public class CU01_SelectorAulas extends javax.swing.JFrame {
 
-    private ArrayList listaDiasReservasConSolapamiento=new ArrayList();
+    private boolean C1;
+    private boolean C2;
+    private int cantAlumnos;
+    private String tipoAula;
+    private Docente docente;
+    private Bedel bedel;
+    private Curso curso;
+    
+    private ArrayList<
+                       Pair<
+                            ArrayList<
+                                        Triple<Date,Time,Time>>,
+                            ArrayList<
+                                        Pair<Integer,Aula>>>
+                    > 
+    listaDiasHorariosConSolapamiento=new ArrayList(); 
+    
+    private ArrayList<
+                       Triple<
+                            ArrayList<
+                                        Triple<Date,Time,Time>>,
+                            ArrayList<
+                                        Pair<Integer,Aula>>
+                            ,Aula>
+                    > 
+    listaDiasHorariosConSolapamientoYAula=new ArrayList(); 
+    
+
+    //Esta lista contiene una lista de pares: El primer elemento es una lista con "dias", donde en periodica son multiples (por dia de la semana) y en esporadica
+    //es uno solo. El segundo elemento contiene, para ese conjunto de días, las aulas disponibles o las aulas con solapamiento.
+    
     
     /**
      * Creates new form AulasDisponibles_CU1_CU5_P2
@@ -29,17 +62,47 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
     public CU01_SelectorAulas(boolean C1, boolean C2, ArrayList<Triple<Date,Time,Time>> listaDiasHorarios, int cantAlumnos, String tipoAula, Docente docente, Bedel bedel, Curso curso) {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.C1=C1;
+        this.C2=C2;
+        this.cantAlumnos=cantAlumnos;
+        this.tipoAula=tipoAula;
+        this.docente=docente;
+        this.bedel=bedel;
+        this.curso=curso;
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jTable1.setColumnSelectionAllowed(false);
+        jTable1.setRowSelectionAllowed(true);
+        int ancho=jTable1.getWidth();
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(ancho/6);
+        jTable1.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        jTable1.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        jTable1.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        jTable1.getColumnModel().getColumn(1).setPreferredWidth(ancho/6);
+        jTable1.getColumnModel().getColumn(2).setPreferredWidth(ancho/6);
+        jTable1.getColumnModel().getColumn(3).setPreferredWidth(ancho/2);
+        
+        //DefaultTableModel model = new DefaultTableModel();
+        //jTable1.setModel(model);
         
         ArrayList diasPorSemana[] = new ArrayList[5];
         for(int i=0;i<5;i++) diasPorSemana[i]=new ArrayList();
         Pair<Time,Time> horaPorDia[]=new Pair[5];
         
         if(!C1 && !C2){ //Esporadica
+            
             for (int i=0;i<listaDiasHorarios.size();i++){
                 ArrayList diaEsporadico=new ArrayList();
                 diaEsporadico.add(listaDiasHorarios.get(i).first);
-                listaDiasReservasConSolapamiento.add(Gestor_Reservas.getInstance().obtenerAulasDisponibles(C1, C2, cantAlumnos, tipoAula, diaEsporadico, listaDiasHorarios.get(i).second, listaDiasHorarios.get(i).third));
+                ArrayList<Pair<Integer,Aula>> aulas = (ArrayList<Pair<Integer,Aula>>) Gestor_Reservas.getInstance().obtenerAulasDisponibles(C1, C2, cantAlumnos, tipoAula, diaEsporadico, listaDiasHorarios.get(i).second, listaDiasHorarios.get(i).third);
+                ArrayList<Triple<Date,Time,Time>> dias = new ArrayList();dias.add(listaDiasHorarios.get(i));
+                Pair p = new Pair(dias,aulas);
+                listaDiasHorariosConSolapamiento.add(p);
             }
+            
         }else{ //Periodica
             
      
@@ -50,33 +113,38 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
             
             for(int i=0;i<5;i++){
                 if(!diasPorSemana[i].isEmpty()){
-                    listaDiasReservasConSolapamiento.add(Gestor_Reservas.getInstance().obtenerAulasDisponibles(C1, C2, cantAlumnos, tipoAula, diasPorSemana[i], horaPorDia[i].getKey(), horaPorDia[i].getValue()));
+                    ArrayList<Pair<Integer,Aula>> aulas=(ArrayList<Pair<Integer,Aula>>) Gestor_Reservas.getInstance().obtenerAulasDisponibles(C1, C2, cantAlumnos, tipoAula, diasPorSemana[i], horaPorDia[i].getKey(), horaPorDia[i].getValue());
+                    ArrayList<Triple<Date,Time,Time>> dias = new ArrayList();
+                    for(int j=0;j<diasPorSemana[i].size();j++){
+                        dias.add(new Triple(diasPorSemana[i].get(j),horaPorDia[i].getKey(),horaPorDia[i].getValue()));
+                    }
+                    Pair p = new Pair(dias,aulas);
+                    listaDiasHorariosConSolapamiento.add(p);
                 }
             }
             
         }
+        
         if (!C1 && !C2){ //Esporadica
 
             DefaultListModel lm;
             lm=new DefaultListModel();
-            for(int i=0;i<listaDiasHorarios.size();i++){
-                lm.addElement(listaDiasHorarios.get(i).toStringEsporadica());
+            for(int i=0;i<listaDiasHorariosConSolapamiento.size();i++){
+                lm.addElement(listaDiasHorariosConSolapamiento.get(i).getKey().get(0).toStringEsporadica());
+                //lm.addElement(listaDiasHorarios.get(i).toStringEsporadica());
             }
-            jList2.setModel(lm);
+            sinAsignar.setModel(lm);
             
         } else {
             
             //Periodica
             DefaultListModel lm;
             lm=new DefaultListModel();
-            for(int i=0;i<5;i++){
-                if(!diasPorSemana[i].isEmpty()){
-                    Triple t = new Triple(diasPorSemana[i].get(0),horaPorDia[i].getKey(),horaPorDia[i].getValue());
-                    lm.addElement(t.toStringPeriodica());
-                }
 
+            for (int i=0;i<listaDiasHorariosConSolapamiento.size();i++){
+                 lm.addElement(listaDiasHorariosConSolapamiento.get(i).getKey().get(0).toStringPeriodica());
             }
-            jList2.setModel(lm);
+            sinAsignar.setModel(lm);
         }
         
     }
@@ -91,22 +159,22 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
+        menos = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        todos = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        mas = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        conAsignar = new javax.swing.JList<>();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        sinAsignar = new javax.swing.JList<>();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -114,9 +182,14 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BDLbedel");
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 0, 51));
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Interfaz/minus.png"))); // NOI18N
+        menos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        menos.setForeground(new java.awt.Color(255, 0, 51));
+        menos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Interfaz/minus.png"))); // NOI18N
+        menos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menosActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+2f));
         jLabel1.setText("Asigne las aulas para cada día:");
@@ -125,10 +198,10 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
 
         jLabel2.setText("Aulas disponibles:");
 
-        jButton4.setText("Asignar aula para todos");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        todos.setText("Asignar aula para todos");
+        todos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                todosActionPerformed(evt);
             }
         });
 
@@ -165,6 +238,11 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
         jButton5.setFont(jButton5.getFont().deriveFont(jButton5.getFont().getStyle() | java.awt.Font.BOLD));
         jButton5.setText("Confirmar reserva");
         jButton5.setEnabled(false);
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Información solapamiento");
         jButton6.setEnabled(false);
@@ -176,26 +254,26 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
             }
         });
 
-        jButton7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton7.setForeground(new java.awt.Color(0, 204, 0));
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Interfaz/plus.png"))); // NOI18N
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        mas.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        mas.setForeground(new java.awt.Color(0, 204, 0));
+        mas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Interfaz/plus.png"))); // NOI18N
+        mas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                masActionPerformed(evt);
             }
         });
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "11/04/17: 15:00 - 16:30 (Lab.4)", "13/04/17: 18:00 - 19:30 (Lab.2)", "15/04/17: 12:00 - 14:00 (Lab.2)", "2", "2", "2", "2", "2", "2" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jList1.setToolTipText("");
-        jScrollPane2.setViewportView(jList1);
+        conAsignar.setToolTipText("");
+        jScrollPane2.setViewportView(conAsignar);
 
         jLabel3.setText("Días que faltan asignar");
 
-        jScrollPane3.setViewportView(jList2);
+        sinAsignar.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                sinAsignarValueChanged(evt);
+            }
+        });
+        jScrollPane3.setViewportView(sinAsignar);
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Interfaz/bdlbedel.png"))); // NOI18N
         jLabel5.setToolTipText("");
@@ -214,56 +292,44 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jSeparator1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(menos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(mas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(158, 158, 158))
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                .addComponent(jLabel4)
+                                .addGap(0, 182, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(todos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 249, Short.MAX_VALUE)
                         .addComponent(jButton6))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(200, 200, 200)
-                        .addComponent(jLabel5)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton5))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addGap(209, 209, 209))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -281,18 +347,19 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)
+                        .addComponent(mas, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                        .addComponent(menos, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
+                    .addComponent(todos)
                     .addComponent(jButton6))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -317,17 +384,62 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void todosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todosActionPerformed
+        
+        if(sinAsignar.getSelectedIndex()>=0 && jTable1.getSelectedRow()>=0){
+            
+            int l=sinAsignar.getSelectedIndex();
+            int t=jTable1.getSelectedRow();
+            ArrayList borrador=new ArrayList();
+            
+            Pair<Integer,Aula> pa=listaDiasHorariosConSolapamiento.get(l).getValue().get(t);
+            
+            for(int i=0;i<listaDiasHorariosConSolapamiento.size();i++){
+                
+                if(listaDiasHorariosConSolapamiento.get(i).getValue().contains(pa)){
+                    
+                    Pair<ArrayList<Triple<Date,Time,Time>>,ArrayList<Pair<Integer,Aula>>>ld=listaDiasHorariosConSolapamiento.get(i);
+                    Triple ldya=new Triple(ld.getKey(),ld.getValue(),pa.getValue());
+                    listaDiasHorariosConSolapamientoYAula.add(ldya);
+                    borrador.add(ld);
+                    
+                }
+                
+            }
+            for(int i=0;i<borrador.size();i++){
+                listaDiasHorariosConSolapamiento.remove(borrador.get(i));
+            }
+            
+            this.relistar();
+            
+            
+        }
+        
+    }//GEN-LAST:event_todosActionPerformed
 
     private void jTable1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseEntered
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
+    private void masActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_masActionPerformed
+        
+        if(sinAsignar.getSelectedIndex()>=0 && jTable1.getSelectedRow()>=0){
+            
+            int l=sinAsignar.getSelectedIndex();
+            int t=jTable1.getSelectedRow();
+            
+            Pair<ArrayList<Triple<Date,Time,Time>>,ArrayList<Pair<Integer,Aula>>>ld=listaDiasHorariosConSolapamiento.get(l);
+            Triple ldya=new Triple(ld.getKey(),ld.getValue(),ld.getValue().get(t).getValue());
+            listaDiasHorariosConSolapamientoYAula.add(ldya);
+            listaDiasHorariosConSolapamiento.remove(ld);
+            
+            //listaDiasHorariosConSolapamiento.get(l).third=listaDiasHorariosConSolapamiento.get(l).second.get(t).getValue();
+            
+            this.relistar();
+            
+        }
+        
+    }//GEN-LAST:event_masActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         new PopUp(TipoPopUp.INFORMACION,"Para asignar un aula\n  1. Seleccione el dia a reservar\n  2. Seleccione el aula\n  3. Presione el '+'\n\nPara desasignar un aula\n  1. Seleccione la reserva a desasignar         \n  2. Presione el '-' ");
@@ -336,6 +448,75 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         FrameController.pop();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void sinAsignarValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_sinAsignarValueChanged
+        //Cuando se selecciona un dia, se muestra las aulas para ese dia en la tabla
+        
+        if(sinAsignar.getSelectedIndex()>=0){
+        int sel=sinAsignar.getSelectedIndex();
+        ArrayList<Pair<Integer,Aula>> aulasParaElDia = listaDiasHorariosConSolapamiento.get(sel).getValue();
+        
+        DefaultTableModel model=((DefaultTableModel)jTable1.getModel());
+        model.setRowCount(0);
+        
+        for(int i=0;i<aulasParaElDia.size();i++){
+            
+            Aula a = aulasParaElDia.get(i).getValue();
+            
+            Object[] fila = {a.getNombreAula(),a.getPiso(),a.getCapacidad(),a.getResumenCaracteristicas()};
+            model.addRow(fila);
+            
+            
+        }
+        }
+
+        
+        
+    }//GEN-LAST:event_sinAsignarValueChanged
+
+    private void menosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menosActionPerformed
+        
+        if(conAsignar.getSelectedIndex()>=0){
+            
+            int l=conAsignar.getSelectedIndex();
+            
+            Triple t = listaDiasHorariosConSolapamientoYAula.get(l);
+            Pair p = new Pair(t.first,t.second);
+            listaDiasHorariosConSolapamiento.add(p);
+            listaDiasHorariosConSolapamientoYAula.remove(t);
+            
+            
+            this.relistar();
+            
+        }
+    }//GEN-LAST:event_menosActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        
+        ArrayList<Pair<Triple<Date,Time,Time>,Aula>> lista=new ArrayList();
+        
+        for(int i=0;i<listaDiasHorariosConSolapamientoYAula.size();i++){
+            
+            for(int j=0;j<listaDiasHorariosConSolapamientoYAula.get(i).first.size();j++){
+                
+                Triple t=listaDiasHorariosConSolapamientoYAula.get(i).first.get(j);
+                Aula a = listaDiasHorariosConSolapamientoYAula.get(i).third;
+                
+                Pair p = new Pair(t,a);
+                lista.add(p);
+                
+            }   
+            
+        }
+        
+        Gestor_Reservas.getInstance().crearReserva(cantAlumnos, C1, C2, docente, curso, bedel, lista);
+        
+        new PopUp(TipoPopUp.INFORMACION,"Se ha realizado la reserva exitosamente.");
+        FrameController.pop();
+        FrameController.pop();
+        FrameController.pop();
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -402,27 +583,67 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void relistar(){
+        
+        DefaultListModel lmSA,lmCA;
+        lmSA=new DefaultListModel();
+        lmCA=new DefaultListModel();
+        
+        if (!C1 && !C2){ //Esporadica
+
+            for(int i=0;i<listaDiasHorariosConSolapamiento.size();i++){
+                lmSA.addElement(listaDiasHorariosConSolapamiento.get(i).getKey().get(0).toStringEsporadica());
+            }
+            for(int i=0;i<listaDiasHorariosConSolapamientoYAula.size();i++){
+                lmCA.addElement(listaDiasHorariosConSolapamientoYAula.get(i).first.get(0).toStringEsporadica()+" ("+listaDiasHorariosConSolapamientoYAula.get(i).third.getNombreAula()+")");
+            }
+ 
+        } else { //Periodica
+
+            for(int i=0;i<listaDiasHorariosConSolapamiento.size();i++){
+                lmSA.addElement(listaDiasHorariosConSolapamiento.get(i).getKey().get(0).toStringPeriodica());
+            }
+            for(int i=0;i<listaDiasHorariosConSolapamientoYAula.size();i++){
+                lmCA.addElement(listaDiasHorariosConSolapamientoYAula.get(i).first.get(0).toStringPeriodica()+" ("+listaDiasHorariosConSolapamientoYAula.get(i).third.getNombreAula()+")");
+            }
+
+        }
+        
+            sinAsignar.setModel(lmSA);
+            conAsignar.setModel(lmCA);
+            ((DefaultTableModel)jTable1.getModel()).setRowCount(0);
+            if(sinAsignar.getModel().getSize()==0){
+                jButton5.setEnabled(true);
+            }else{
+                jButton5.setEnabled(false);
+            }
+        
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList<String> conAsignar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton mas;
+    private javax.swing.JButton menos;
+    private javax.swing.JList<String> sinAsignar;
+    private javax.swing.JButton todos;
     // End of variables declaration//GEN-END:variables
 }
+
+

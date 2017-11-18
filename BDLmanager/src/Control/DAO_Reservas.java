@@ -13,6 +13,7 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -45,11 +46,10 @@ public class DAO_Reservas {
                 conj.add(Restrictions.eq("fecha",dr.getFecha()));
             }
             
-            if(dr.getHoraFin()!=null){
-                //SEGUIR ACA
-            }
-            
-            if(dr.getHoraInicio()!=null){
+            if(dr.getHoraFin()!=null && dr.getHoraInicio()!=null){
+
+                conj.add(Restrictions.gt("horaFin",dr.getHoraInicio()));
+                conj.add(Restrictions.lt("horaInicio", dr.getHoraFin()));
                 
             }
             
@@ -59,10 +59,15 @@ public class DAO_Reservas {
             }
             
             cr.add(conj);
+            
+            resultado=(ArrayList<DiaReserva>) cr.list();
+                    
+            ses.getTransaction().commit();
         }
         catch(org.hibernate.exception.GenericJDBCException jbdc){
             resultado=new ArrayList();
         }
+        
         return resultado;
         
     }
@@ -76,9 +81,17 @@ public class DAO_Reservas {
     
     public boolean insert (Reserva rsv){
         
-        //a implementar
+            try{
+            Session s = Hibernator.getInstance().getSession();
+            s.beginTransaction();
+            s.save(rsv);
+            s.getTransaction().commit();
+            return true;
+        }
+        catch (org.hibernate.exception.GenericJDBCException jbdc){
+            return false;
+        }
         
-        return true;
     }
     
     public boolean update (){

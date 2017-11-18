@@ -59,6 +59,9 @@ public class CU01_PeriodicaDias extends javax.swing.JFrame {
         while (calendar.getTime().before(enddate))
         {
             Date result = calendar.getTime();
+            result.setHours(0);
+            result.setMinutes(0);
+            result.setSeconds(0);
             dates.add(result);
             calendar.add(Calendar.DATE, 1);
         }
@@ -594,30 +597,6 @@ public class CU01_PeriodicaDias extends javax.swing.JFrame {
             //En este momento ya se tiene una lista con ternas <Date,Time,Time> con las fechas del periodo correspondiente que coiniciden con los dias de la semana
             //ingresados por el usuario.
             
-            /*System.out.println("Fechas:");
-            for(int i=0;i<listaDiasHorarios.size();i++){
-                Date d=listaDiasHorarios.get(i).first;
-                switch(d.getDay()){
-                    case 1:System.out.print("LUN");break;
-                    case 2:System.out.print("MAR");break;
-                    case 3:System.out.print("MIE");break;
-                    case 4:System.out.print("JUE");break;
-                    case 5:System.out.print("VIE");break;
-                }
-                System.out.print(" ");
-                System.out.print(d.getDate());
-                System.out.print("/");
-                System.out.print(d.getMonth()+1);
-                System.out.print("/");
-                System.out.print(d.getYear()+1900);
-                System.out.print("  ");
-                System.out.print(listaDiasHorarios.get(i).second.toString());
-                System.out.print(" - ");
-                System.out.print(listaDiasHorarios.get(i).third.toString());
-                System.out.print("\n");
-            }
-            
-            System.out.print("\n");*/
             
             FrameController.push(new CU01_SelectorAulas(C1,C2,listaDiasHorarios,cantAlumnos,tipoAula,docente,bedel,curso));
             

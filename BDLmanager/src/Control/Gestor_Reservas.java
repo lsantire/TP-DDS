@@ -6,13 +6,13 @@
 package Control;
 
 import Entidad.*;
+import Utilidades.Triple;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.TreeSet;
 import javafx.util.Pair;
 
 /**
@@ -27,6 +27,34 @@ public class Gestor_Reservas {
     public static Gestor_Reservas getInstance(){
         if(instance==null) instance=new Gestor_Reservas();
         return instance;
+    }
+    
+    public void crearReserva (int cantAlumnos, boolean C1, boolean C2, Docente docente, Curso curso, Bedel bedel, ArrayList<Pair<Triple<Date,Time,Time>,Aula>> lista){
+        
+        Reserva r = new Reserva();
+        r.setBedel(bedel);
+        r.setCantidadAlumnos(cantAlumnos);
+        if(C1 || C2){r.setEsPeriodica(true);}else{r.setEsPeriodica(false);}
+        r.setCurso(curso);
+        r.setDocente(docente);
+        Collection<DiaReserva> drs = new ArrayList();
+        
+        for (int i=0;i<lista.size();i++){
+            
+            DiaReserva dr=new DiaReserva();
+            dr.setAula(lista.get(i).getValue());
+            dr.setFecha(lista.get(i).getKey().first);
+            dr.setHoraInicio(lista.get(i).getKey().second);
+            dr.setHoraFin(lista.get(i).getKey().third);
+            dr.setReserva(r);
+            drs.add(dr);
+            
+        }
+        
+        r.setDiasReserva(drs);
+        
+        DAO_Reservas.getInstance().insert(r);
+        
     }
     
     public Pair<Date,Date> obtenerPeriodo(boolean C1, boolean C2){
@@ -84,23 +112,36 @@ public class Gestor_Reservas {
         
         
         ArrayList<Aula> aulasCompatibles = (ArrayList)Gestor_Aulas.getInstance().obtenerAulas(cantAlumnos, tipoAula);
-        ArrayList<Pair<Integer,Aula>> disponibles=new ArrayList();
         DiaReserva dr=new DiaReserva();
+        ArrayList<Pair<Integer,Aula>> aulasYSolapamientos=new ArrayList();
         
         for (int i=0;i<aulasCompatibles.size();i++)
         {
             dr.setAula(aulasCompatibles.get(i));
+            boolean libre=true;
             for(int j=0;j<dias.size();j++)
             {
                 dr.setFecha(dias.get(j));
                 dr.setHoraInicio(horainicio);
                 dr.setHoraFin(horafin);
-                DAO_Reservas.getInstance().find(dr);
+                
+                if(!DAO_Reservas.getInstance().find(dr).isEmpty()) libre=false;
+                
+            }
+            
+            if(libre){
+                aulasYSolapamientos.add(new Pair(0,aulasCompatibles.get(i)));
             }
             
         }
         
-        return new ArrayList();
+        if(aulasYSolapamientos.isEmpty()){
+            
+            //AQUI CORRESPONDE EL CODIGO AL METODO QUE MANEJA LOS SOLAPAMIENTOS
+            
+        }
+        
+        return aulasYSolapamientos;
         
     }
     

@@ -138,6 +138,33 @@ public class AulaMultimedios extends Aula{
         this.diasReserva = diasReserva;
     }
     
+        @Override
+    public String getResumenCaracteristicas(){
+        
+        String retorno="";
+        
+        retorno+=tipoPizarron;
+        
+        if(aireAcondicionado){
+            retorno+=", Aire Acondicionado";
+        }
+        if(canion){
+            retorno+=", Cañon";
+        }
+        if(computadora){
+            retorno+=", Computadora";
+        }
+        if(televisor){
+            retorno+=", TV";
+        }
+        if(dvd){
+            retorno+=", DVD";
+        }
+        
+        return retorno;
+    }
     
+    
+
     
 }

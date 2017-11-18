@@ -28,7 +28,7 @@ public class Gestor_Aulas {
         Aula buscador;
         
         switch (tipoAula){
-            case "Sin Recursos Adicionales": buscador=new AulaSinRecursos(); ((Aula)buscador).setCapacidad(cantAlumnos); break;
+            case "Sin recursos adicionales": buscador=new AulaSinRecursos(); ((Aula)buscador).setCapacidad(cantAlumnos); break;
             case "Multimedios": buscador=new AulaMultimedios(); ((Aula)buscador).setCapacidad(cantAlumnos); break;
             case "Informática": buscador=new AulaInformatica(); ((Aula)buscador).setCapacidad(cantAlumnos); break;
             default: buscador=new Aula(); buscador.setCapacidad(cantAlumnos);

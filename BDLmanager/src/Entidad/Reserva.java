@@ -50,5 +50,63 @@ public class Reserva {
     public Reserva(){
         
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getCantidadAlumnos() {
+        return cantidadAlumnos;
+    }
+
+    public void setCantidadAlumnos(int cantidadAlumnos) {
+        this.cantidadAlumnos = cantidadAlumnos;
+    }
+
+    public boolean isEsPeriodica() {
+        return esPeriodica;
+    }
+
+    public void setEsPeriodica(boolean esPeriodica) {
+        this.esPeriodica = esPeriodica;
+    }
+
+    public Collection<DiaReserva> getDiasReserva() {
+        return diasReserva;
+    }
+
+    public void setDiasReserva(Collection<DiaReserva> diasReserva) {
+        this.diasReserva = diasReserva;
+    }
+
+    public Bedel getBedel() {
+        return bedel;
+    }
+
+    public void setBedel(Bedel bedel) {
+        this.bedel = bedel;
+    }
+
+    public Curso getCurso() {
+        return curso;
+    }
+
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
+
+    public Docente getDocente() {
+        return docente;
+    }
+
+    public void setDocente(Docente docente) {
+        this.docente = docente;
+    }
+    
+    
     
 }

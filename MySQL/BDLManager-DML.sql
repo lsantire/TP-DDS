@@ -56,7 +56,7 @@ INSERT INTO bdlmanager.aula (`id`,`DTYPE`,`capacidad`,`habilitado`,`nombreAula`,
 INSERT INTO bdlmanager.aula (`id`,`DTYPE`,`capacidad`,`habilitado`,`nombreAula`,`piso`,`tipoPizarron`,`aireAcondicionado`,`canion`,`computadora`,`dvd`,`televisor`) VALUES (10,'AulaMultimedios',25, true, 'MM5', 3, 'A tiza', true, false, false, true, true);
 
 INSERT INTO bdlmanager.aula (`id`,`DTYPE`,`capacidad`,`habilitado`,`nombreAula`,`piso`,`tipoPizarron`,`tipoClimatizacion`) VALUES (11,'AulaSinRecursos',40, true, 'Aula 1', 1, 'A tiza', 'Aire Acondiconado');
-INSERT INTO bdlmanager.aula (`id`,`DTYPE`,`capacidad`,`habilitado`,`nombreAula`,`piso`,`tipoPizarron`,`tipoClimatizacion`) VALUES (12,'AulaSinRecursos',32, true, 'Aula 2', 1, 'A fibrón', 'N/A');
+INSERT INTO bdlmanager.aula (`id`,`DTYPE`,`capacidad`,`habilitado`,`nombreAula`,`piso`,`tipoPizarron`,`tipoClimatizacion`) VALUES (12,'AulaSinRecursos',32, true, 'Aula 2', 1, 'A fibrón', 'Sin Climatizacion');
 INSERT INTO bdlmanager.aula (`id`,`DTYPE`,`capacidad`,`habilitado`,`nombreAula`,`piso`,`tipoPizarron`,`tipoClimatizacion`) VALUES (13,'AulaSinRecursos',50, true, 'Aula 3', 1, 'A fibrón', 'Ventiladores');
 INSERT INTO bdlmanager.aula (`id`,`DTYPE`,`capacidad`,`habilitado`,`nombreAula`,`piso`,`tipoPizarron`,`tipoClimatizacion`) VALUES (14,'AulaSinRecursos',46, true, 'Aula 4', 1, 'A tiza', 'Aire Acondiconado');
 INSERT INTO bdlmanager.aula (`id`,`DTYPE`,`capacidad`,`habilitado`,`nombreAula`,`piso`,`tipoPizarron`,`tipoClimatizacion`) VALUES (15,'AulaSinRecursos',38, true, 'Aula 5', 1, 'A fibrón', 'Ventiladores');
