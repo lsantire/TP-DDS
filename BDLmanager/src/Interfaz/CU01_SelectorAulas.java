@@ -8,6 +8,7 @@ package Interfaz;
 import Control.Gestor_Reservas;
 import Entidad.*;
 import Utilidades.Triple;
+import java.awt.Color;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +38,7 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
                             ArrayList<
                                         Triple<Date,Time,Time>>,
                             ArrayList<
-                                        Pair<Integer,Aula>>>
+                                        Triple<Integer,DiaReserva,Aula>>>
                     > 
     listaDiasHorariosConSolapamiento=new ArrayList(); 
     
@@ -46,7 +47,7 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
                             ArrayList<
                                         Triple<Date,Time,Time>>,
                             ArrayList<
-                                        Pair<Integer,Aula>>
+                                        Triple<Integer,DiaReserva,Aula>>
                             ,Aula>
                     > 
     listaDiasHorariosConSolapamientoYAula=new ArrayList(); 
@@ -97,7 +98,7 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
             for (int i=0;i<listaDiasHorarios.size();i++){
                 ArrayList diaEsporadico=new ArrayList();
                 diaEsporadico.add(listaDiasHorarios.get(i).first);
-                ArrayList<Pair<Integer,Aula>> aulas = (ArrayList<Pair<Integer,Aula>>) Gestor_Reservas.getInstance().obtenerAulasDisponibles(C1, C2, cantAlumnos, tipoAula, diaEsporadico, listaDiasHorarios.get(i).second, listaDiasHorarios.get(i).third);
+                ArrayList<Triple<Integer,DiaReserva,Aula>> aulas = Gestor_Reservas.getInstance().obtenerAulasDisponibles(C1, C2, cantAlumnos, tipoAula, diaEsporadico, listaDiasHorarios.get(i).second, listaDiasHorarios.get(i).third);
                 ArrayList<Triple<Date,Time,Time>> dias = new ArrayList();dias.add(listaDiasHorarios.get(i));
                 Pair p = new Pair(dias,aulas);
                 listaDiasHorariosConSolapamiento.add(p);
@@ -113,7 +114,7 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
             
             for(int i=0;i<5;i++){
                 if(!diasPorSemana[i].isEmpty()){
-                    ArrayList<Pair<Integer,Aula>> aulas=(ArrayList<Pair<Integer,Aula>>) Gestor_Reservas.getInstance().obtenerAulasDisponibles(C1, C2, cantAlumnos, tipoAula, diasPorSemana[i], horaPorDia[i].getKey(), horaPorDia[i].getValue());
+                    ArrayList<Triple<Integer,DiaReserva,Aula>> aulas=(ArrayList<Triple<Integer,DiaReserva,Aula>>) Gestor_Reservas.getInstance().obtenerAulasDisponibles(C1, C2, cantAlumnos, tipoAula, diasPorSemana[i], horaPorDia[i].getKey(), horaPorDia[i].getValue());
                     ArrayList<Triple<Date,Time,Time>> dias = new ArrayList();
                     for(int j=0;j<diasPorSemana[i].size();j++){
                         dias.add(new Triple(diasPorSemana[i].get(j),horaPorDia[i].getKey(),horaPorDia[i].getValue()));
@@ -142,11 +143,11 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
             lm=new DefaultListModel();
 
             for (int i=0;i<listaDiasHorariosConSolapamiento.size();i++){
-                 lm.addElement(listaDiasHorariosConSolapamiento.get(i).getKey().get(0).toStringPeriodica());
+                lm.addElement(listaDiasHorariosConSolapamiento.get(i).getKey().get(0).toStringPeriodica());
             }
             sinAsignar.setModel(lm);
         }
-        
+             
     }
 
     /**
@@ -246,6 +247,11 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
 
         jButton6.setText("Información solapamiento");
         jButton6.setEnabled(false);
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Volver");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -386,20 +392,25 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
 
     private void todosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todosActionPerformed
         
-        if(sinAsignar.getSelectedIndex()>=0 && jTable1.getSelectedRow()>=0){
+        if(sinAsignar.getSelectedIndex()>=0 && jTable1.getSelectedRow()>=0 && listaDiasHorariosConSolapamiento.get(sinAsignar.getSelectedIndex()).getValue().get(jTable1.getSelectedRow()).first==0){
             
             int l=sinAsignar.getSelectedIndex();
             int t=jTable1.getSelectedRow();
             ArrayList borrador=new ArrayList();
             
-            Pair<Integer,Aula> pa=listaDiasHorariosConSolapamiento.get(l).getValue().get(t);
+            Triple<Integer,DiaReserva,Aula> pa=listaDiasHorariosConSolapamiento.get(l).getValue().get(t);
+            pa=new Triple(0,null,pa.third);
             
             for(int i=0;i<listaDiasHorariosConSolapamiento.size();i++){
                 
-                if(listaDiasHorariosConSolapamiento.get(i).getValue().contains(pa)){
+                //Si tiene el aula en su lista y la tiene sin solapamiento
+                //Si esto ocurre, en la lista el elemento va a responder al formato <0,null,Aula>
+                //por lo que generando de forma manual eso en "pa" deberia andar
+                
+                if(listaDiasHorariosConSolapamiento.get(i).getValue().contains(pa) ){
                     
-                    Pair<ArrayList<Triple<Date,Time,Time>>,ArrayList<Pair<Integer,Aula>>>ld=listaDiasHorariosConSolapamiento.get(i);
-                    Triple ldya=new Triple(ld.getKey(),ld.getValue(),pa.getValue());
+                    Pair<ArrayList<Triple<Date,Time,Time>>,ArrayList<Triple<Integer,DiaReserva,Aula>>>ld=listaDiasHorariosConSolapamiento.get(i);
+                    Triple ldya=new Triple(ld.getKey(),ld.getValue(),pa.third);
                     listaDiasHorariosConSolapamientoYAula.add(ldya);
                     borrador.add(ld);
                     
@@ -423,13 +434,13 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
 
     private void masActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_masActionPerformed
         
-        if(sinAsignar.getSelectedIndex()>=0 && jTable1.getSelectedRow()>=0){
+        if(sinAsignar.getSelectedIndex()>=0 && jTable1.getSelectedRow()>=0 && listaDiasHorariosConSolapamiento.get(sinAsignar.getSelectedIndex()).getValue().get(jTable1.getSelectedRow()).first==0){
             
             int l=sinAsignar.getSelectedIndex();
             int t=jTable1.getSelectedRow();
             
-            Pair<ArrayList<Triple<Date,Time,Time>>,ArrayList<Pair<Integer,Aula>>>ld=listaDiasHorariosConSolapamiento.get(l);
-            Triple ldya=new Triple(ld.getKey(),ld.getValue(),ld.getValue().get(t).getValue());
+            Pair<ArrayList<Triple<Date,Time,Time>>,ArrayList<Triple<Integer,DiaReserva,Aula>>>ld=listaDiasHorariosConSolapamiento.get(l);
+            Triple ldya=new Triple(ld.getKey(),ld.getValue(),ld.getValue().get(t).third);
             listaDiasHorariosConSolapamientoYAula.add(ldya);
             listaDiasHorariosConSolapamiento.remove(ld);
             
@@ -454,17 +465,26 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
         
         if(sinAsignar.getSelectedIndex()>=0){
         int sel=sinAsignar.getSelectedIndex();
-        ArrayList<Pair<Integer,Aula>> aulasParaElDia = listaDiasHorariosConSolapamiento.get(sel).getValue();
+        ArrayList<Triple<Integer,DiaReserva,Aula>> aulasParaElDia = listaDiasHorariosConSolapamiento.get(sel).getValue();
         
         DefaultTableModel model=((DefaultTableModel)jTable1.getModel());
         model.setRowCount(0);
         
+        if((listaDiasHorariosConSolapamiento.get(sinAsignar.getSelectedIndex()).getValue().get(0).first)>0){
+            jTable1.setForeground(Color.RED);
+            jButton6.setEnabled(true);
+        }else{
+            jTable1.setForeground(Color.BLACK);
+            jButton6.setEnabled(false);
+        
+        }
         for(int i=0;i<aulasParaElDia.size();i++){
             
-            Aula a = aulasParaElDia.get(i).getValue();
+            Aula a = aulasParaElDia.get(i).third;
             
             Object[] fila = {a.getNombreAula(),a.getPiso(),a.getCapacidad(),a.getResumenCaracteristicas()};
             model.addRow(fila);
+            
             
             
         }
@@ -517,6 +537,14 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
         FrameController.pop();
         
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        
+        DiaReserva dr=listaDiasHorariosConSolapamiento.get(sinAsignar.getSelectedIndex()).getValue().get(jTable1.getSelectedRow()).second;
+        
+        new CU01_InformacionSolapamiento(dr).setVisible(true);
+        
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments

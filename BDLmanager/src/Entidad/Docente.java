@@ -47,4 +47,10 @@ public class Docente implements Comparable<Docente>{
         return this.nombreYApellido;
     }
 
+    public String getNombreYApellido() {
+        return nombreYApellido;
+    }
+    
+    
+
 }

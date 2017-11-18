@@ -29,7 +29,7 @@ public class Gestor_Reservas {
         return instance;
     }
     
-    public void crearReserva (int cantAlumnos, boolean C1, boolean C2, Docente docente, Curso curso, Bedel bedel, ArrayList<Pair<Triple<Date,Time,Time>,Aula>> lista){
+    public void crearReserva (int cantAlumnos, boolean C1, boolean C2, Docente docente, Curso curso, Bedel bedel, ArrayList<Pair<Triple<Date,Time,Time>,Aula>> listaDiasAulas){
         
         Reserva r = new Reserva();
         r.setBedel(bedel);
@@ -39,13 +39,13 @@ public class Gestor_Reservas {
         r.setDocente(docente);
         Collection<DiaReserva> drs = new ArrayList();
         
-        for (int i=0;i<lista.size();i++){
+        for (int i=0;i<listaDiasAulas.size();i++){
             
             DiaReserva dr=new DiaReserva();
-            dr.setAula(lista.get(i).getValue());
-            dr.setFecha(lista.get(i).getKey().first);
-            dr.setHoraInicio(lista.get(i).getKey().second);
-            dr.setHoraFin(lista.get(i).getKey().third);
+            dr.setAula(listaDiasAulas.get(i).getValue());
+            dr.setFecha(listaDiasAulas.get(i).getKey().first);
+            dr.setHoraInicio(listaDiasAulas.get(i).getKey().second);
+            dr.setHoraFin(listaDiasAulas.get(i).getKey().third);
             dr.setReserva(r);
             drs.add(dr);
             
@@ -108,12 +108,12 @@ public class Gestor_Reservas {
         
     }
     
-    public Collection<Pair<Integer,Aula>> obtenerAulasDisponibles(boolean C1, boolean C2, int cantAlumnos, String tipoAula, ArrayList<Date> dias, Time horainicio, Time horafin){
+    public ArrayList<Triple<Integer,DiaReserva,Aula>> obtenerAulasDisponibles(boolean C1, boolean C2, int cantAlumnos, String tipoAula, ArrayList<Date> dias, Time horainicio, Time horafin){
         
         
         ArrayList<Aula> aulasCompatibles = (ArrayList)Gestor_Aulas.getInstance().obtenerAulas(cantAlumnos, tipoAula);
         DiaReserva dr=new DiaReserva();
-        ArrayList<Pair<Integer,Aula>> aulasYSolapamientos=new ArrayList();
+        ArrayList<Triple<Integer,DiaReserva,Aula>> aulasYSolapamientos=new ArrayList();
         
         for (int i=0;i<aulasCompatibles.size();i++)
         {
@@ -125,24 +125,149 @@ public class Gestor_Reservas {
                 dr.setHoraInicio(horainicio);
                 dr.setHoraFin(horafin);
                 
-                if(!DAO_Reservas.getInstance().find(dr).isEmpty()) libre=false;
+                if(!DAO_Reservas.getInstance().verificarDisponibilidad(dr).isEmpty()) libre=false;
                 
             }
             
             if(libre){
-                aulasYSolapamientos.add(new Pair(0,aulasCompatibles.get(i)));
+                aulasYSolapamientos.add(new Triple(0,null,aulasCompatibles.get(i)));
             }
             
         }
         
+        //CODIGO PARA LA OBTENCION DE LAS AULAS CON SOLAPAMIENTO
         if(aulasYSolapamientos.isEmpty()){
             
-            //AQUI CORRESPONDE EL CODIGO AL METODO QUE MANEJA LOS SOLAPAMIENTOS
+            for (int i=0;i<aulasCompatibles.size();i++)
+                {
+                    dr.setAula(aulasCompatibles.get(i));
+                    ArrayList<Pair<Integer,DiaReserva>> listaSolapamientos=new ArrayList();
+                    for(int j=0;j<dias.size();j++)
+                    {
+                        dr.setFecha(dias.get(j));
+                        dr.setHoraInicio(horainicio);
+                        dr.setHoraFin(horafin);
+                
+                        ArrayList<DiaReserva> drsQueSolapan=(ArrayList<DiaReserva>) DAO_Reservas.getInstance().verificarDisponibilidad(dr);
+                        Pair<Integer,DiaReserva> solapamiento=this.calcularSolapamientos(dr, drsQueSolapan);
+                        listaSolapamientos.add(solapamiento);
+                        
+                    }
+                    
+                    
+                    //no es dr
+                    Pair<Integer,DiaReserva> maxSolap=new Pair(0,null);
+                    for(int k=0;k<listaSolapamientos.size();k++){
+                        if(listaSolapamientos.get(k).getKey()>maxSolap.getKey()){maxSolap=listaSolapamientos.get(k);}
+                    }
+                    aulasYSolapamientos.add(new Triple(maxSolap.getKey(),maxSolap.getValue(),maxSolap.getValue().getAula()));
+                    
+                }
+            
+                //Reordenar segun solapamiento decreciente
+                /*for(int i=0;i<aulasYSolapamientos.size();i++){
+                    
+                    for(int j=0;j<aulasYSolapamientos.size()-i;j++){
+                        
+                        if(aulasYSolapamientos.get(j).first>aulasYSolapamientos.get(j+1).first){
+                            Triple taux=aulasYSolapamientos.get(j);
+                            aulasYSolapamientos.set(j, aulasYSolapamientos.get(j+1));
+                            aulasYSolapamientos.set(j+1, taux);
+                        }
+                        
+                    }
+                    
+                }*/
+            
+            
+            }
+        
+
+        
+        return aulasYSolapamientos;
+     
+        
+    }
+    
+    private Pair<Integer,DiaReserva> calcularSolapamientos(DiaReserva dr, ArrayList<DiaReserva> drs){
+        
+        //Este metodo debe, dado un dia reserva y una coleccion de dias reserva, evaluar cual dia reserva de "drs" es el que genera
+        //el maximo grado de solapamiento, ponderarlo (en el integer) y devolverlo, junto con ese mismo dia reserva que genero el solapamiento.
+        
+        Pair<Integer,DiaReserva> retorno=null;
+        long solapamientoEnMS=0;
+        long solapamientoEnMS_aux=0;
+        DiaReserva causanteSolapamiento=null;
+        
+        Time hf=dr.getHoraFin();
+        Time hi=dr.getHoraInicio();
+        Time _hf;
+        Time _hi;
+        
+        for(int i=0;i<drs.size();i++){
+            
+            _hf=drs.get(i).getHoraFin();
+            _hi=drs.get(i).getHoraInicio();
+            
+            
+            //Se plantean los 9 posibles casos de overlapping
+            
+            //1. Start inside: _hi < hi && hi< _hf && _hf<hf
+            if(_hi.before(hi) && hi.before(_hf) && _hf.before(hf)){
+                solapamientoEnMS_aux=_hf.getTime()-hi.getTime();
+            }
+            
+            //2. Inside start touching _hi==hi && hf<_hf
+            if(_hi.equals(hi) && hf.before(_hf)){
+                solapamientoEnMS_aux=hf.getTime()-hi.getTime();
+            }
+            
+            //3. Enclosign start touching _hi==hi && _hf<hf
+            if(_hi.equals(hi) && _hf.before(hf)){
+                solapamientoEnMS_aux=_hf.getTime()-hi.getTime();
+            }
+            
+            //4. Enclosing hi<_hi && _hf<hf
+            if(hi.before(_hi) && _hf.before(hf)){
+                solapamientoEnMS_aux=_hf.getTime()-_hi.getTime();
+            }
+            
+            //5. Enclosing end touching hi<_hi && hf==_hf
+            if(hi.before(_hi) && _hf.equals(hf)){
+                solapamientoEnMS_aux=hf.getTime()-_hi.getTime();
+            }
+            
+            //6. Exact Match hi==_hi && hf==_hf
+            if(hi.equals(_hi) && hf.equals(_hf)){
+                solapamientoEnMS_aux=hf.getTime()-hi.getTime();
+            }
+            
+            //7. Inside _hi<hi && hf<_hf
+            if(_hi.before(hi) && hf.before(_hf)){
+                solapamientoEnMS_aux=hf.getTime()-hi.getTime();
+            }
+            
+            //8. Inside end touching _hi<hf && hf==_hf
+            if(_hi.before(hi) && hf.equals(_hf)){
+                solapamientoEnMS_aux=hf.getTime()-hi.getTime();
+            }
+            
+            //9. End inside _hi<hf && hi<_hi && hf<_hf
+            if(_hi.before(hf) && hi.before(_hi) && hf.before(_hf)){
+                solapamientoEnMS_aux=hf.getTime()-_hi.getTime();
+            }
+            
+            if(solapamientoEnMS_aux>solapamientoEnMS){
+                causanteSolapamiento=drs.get(i);
+                solapamientoEnMS=solapamientoEnMS_aux;
+                solapamientoEnMS_aux=0;
+            }
             
         }
         
-        return aulasYSolapamientos;
+        retorno=new Pair((Integer)(int)(solapamientoEnMS/60000),causanteSolapamiento);        
         
+        return retorno;
     }
     
     public Collection<Reserva> buscarReservasPorCurso(){

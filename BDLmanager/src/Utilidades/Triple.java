@@ -9,6 +9,7 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class Triple<F, S, T> {
 
@@ -22,14 +23,39 @@ public class Triple<F, S, T> {
         this.third = third;
     }
 
-    @Override
+    /*@Override
     public boolean equals(Object o) {
         if (!(o instanceof Triple)) {
             return false;
         }
         Triple<?, ?, ?> p = (Triple<?, ?, ?>) o;
         return first.equals(p.first) && second.equals(p.second) && third.equals(p.third);
+    }*/
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Triple<?, ?, ?> other = (Triple<?, ?, ?>) obj;
+        if (!Objects.equals(this.first, other.first)) {
+            return false;
+        }
+        if (!Objects.equals(this.second, other.second)) {
+            return false;
+        }
+        if (!Objects.equals(this.third, other.third)) {
+            return false;
+        }
+        return true;
     }
+    
 
     private static boolean equals(Object x, Object y) {
         return (x == null && y == null) || (x != null && x.equals(y));
@@ -69,5 +95,7 @@ public class Triple<F, S, T> {
         return retorno;
         
     }
+    
+    
     
 }

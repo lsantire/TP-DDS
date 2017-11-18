@@ -30,7 +30,7 @@ public class DAO_Reservas {
         return instance;
     }
     
-    public Collection<DiaReserva> find (DiaReserva dr) {
+    public Collection<DiaReserva> verificarDisponibilidad (DiaReserva dr) {
         
         ArrayList<DiaReserva> resultado=new ArrayList();
         
@@ -67,7 +67,7 @@ public class DAO_Reservas {
         catch(org.hibernate.exception.GenericJDBCException jbdc){
             resultado=new ArrayList();
         }
-        
+                
         return resultado;
         
     }

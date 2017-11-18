@@ -41,5 +41,11 @@ public class Curso implements Comparable<Curso> {
     public String toString(){
         return this.nombreCurso;
     }
+
+    public String getNombreCurso() {
+        return nombreCurso;
+    }
+    
+    
     
 }

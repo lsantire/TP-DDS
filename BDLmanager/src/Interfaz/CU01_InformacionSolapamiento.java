@@ -5,6 +5,9 @@
  */
 package Interfaz;
 
+import Entidad.DiaReserva;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author Luis Re
@@ -13,9 +16,23 @@ public class CU01_InformacionSolapamiento extends javax.swing.JFrame {
 
     /**
      * Creates new form InformacionSolapamiento
+     * @param dr
      */
-    public CU01_InformacionSolapamiento() {
+
+    public CU01_InformacionSolapamiento(DiaReserva dr) {
+
         initComponents();
+        this.setIconImage(new ImageIcon(FrameController.class.getResource("/Interfaz/iconoround.png")).getImage());
+        this.setLocationRelativeTo(null);
+        
+        System.out.println(dr.getReserva());
+        //El atributo reserva de dia reserva esta viniendo vacio
+        this.catedraTB.setText(dr.getReserva().getCurso().getNombreCurso());
+        this.docenteTB.setText(dr.getReserva().getDocente().getNombreYApellido());
+        this.mailTB.setText(dr.getReserva().getDocente().getMail());
+        this.horaIniTB.setText(dr.getHoraInicio().toString());
+        this.horaFinTB.setText(dr.getHoraFin().toString());
+        
     }
 
     /**
@@ -28,28 +45,30 @@ public class CU01_InformacionSolapamiento extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        catedraTB = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        docenteTB = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
+        mailTB = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        horaIniTB = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        horaFinTB = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("BDLbedel");
+        setAlwaysOnTop(true);
+        setType(java.awt.Window.Type.POPUP);
 
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+2f));
         jLabel1.setText("Información reserva solapamiento:");
 
-        jTextField1.setEditable(false);
-        jTextField1.setText("Diseño e implementación de estructuras de datos");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        catedraTB.setEditable(false);
+        catedraTB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                catedraTBActionPerformed(evt);
             }
         });
 
@@ -64,28 +83,24 @@ public class CU01_InformacionSolapamiento extends javax.swing.JFrame {
 
         jLabel2.setText("Docente:");
 
-        jTextField3.setEditable(false);
-        jTextField3.setText("Juan García");
+        docenteTB.setEditable(false);
 
         jLabel4.setText("Contacto:");
 
-        jTextField7.setEditable(false);
-        jTextField7.setText("jgarcia2@live.com");
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+        mailTB.setEditable(false);
+        mailTB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
+                mailTBActionPerformed(evt);
             }
         });
 
         jLabel5.setText("Hora inicio:");
 
-        jTextField2.setEditable(false);
-        jTextField2.setText("15:00");
+        horaIniTB.setEditable(false);
 
         jLabel6.setText("Hora fin:");
 
-        jTextField4.setEditable(false);
-        jTextField4.setText("16:30");
+        horaFinTB.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,13 +122,13 @@ public class CU01_InformacionSolapamiento extends javax.swing.JFrame {
                             .addComponent(jLabel6))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField7)
+                            .addComponent(catedraTB, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+                            .addComponent(docenteTB)
+                            .addComponent(mailTB)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField2)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+                                    .addComponent(horaIniTB)
+                                    .addComponent(horaFinTB, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -128,23 +143,23 @@ public class CU01_InformacionSolapamiento extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(catedraTB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(docenteTB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(mailTB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(horaIniTB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(horaFinTB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(1, 1, 1)
                 .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -153,17 +168,17 @@ public class CU01_InformacionSolapamiento extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void catedraTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_catedraTBActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_catedraTBActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+    private void mailTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mailTBActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
+    }//GEN-LAST:event_mailTBActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,12 +225,16 @@ public class CU01_InformacionSolapamiento extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CU01_InformacionSolapamiento().setVisible(true);
+                new CU01_InformacionSolapamiento(null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField catedraTB;
+    private javax.swing.JTextField docenteTB;
+    private javax.swing.JTextField horaFinTB;
+    private javax.swing.JTextField horaIniTB;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -223,10 +242,6 @@ public class CU01_InformacionSolapamiento extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField mailTB;
     // End of variables declaration//GEN-END:variables
 }
