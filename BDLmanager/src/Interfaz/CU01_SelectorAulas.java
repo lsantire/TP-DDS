@@ -470,12 +470,16 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
         DefaultTableModel model=((DefaultTableModel)jTable1.getModel());
         model.setRowCount(0);
         
-        if((listaDiasHorariosConSolapamiento.get(sinAsignar.getSelectedIndex()).getValue().get(0).first)>0){
-            jTable1.setForeground(Color.RED);
-            jButton6.setEnabled(true);
-        }else{
-            jTable1.setForeground(Color.BLACK);
-            jButton6.setEnabled(false);
+        if(!listaDiasHorariosConSolapamiento.get(sinAsignar.getSelectedIndex()).getValue().isEmpty()){
+            
+            if((listaDiasHorariosConSolapamiento.get(sinAsignar.getSelectedIndex()).getValue().get(0).first)>0){
+                jTable1.setForeground(Color.RED);
+                jButton6.setEnabled(true);
+            }else{
+                jTable1.setForeground(Color.BLACK);
+                jButton6.setEnabled(false);
+
+            }
         
         }
         for(int i=0;i<aulasParaElDia.size();i++){
