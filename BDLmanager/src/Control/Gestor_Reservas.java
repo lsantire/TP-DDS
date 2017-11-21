@@ -115,6 +115,7 @@ public class Gestor_Reservas {
         DiaReserva dr=new DiaReserva();
         ArrayList<Triple<Integer,DiaReserva,Aula>> aulasYSolapamientos=new ArrayList();
         
+        //primero se buscan aulas compatibles con 100% de disponibilidad
         for (int i=0;i<aulasCompatibles.size();i++)
         {
             dr.setAula(aulasCompatibles.get(i));
@@ -135,7 +136,7 @@ public class Gestor_Reservas {
             
         }
         
-        //CODIGO PARA LA OBTENCION DE LAS AULAS CON SOLAPAMIENTO
+        //En el caso de que no se encuentren, se buscan aulas compatibles con solapamiento.
         if(aulasYSolapamientos.isEmpty()){
             
             for (int i=0;i<aulasCompatibles.size();i++)
