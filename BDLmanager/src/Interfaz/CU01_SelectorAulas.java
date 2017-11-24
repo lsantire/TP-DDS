@@ -86,13 +86,13 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(2).setPreferredWidth(ancho/6);
         jTable1.getColumnModel().getColumn(3).setPreferredWidth(ancho/2);
         
-        //DefaultTableModel model = new DefaultTableModel();
-        //jTable1.setModel(model);
+        
         
         ArrayList diasPorSemana[] = new ArrayList[5];
         for(int i=0;i<5;i++) diasPorSemana[i]=new ArrayList();
         Pair<Time,Time> horaPorDia[]=new Pair[5];
         
+        //Cargo las estructuras lista y listaAulas
         if(!C1 && !C2){ //Esporadica
             
             for (int i=0;i<listaDiasHorarios.size();i++){
@@ -126,6 +126,8 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
             
         }
         
+
+        //Cargo en el modelo de la tabla
         if (!C1 && !C2){ //Esporadica
 
             DefaultListModel lm;

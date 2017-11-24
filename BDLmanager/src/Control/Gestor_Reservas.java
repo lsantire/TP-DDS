@@ -139,6 +139,8 @@ public class Gestor_Reservas {
         //En el caso de que no se encuentren, se buscan aulas compatibles con solapamiento.
         if(aulasYSolapamientos.isEmpty()){
             
+            ArrayList<Triple<Integer,DiaReserva,Aula>> retorno=new ArrayList();
+            
             for (int i=0;i<aulasCompatibles.size();i++)
                 {
                     dr.setAula(aulasCompatibles.get(i));
@@ -156,36 +158,62 @@ public class Gestor_Reservas {
                     }
                     
                     
-                    //no es dr
-                    Pair<Integer,DiaReserva> maxSolap=new Pair(0,null);
+                    Pair<Integer,DiaReserva> minSolap=new Pair(1441,null);
                     for(int k=0;k<listaSolapamientos.size();k++){
-                        if(listaSolapamientos.get(k).getKey()>maxSolap.getKey()){maxSolap=listaSolapamientos.get(k);}
+                        if(listaSolapamientos.get(k).getKey()<minSolap.getKey()){minSolap=listaSolapamientos.get(k);}
                     }
-                    aulasYSolapamientos.add(new Triple(maxSolap.getKey(),maxSolap.getValue(),maxSolap.getValue().getAula()));
+                    aulasYSolapamientos.add(new Triple(minSolap.getKey(),minSolap.getValue(),minSolap.getValue().getAula()));
                     
                 }
             
-                //Reordenar segun solapamiento decreciente
-                /*for(int i=0;i<aulasYSolapamientos.size();i++){
-                    
-                    for(int j=0;j<aulasYSolapamientos.size()-i;j++){
-                        
-                        if(aulasYSolapamientos.get(j).first>aulasYSolapamientos.get(j+1).first){
-                            Triple taux=aulasYSolapamientos.get(j);
-                            aulasYSolapamientos.set(j, aulasYSolapamientos.get(j+1));
-                            aulasYSolapamientos.set(j+1, taux);
-                        }
-                        
+            
+                Integer m=1441;
+                for (int i=0;i<aulasYSolapamientos.size();i++){
+                    if(aulasYSolapamientos.get(i).first<m){
+                        m=aulasYSolapamientos.get(i).first;
+                    }   
+                }
+                
+                for (int i=0;i<aulasYSolapamientos.size();i++){
+                    if(aulasYSolapamientos.get(i).first.equals(m)){
+                        retorno.add(aulasYSolapamientos.get(i));
                     }
-                    
-                }*/
-            
-            
+                }
+                
+                return retorno;
+                
             }
         
-
+        //Anexo - devuelve solo 3 aulas ordenadas por capacidad creciente
         
-        return aulasYSolapamientos;
+        ArrayList<Triple<Integer,DiaReserva,Aula>> ret = new ArrayList();
+        Triple aux=null;
+        
+        for(int i=0;i<aulasYSolapamientos.size();i++){
+            
+            for(int j=i;j<aulasYSolapamientos.size();j++){
+                
+                if(aulasYSolapamientos.get(j).third.getCapacidad()<aulasYSolapamientos.get(i).third.getCapacidad()){
+                    
+                    aux=aulasYSolapamientos.get(j);
+                    aulasYSolapamientos.set(j,aulasYSolapamientos.get(i));
+                    aulasYSolapamientos.set(i,aux);
+                }
+                
+            }
+            
+        }
+        
+        int i=0;
+            while (i<aulasYSolapamientos.size() && i<3){
+                ret.add(aulasYSolapamientos.get(i));
+                i++;
+            }
+        
+        
+        return ret;
+        
+
      
         
     }
@@ -193,10 +221,10 @@ public class Gestor_Reservas {
     private Pair<Integer,DiaReserva> calcularSolapamientos(DiaReserva dr, ArrayList<DiaReserva> drs){
         
         //Este metodo debe, dado un dia reserva y una coleccion de dias reserva, evaluar cual dia reserva de "drs" es el que genera
-        //el maximo grado de solapamiento, ponderarlo (en el integer) y devolverlo, junto con ese mismo dia reserva que genero el solapamiento.
+        //el minimo grado de solapamiento, ponderarlo (en el integer) y devolverlo, junto con ese mismo dia reserva que genero el solapamiento.
         
         Pair<Integer,DiaReserva> retorno=null;
-        long solapamientoEnMS=0;
+        long solapamientoEnMS=100000000;
         long solapamientoEnMS_aux=0;
         DiaReserva causanteSolapamiento=null;
         
@@ -258,7 +286,7 @@ public class Gestor_Reservas {
                 solapamientoEnMS_aux=hf.getTime()-_hi.getTime();
             }
             
-            if(solapamientoEnMS_aux>solapamientoEnMS){
+            if(solapamientoEnMS_aux<solapamientoEnMS){
                 causanteSolapamiento=drs.get(i);
                 solapamientoEnMS=solapamientoEnMS_aux;
                 solapamientoEnMS_aux=0;

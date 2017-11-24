@@ -256,6 +256,7 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         
+        if(jTable1.getSelectedRow()>-1){
         listaDiasHorarios.remove(jTable1.getSelectedRow());
         
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
@@ -267,7 +268,7 @@ public class CU01_EsporadicaDias extends javax.swing.JFrame {
                     Object[] fila = {formatterFecha.format((Date)trip.first),formatterHorario.format((Time)(trip.second))+"-"+formatterHorario.format((Time)(trip.third))};
                     model.addRow(fila);
                 }
-        
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void horaIniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_horaIniActionPerformed

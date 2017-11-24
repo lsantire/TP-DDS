@@ -25,7 +25,6 @@ public class CU01_InformacionSolapamiento extends javax.swing.JFrame {
         this.setIconImage(new ImageIcon(FrameController.class.getResource("/Interfaz/iconoround.png")).getImage());
         this.setLocationRelativeTo(null);
         
-        System.out.println(dr.getReserva());
         //El atributo reserva de dia reserva esta viniendo vacio
         this.catedraTB.setText(dr.getReserva().getCurso().getNombreCurso());
         this.docenteTB.setText(dr.getReserva().getDocente().getNombreYApellido());
@@ -57,9 +56,10 @@ public class CU01_InformacionSolapamiento extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         horaFinTB = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("BDLbedel");
         setAlwaysOnTop(true);
+        setResizable(false);
         setType(java.awt.Window.Type.POPUP);
 
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+2f));
