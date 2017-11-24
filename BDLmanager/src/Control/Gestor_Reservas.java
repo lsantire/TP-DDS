@@ -189,7 +189,8 @@ public class Gestor_Reservas {
         ArrayList<Triple<Integer,DiaReserva,Aula>> ret = new ArrayList();
         Triple aux=null;
         
-        for(int i=0;i<aulasYSolapamientos.size();i++){
+        
+        for(int i=0;i<Math.min(aulasCompatibles.size(), 3);i++){
             
             for(int j=i;j<aulasYSolapamientos.size();j++){
                 

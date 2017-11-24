@@ -126,6 +126,7 @@ public class Gestor_Bedeles {
                 if(politicaSeguridad.isDebeEspecial())infoError+="La contrasenia debe tener al menos un signo especial(@#$%&*)\n";
                 if(politicaSeguridad.isDebeUnNumero())infoError+="La contrasenia debe tener al menos un numero\n";
                 if(politicaSeguridad.isDebeUnaMayus())infoError+="La contrasenia debe tener una mayuscula\n";
+                if(!politicaSeguridad.isPuedeRepetirse())infoError+="La contrasenia no puede repetirse\n";
                 infoError+="La contrasenia debe tener un mínimo de "+politicaSeguridad.getLongitudMinima()+" caracteres\n";
                 
                 throw new NoCumplePoliticaException("No se respeta la politica de seguridad:\n"+infoError);
