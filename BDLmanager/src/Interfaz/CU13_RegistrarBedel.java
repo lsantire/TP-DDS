@@ -7,6 +7,7 @@ package Interfaz;
 
 import Control.Gestor_Bedeles;
 import Excepciones.*;
+import Utilidades.LengthRestrictedDocument;
 import Utilidades.StringHandler;
 
 /**
@@ -20,6 +21,11 @@ public class CU13_RegistrarBedel extends javax.swing.JFrame {
      */
     public CU13_RegistrarBedel() {
         initComponents();
+        jTextField4.setDocument(new LengthRestrictedDocument(60));
+        jTextField5.setDocument(new LengthRestrictedDocument(60));
+        jTextField6.setDocument(new LengthRestrictedDocument(32));
+        jPasswordField3.setDocument(new LengthRestrictedDocument(32));
+        jPasswordField4.setDocument(new LengthRestrictedDocument(32));
         this.setLocationRelativeTo(null);
     }
 

@@ -7,6 +7,7 @@ package Interfaz;
 
 import Control.Gestor_Reservas;
 import Entidad.*;
+import Excepciones.ErrorNuevaReservaException;
 import Utilidades.Triple;
 import java.awt.Color;
 import java.sql.Time;
@@ -98,7 +99,7 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
             for (int i=0;i<listaDiasHorarios.size();i++){
                 ArrayList diaEsporadico=new ArrayList();
                 diaEsporadico.add(listaDiasHorarios.get(i).first);
-                ArrayList<Triple<Integer,DiaReserva,Aula>> aulas = Gestor_Reservas.getInstance().obtenerAulasDisponibles(C1, C2, cantAlumnos, tipoAula, diaEsporadico, listaDiasHorarios.get(i).second, listaDiasHorarios.get(i).third);
+                ArrayList<Triple<Integer,DiaReserva,Aula>> aulas = Gestor_Reservas.getInstance().obtenerAulasDisponibles(cantAlumnos, tipoAula, diaEsporadico, listaDiasHorarios.get(i).second, listaDiasHorarios.get(i).third);
                 ArrayList<Triple<Date,Time,Time>> dias = new ArrayList();dias.add(listaDiasHorarios.get(i));
                 Pair p = new Pair(dias,aulas);
                 listaDiasHorariosConSolapamiento.add(p);
@@ -114,7 +115,7 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
             
             for(int i=0;i<5;i++){
                 if(!diasPorSemana[i].isEmpty()){
-                    ArrayList<Triple<Integer,DiaReserva,Aula>> aulas=(ArrayList<Triple<Integer,DiaReserva,Aula>>) Gestor_Reservas.getInstance().obtenerAulasDisponibles(C1, C2, cantAlumnos, tipoAula, diasPorSemana[i], horaPorDia[i].getKey(), horaPorDia[i].getValue());
+                    ArrayList<Triple<Integer,DiaReserva,Aula>> aulas=(ArrayList<Triple<Integer,DiaReserva,Aula>>) Gestor_Reservas.getInstance().obtenerAulasDisponibles(cantAlumnos, tipoAula, diasPorSemana[i], horaPorDia[i].getKey(), horaPorDia[i].getValue());
                     ArrayList<Triple<Date,Time,Time>> dias = new ArrayList();
                     for(int j=0;j<diasPorSemana[i].size();j++){
                         dias.add(new Triple(diasPorSemana[i].get(j),horaPorDia[i].getKey(),horaPorDia[i].getValue()));
@@ -283,6 +284,7 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(sinAsignar);
 
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Interfaz/bdlbedel.png"))); // NOI18N
         jLabel5.setToolTipText("");
 
@@ -334,10 +336,10 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
                         .addComponent(jButton5))
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel5)
-                .addGap(209, 209, 209))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -535,7 +537,11 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
             
         }
         
-        Gestor_Reservas.getInstance().crearReserva(cantAlumnos, C1, C2, docente, curso, bedel, lista);
+        try{
+            Gestor_Reservas.getInstance().crearReserva(cantAlumnos, C1, C2, docente, curso, bedel, lista);
+        }catch(ErrorNuevaReservaException ex){
+            new PopUp(TipoPopUp.ERROR, ex.getMessage());
+        }
         
         new PopUp(TipoPopUp.INFORMACION,"Se ha realizado la reserva exitosamente.");
         FrameController.pop();
@@ -546,9 +552,11 @@ public class CU01_SelectorAulas extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         
-        DiaReserva dr=listaDiasHorariosConSolapamiento.get(sinAsignar.getSelectedIndex()).getValue().get(jTable1.getSelectedRow()).second;
-        
-        new CU01_InformacionSolapamiento(dr).setVisible(true);
+        if(jTable1.getSelectedRow()>-1 && sinAsignar.getSelectedIndex()>-1){
+            DiaReserva dr=listaDiasHorariosConSolapamiento.get(sinAsignar.getSelectedIndex()).getValue().get(jTable1.getSelectedRow()).second;
+
+            new CU01_InformacionSolapamiento(dr).setVisible(true);
+        }
         
     }//GEN-LAST:event_jButton6ActionPerformed
 

@@ -6,6 +6,7 @@
 package Control;
 
 import Entidad.*;
+import Excepciones.ErrorNuevaReservaException;
 import Utilidades.Triple;
 import java.sql.Time;
 import java.text.DateFormat;
@@ -29,7 +30,7 @@ public class Gestor_Reservas {
         return instance;
     }
     
-    public void crearReserva (int cantAlumnos, boolean C1, boolean C2, Docente docente, Curso curso, Bedel bedel, ArrayList<Pair<Triple<Date,Time,Time>,Aula>> listaDiasAulas){
+    public void crearReserva (int cantAlumnos, boolean C1, boolean C2, Docente docente, Curso curso, Bedel bedel, ArrayList<Pair<Triple<Date,Time,Time>,Aula>> listaDiasAulas) throws ErrorNuevaReservaException{
         
         Reserva r = new Reserva();
         r.setBedel(bedel);
@@ -53,7 +54,10 @@ public class Gestor_Reservas {
         
         r.setDiasReserva(drs);
         
-        DAO_Reservas.getInstance().insert(r);
+        if(!DAO_Reservas.getInstance().insert(r)){
+            throw new ErrorNuevaReservaException("No se pudo realizar la reserva");
+        }
+
         
     }
     
@@ -108,7 +112,7 @@ public class Gestor_Reservas {
         
     }
     
-    public ArrayList<Triple<Integer,DiaReserva,Aula>> obtenerAulasDisponibles(boolean C1, boolean C2, int cantAlumnos, String tipoAula, ArrayList<Date> dias, Time horainicio, Time horafin){
+    public ArrayList<Triple<Integer,DiaReserva,Aula>> obtenerAulasDisponibles(int cantAlumnos, String tipoAula, ArrayList<Date> dias, Time horainicio, Time horafin){
         
         
         ArrayList<Aula> aulasCompatibles = (ArrayList)Gestor_Aulas.getInstance().obtenerAulas(cantAlumnos, tipoAula);

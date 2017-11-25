@@ -8,6 +8,7 @@ package Interfaz;
 import Control.Gestor_Bedeles;
 import Entidad.Bedel;
 import Excepciones.*;
+import Utilidades.LengthRestrictedDocument;
 import Utilidades.StringHandler;
 
 
@@ -28,6 +29,11 @@ public class CU14_ModificarBedel extends javax.swing.JFrame  {
      */
     public CU14_ModificarBedel() {
         initComponents();
+        jTextField1.setDocument(new LengthRestrictedDocument(60));
+        jTextField2.setDocument(new LengthRestrictedDocument(60));
+        jPasswordField1.setDocument(new LengthRestrictedDocument(32));
+        jPasswordField2.setDocument(new LengthRestrictedDocument(32));
+        
         this.setLocationRelativeTo(null);
         jTextField1.setText(bedel.getNombre());
         jTextField2.setText(bedel.getApellido());

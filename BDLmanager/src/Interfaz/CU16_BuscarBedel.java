@@ -7,6 +7,7 @@ package Interfaz;
 
 import Control.Gestor_Bedeles;
 import Entidad.Bedel;
+import Utilidades.LengthRestrictedDocument;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +26,7 @@ public class CU16_BuscarBedel extends javax.swing.JFrame  {
      */
     public CU16_BuscarBedel() {
         initComponents();
+        jTextField1.setDocument(new LengthRestrictedDocument(60));
         this.setLocationRelativeTo(null);
         jTable1.setRowSelectionAllowed(true);
         jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

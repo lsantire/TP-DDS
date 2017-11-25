@@ -6,6 +6,7 @@
 package Interfaz;
 
 import Control.Gestor_Autenticacion;
+import Utilidades.LengthRestrictedDocument;
 import javax.swing.ImageIcon;
 
 /**
@@ -19,6 +20,8 @@ public class CU17_Login extends javax.swing.JFrame  {
      */
     public CU17_Login() {
         initComponents();
+        jTextField1.setDocument(new LengthRestrictedDocument(32));
+        jPasswordField1.setDocument(new LengthRestrictedDocument(32));
         buttonGroup1.add(jRadioButton1);
         buttonGroup1.add(jRadioButton2);
         jRadioButton1.setSelected(true);
