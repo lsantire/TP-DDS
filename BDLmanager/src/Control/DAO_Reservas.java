@@ -8,6 +8,7 @@ package Control;
 import Entidad.DiaReserva;
 import Entidad.Reserva;
 import Utilidades.Hibernator;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.hibernate.Criteria;
@@ -41,22 +42,27 @@ public class DAO_Reservas {
             
             Criteria cr=ses.createCriteria(DiaReserva.class);
             Conjunction conj = Restrictions.conjunction();
+            Disjunction disj = Restrictions.disjunction();
             
             if(dr.getFecha()!=null){
                 conj.add(Restrictions.eq("fecha",dr.getFecha()));
             }
             
-            if(dr.getHoraFin()!=null && dr.getHoraInicio()!=null){
-
-                conj.add(Restrictions.gt("horaFin",dr.getHoraInicio()));
-                conj.add(Restrictions.lt("horaInicio", dr.getHoraFin()));
-                
-            }
+            Time hi=dr.getHoraInicio();
+            Time hf=dr.getHoraFin();
+            String _hi="horaInicio";
+            String _hf="horaFin";
+            
             
             if(dr.getAula()!=null){
                 conj.add(Restrictions.eq("aula", dr.getAula()));
                 
             }
+            conj.add(Restrictions.and(
+                    Restrictions.lt(_hi, hf),
+                    Restrictions.gt(_hf, hi)
+                    )
+            );
             
             cr.add(conj);
             
@@ -67,7 +73,8 @@ public class DAO_Reservas {
         catch(org.hibernate.exception.GenericJDBCException jbdc){
             resultado=new ArrayList();
         }
-                
+        
+        System.out.println(resultado.size());
         return resultado;
         
     }

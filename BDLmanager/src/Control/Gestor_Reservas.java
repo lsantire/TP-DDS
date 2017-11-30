@@ -243,7 +243,7 @@ public class Gestor_Reservas {
             _hf=drs.get(i).getHoraFin();
             _hi=drs.get(i).getHoraInicio();
             
-            
+            /*
             //Se plantean los 9 posibles casos de overlapping
             
             //1. Start inside: _hi < hi && hi< _hf && _hf<hf
@@ -290,6 +290,10 @@ public class Gestor_Reservas {
             if(_hi.before(hf) && hi.before(_hi) && hf.before(_hf)){
                 solapamientoEnMS_aux=hf.getTime()-_hi.getTime();
             }
+            
+            */
+            
+            solapamientoEnMS_aux=Math.min(hf.getTime(),_hf.getTime())-Math.max(hi.getTime(), _hi.getTime());
             
             if(solapamientoEnMS_aux<solapamientoEnMS){
                 causanteSolapamiento=drs.get(i);
