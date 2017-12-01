@@ -1,7 +1,9 @@
 INSERT INTO bdlmanager.administrador VALUES('admin','argentina');
+
 INSERT INTO bdlmanager.politicaseguridad VALUES (1,false,true,true,6,false,true);
 INSERT INTO bdlmanager.politicaseguridad VALUES (2,true,false,false,4,false,false);
 INSERT INTO bdlmanager.politicaseguridad VALUES (3,false,false,true,8,true,false);
+
 INSERT INTO bdlmanager.docente (dni, mail, `nombreYApellido`) VALUES (11, 'luisbianculli@hotmail.com', 'Bianculli Luis');
 INSERT INTO bdlmanager.docente (dni, mail, `nombreYApellido`) VALUES (22, 'pablokler@hotmail.com', 'Kler Pablo');
 INSERT INTO bdlmanager.docente (dni, mail, `nombreYApellido`) VALUES (33, 'fabiodlugo@hotmail.com', 'Dlugovitzky Fabio');
@@ -36,12 +38,12 @@ INSERT INTO bdlmanager.curso (id, `nombreCurso`) VALUES (13, 'Diseño y Estructu
 INSERT INTO bdlmanager.curso (id, `nombreCurso`) VALUES (14, 'Algoritmos y Estructuras de Datos');
 INSERT INTO bdlmanager.curso (id, `nombreCurso`) VALUES (15, 'Sistemas y Organizaciones');
 
-INSERT INTO bdlmanager.cuatrimestre (`cicloLectivo`, `fechaInicio`, `fechaFin`) VALUES (2016, '2016-03-04 15:13:17.285', '2016-07-05 15:13:40.652');
-INSERT INTO bdlmanager.cuatrimestre (`cicloLectivo`, `fechaInicio`, `fechaFin`) VALUES (2016, '2016-08-09 15:14:04.595', '2016-11-30 15:14:12.284');
-INSERT INTO bdlmanager.cuatrimestre (`cicloLectivo`, `fechaInicio`, `fechaFin`) VALUES (2017, '2017-02-28 15:14:26.07', '2017-07-01 15:14:35.888');
-INSERT INTO bdlmanager.cuatrimestre (`cicloLectivo`, `fechaInicio`, `fechaFin`) VALUES (2017, '2017-08-02 15:14:46.901', '2017-12-06 15:14:53.034');
-INSERT INTO bdlmanager.cuatrimestre (`cicloLectivo`, `fechaInicio`, `fechaFin`) VALUES (2018, '2018-03-15 15:15:03.8', '2018-07-12 15:15:09.8');
-INSERT INTO bdlmanager.cuatrimestre (`cicloLectivo`, `fechaInicio`, `fechaFin`) VALUES (2018, '2018-08-15 15:15:18.826', '2018-12-06 15:15:25.158');
+INSERT INTO bdlmanager.cuatrimestre (`cicloLectivo`, `fechaInicio`, `fechaFin`) VALUES (2016, '2016-03-04 00:00:00.000', '2016-07-05 23:59:59.999');
+INSERT INTO bdlmanager.cuatrimestre (`cicloLectivo`, `fechaInicio`, `fechaFin`) VALUES (2016, '2016-08-09 00:00:00.000', '2016-11-30 23:59:59.999');
+INSERT INTO bdlmanager.cuatrimestre (`cicloLectivo`, `fechaInicio`, `fechaFin`) VALUES (2017, '2017-02-28 00:00:00.000', '2017-07-01 23:59:59.999');
+INSERT INTO bdlmanager.cuatrimestre (`cicloLectivo`, `fechaInicio`, `fechaFin`) VALUES (2017, '2017-08-02 00:00:00.000', '2017-12-29 23:59:59.999');
+INSERT INTO bdlmanager.cuatrimestre (`cicloLectivo`, `fechaInicio`, `fechaFin`) VALUES (2018, '2018-03-15 00:00:00.000', '2018-07-12 23:59:59.999');
+INSERT INTO bdlmanager.cuatrimestre (`cicloLectivo`, `fechaInicio`, `fechaFin`) VALUES (2018, '2018-08-15 00:00:00.000', '2018-12-06 23:59:59.999');
 
 INSERT INTO bdlmanager.aula (`id`,`DTYPE`,`capacidad`,`habilitado`,`nombreAula`,`piso`,`tipoPizarron`,`aireAcondicionado`,`canion`,`cantidadPcs`) VALUES (1,'AulaInformatica',30, true, 'Lab 1', 3, 'A fibrón', true, true, 15);
 INSERT INTO bdlmanager.aula (`id`,`DTYPE`,`capacidad`,`habilitado`,`nombreAula`,`piso`,`tipoPizarron`,`aireAcondicionado`,`canion`,`cantidadPcs`) VALUES (2,'AulaInformatica',35, true, 'Lab 2', 3, 'A tiza', true, false, 15);
